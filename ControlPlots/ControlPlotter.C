@@ -1,6 +1,5 @@
-int nbins, nbins1; 
-double min, max, width;
-double min1, max1;
+int nbins; 
+double minBin = 0, maxBin = 0, width = 0;
 string histo_title;
 string xaxis_title;
 string yaxis_title;
@@ -13,10 +12,9 @@ TCut cut0;
 TCut generalCut =  "";
 
 
-
 TH1F* numRecVertex1 = new TH1F();
 TH2F* numRecVertex2 = new TH2F();
-TFile *f1, *f2, *write;
+TFile *f1, *f2, *fWrite;
 
 bool bDATA = false;
 
@@ -24,13 +22,16 @@ TCanvas* Canvas  = new TCanvas("Canvas", "",  500, 500);
 
 TTree* R2S;
 
+void PlottiPlotta();
+void setParams(TH1F* f, string xtitle, string ytitle, int Color, int Style, int Width);
+
 void ControlPlotter(){
 
   string directory("HH4b_subjetBTagged_15ov2015/"); 
 
   string s_file = directory + "ControlPlotsSignal.root"; 
   //string s_file = "ControlPlotsNoReg_X270.root"; 
-  write  = new TFile(s_file.data(), "RECREATE");
+  fWrite  = new TFile(s_file.data(), "RECREATE");
 
   const int ntrees = 8;
 
@@ -79,8 +80,8 @@ void ControlPlotter(){
     // R2S->Print();
  
     nbins = 50; 
-    min = 1000, width = 40; 
-    max = min + nbins*width;
+    minBin = 1000., width = 40.; 
+    maxBin = minBin + nbins*width;
     plotName  = "TotalMass_" + sampleName[i];
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
@@ -91,10 +92,38 @@ void ControlPlotter(){
  
     PlottiPlotta();
 
+
+    nbins = 2000; 
+    minBin = 1000., width = 1.; 
+    maxBin = minBin + nbins*width;
+    plotName  = "TotalMass1GeV_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 40 GeV";
+    variable = "SelectedEventminv_leading2hjets";
+    cut0 = "";
+    cut = cut0*generalCut;
+ 
+    PlottiPlotta();
+
+
+    nbins = 2000; 
+    minBin = 1000., width = 1.; 
+    maxBin = minBin + nbins*width;
+    plotName  = "TotalMass1GeV_3btag_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 40 GeV";
+    variable = "SelectedEventminv_leading2hjets";
+    cut0 = "(HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99";
+    cut = cut0*generalCut;
+ 
+    PlottiPlotta();
+
     
     nbins = 15; 
-    min = 0, width = 0.1; 
-    max = min + nbins*width;
+    minBin = 0., width = 0.1; 
+    maxBin = minBin + nbins*width;
     plotName  = "DeltaEta_" + sampleName[i];
     histo_title = "";
     xaxis_title = "#Delta #eta";
@@ -107,8 +136,8 @@ void ControlPlotter(){
 
 
     nbins = 42; 
-    min = 200, width = 25; 
-    max = min + nbins*width;
+    minBin = 200., width = 25; 
+    maxBin = minBin + nbins*width;
     plotName  = "PT0_" + sampleName[i];
     histo_title = "";
     xaxis_title = "p_{T, j0} (GeV)";
@@ -122,8 +151,8 @@ void ControlPlotter(){
 
 
     nbins = 42; 
-    min = 200, width = 25; 
-    max = min + nbins*width;
+    minBin = 200., width = 25; 
+    maxBin = minBin + nbins*width;
     plotName  = "PT1_" + sampleName[i];
     histo_title = "";
     xaxis_title = "p_{T, j1} (GeV)";
@@ -136,8 +165,8 @@ void ControlPlotter(){
 
 
     nbins = 30; 
-    min = -3, width = 0.2; 
-    max = min + nbins*width;
+    minBin = -3., width = 0.2; 
+    maxBin = minBin + nbins*width;
     plotName  = "ETA_" + sampleName[i];
     histo_title = "";
     xaxis_title = "#eta ";
@@ -150,8 +179,8 @@ void ControlPlotter(){
 
 
     nbins = 16; 
-    min =90, width = 5; 
-    max = min + nbins*width;
+    minBin =90., width = 5; 
+    maxBin = minBin + nbins*width;
     plotName  = "M0Pruned_" + sampleName[i];
     histo_title = "";
     xaxis_title = "m_{j0} (GeV)";
@@ -165,8 +194,8 @@ void ControlPlotter(){
 
 
     nbins = 16; 
-    min =90, width = 5; 
-    max = min + nbins*width;
+    minBin =90., width = 5; 
+    maxBin = minBin + nbins*width;
     plotName  = "M1Pruned_" + sampleName[i];
     histo_title = "";
     xaxis_title = "m_{j1} (GeV)";
@@ -181,8 +210,8 @@ void ControlPlotter(){
 
 
     nbins = 10; 
-    min =0, width = 0.1; 
-    max = min + nbins*width;
+    minBin =0., width = 0.1; 
+    maxBin = minBin + nbins*width;
     plotName  = "nCSV_J0_SJ0_" + sampleName[i];
     histo_title = "";
     xaxis_title = "CSV J0 SJ0";
@@ -196,8 +225,8 @@ void ControlPlotter(){
 
 
     nbins = 10; 
-    min =0, width = 0.11; 
-    max = min + nbins*width;
+    minBin =0., width = 0.11; 
+    maxBin = minBin + nbins*width;
     plotName  = "nCSV_J1_SJ0_" + sampleName[i];
     histo_title = "";
     xaxis_title = "CSV J1 SJ0";
@@ -210,8 +239,8 @@ void ControlPlotter(){
 
 
     nbins = 10; 
-    min =0, width = 0.1; 
-    max = min + nbins*width;
+    minBin =0., width = 0.1; 
+    maxBin = minBin + nbins*width;
     plotName  = "nCSV_J0_SJ1_" + sampleName[i];
     histo_title = "";
     xaxis_title = "CSV J0 SJ1";
@@ -225,8 +254,8 @@ void ControlPlotter(){
 
 
     nbins = 10; 
-    min =0, width = 0.11; 
-    max = min + nbins*width;
+    minBin =0., width = 0.11; 
+    maxBin = minBin + nbins*width;
     plotName  = "nCSV_J1_SJ1_" + sampleName[i];
     histo_title = "";
     xaxis_title = "CSV J1 SJ1";
@@ -240,8 +269,8 @@ void ControlPlotter(){
 
 
     nbins = 6; 
-    min =-0.5, width = 1; 
-    max = min + nbins*width;
+    minBin =-0.5, width = 1; 
+    maxBin = minBin + nbins*width;
     plotName  = "nCSV_" + sampleName[i];
     histo_title = "";
     xaxis_title = "N(CSV0)+N(CSV1)";
@@ -256,8 +285,8 @@ void ControlPlotter(){
     // R2S->Print();
  
     nbins = 50; 
-    min = 1000, width = 40; 
-    max = min + nbins*width;
+    minBin = 1000., width = 40.; 
+    maxBin = minBin + nbins*width;
     plotName  = "TotalMass3btag_" + sampleName[i];
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
@@ -271,7 +300,9 @@ void ControlPlotter(){
   }
 
 
-  write->Close();
+  fWrite->Close();
+
+
 
 }
 
@@ -281,29 +312,29 @@ void PlottiPlotta(){
   Canvas->cd();
 
   f1->cd();
-  numRecVertex1 = new TH1F("numRecVertex1", histo_title.data(), nbins, min, max);
+  numRecVertex1 = new TH1F("numRecVertex1", histo_title.data(), nbins, minBin, maxBin);
   numRecVertex1->Sumw2();
   string plot = variable + ">> numRecVertex1";
   //     R2S->Draw(plot.data(), cut, opt.data(), 100000000, 10000);
   R2S->Draw(plot.data(), cut, "");
-  setParams(numRecVertex1, xaxis_title.data(), yaxis_title.data(), 1, 1, 2); 
+  setParams(numRecVertex1, xaxis_title, yaxis_title, 1, 1, 2); 
   Canvas->Update(); 
 
 
-  write->cd();
+  fWrite->cd();
   numRecVertex1->Write(plotName.data());
 
 }
 
 
-void setParams(TH1F* f, char* xtitle, char* ytitle, int Color, int Style, int Width){
+void setParams(TH1F* f, string xtitle, string ytitle, int Color, int Style, int Width){
 
 
   f->SetStats(0);
   //  f->Sumw2();
 
-  f->SetXTitle(xtitle);
-  f->SetYTitle(ytitle);
+  f->SetXTitle(xtitle.c_str());
+  f->SetYTitle(ytitle.c_str());
 
   f->SetTitleSize(0.07, "Y");
   f->SetTitleOffset(0.7, "Y");
