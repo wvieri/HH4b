@@ -2,7 +2,7 @@
 
   // control plots we want
 
-  const int nplots = 14;
+  const int nplots = 18;
   const int ntrees = 11;
   double sherpa = 1.;//1./2.54;
   double Lumi = 1.92956;
@@ -74,7 +74,7 @@ In pb
 			       "Radion_m1200_13TeV", "Radion_m1800_13TeV", "Radion_m2500_13TeV", "Radion_m3500_13TeV"};
 
 
-  string plotNames[nplots] = {"TotalMass", "PT0",  "PT1", "M0Pruned", "M1Pruned",  "ETA", "DeltaEta",  "nCSV_J0_SJ0", "nCSV_J0_SJ1", "nCSV_J1_SJ0", "nCSV_J1_SJ1", "nCSV", "HT12", "TotalMass3btag"};
+  string plotNames[nplots] = {"TotalMass", "PT0",  "PT1", "M0Pruned", "M1Pruned",  "ETA", "DeltaEta",  "nCSV_J0_SJ0", "nCSV_J0_SJ1", "nCSV_J1_SJ0", "nCSV_J1_SJ1", "nCSV", "HT12", "TotalMass3btag", "TotalMass4btag", "TotalMass1GeV_3btagExactly", "TAU21_J0", "TAU21_J1"};
 
 
   TH1D* plots[ntrees][nplots];
@@ -249,6 +249,9 @@ In pb
 
       }
       if (!AddToStack[iTreeNames]){// && iTreeNames > 0 ) {
+
+	if ( plotNames[iPlotNames].find("4btag") != string::npos && treeNames[iTreeNames].find("Radion") != string::npos ) plots[iTreeNames][iPlotNames]->Scale(0.01);
+	if ( plotNames[iPlotNames].find("3btag") != string::npos && treeNames[iTreeNames].find("Radion") != string::npos ) plots[iTreeNames][iPlotNames]->Scale(0.03);
 	plots[iTreeNames][iPlotNames]->SetFillStyle(0);
 	//	plots[iTreeNames][iPlotNames]->SetLineStyle(iTreeNames%4+2);
 	plots[iTreeNames][iPlotNames]->SetLineWidth(3);
