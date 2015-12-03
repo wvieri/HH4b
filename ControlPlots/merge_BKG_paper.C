@@ -2,10 +2,10 @@
 
   // control plots we want
 
-  const int nplots = 13;
-  const int ntrees = 8;
+  const int nplots = 14;
+  const int ntrees = 11;
   double sherpa = 1.;//1./2.54;
-  double Lumi = 3.0;
+  double Lumi = 1.92956;
   double NewNtot = 150.;
   double scale_radion = 1./20000.;
   double scale_mssmhiggs = NewNtot/300000.;
@@ -44,31 +44,37 @@ In pb
 
  //5, 1.1, 1.1, 0.37, 16.5};
 
-  double scaleXsec[ntrees] = {351300000*Lumi/19826197, 31630000*Lumi/19664159, 6802000*Lumi/15356448, 1206000*Lumi/4884057, 
-			      120400*Lumi/3863167, 25.25*Lumi/1912529,
-				1, 1};
+  double scaleXsec[ntrees] = {1.,                                                                                              
+			      351300000*Lumi/19826197, 31630000*Lumi/19664159, 6802000*Lumi/15356448, 1206000*Lumi/4963895,                                                            
+			      120400*Lumi/3868890, 25250*Lumi/1912529,
+			      1, 1, 1, 1};
 
-  double Uncertainty[ntrees] = {1, 1, 1, 1, 1, 1,
-				1, 1};
+  double Uncertainty[ntrees] = {1, 1, 1, 1, 1, 1, 1,
+				1, 1, 1, 1};
 
 
-  string sTitle[ntrees] =   {"QCD_HT300to1000", "QCD_HT300to1000",  "QCD_HT300to1000",  "QCD_HT1000to1500", "QCD_HT1500to2000", "QCD_HT2000toInf", 
-			     "M_{R} = 1.2 TeV", "M_{R} = 1.6 TeV"};
+  string sTitle[ntrees] =   {"DATA", 
+			     "QCD_HT300to1000", "QCD_HT300to1000",  "QCD_HT300to1000",  "QCD_HT1000to1500", "QCD_HT1500to2000", "QCD_HT2000toInf", 
+			     "M_{R} = 1.2 TeV", "M_{R} = 1.8 TeV", "M_{R} = 2.5 TeV", "M_{R} = 3.5 TeV"};
 
-  bool AddToStack[ntrees] = {true, true, true,  true, true, true,
-			     false, false};
+  bool AddToStack[ntrees] = {false, 
+			     true, true, true,  true, true, true,
+			     false, false, false, false};
   
-  bool UsefulColor[ntrees] = {false, false, true, true, true, true,
-			      true, true};
+  bool UsefulColor[ntrees] = {true, 
+			      false, false, true, true, true, true,
+			      true, true, true, true};
 
-  int Color[ntrees] = {kYellow, kYellow, kYellow, 42, 43, 44,
-		       kBlack, kBlue};
+  int Color[ntrees] = {kBlack,
+		       kYellow, kYellow, kYellow, 42, 43, 47,
+		       kRed, kBlue, kGreen, kMagenta};
 
-  string treeNames[ntrees] = { "QCD_HT300to500", "QCD_HT500to700",  "QCD_HT700to1000", "QCD_HT1000to1500",  "QCD_HT1500to2000", "QCD_HT2000toInf", 
-			       "Radion_m1200_13TeV", "Radion_m1600_13TeV"};
+  string treeNames[ntrees] = { "Data",
+			       "QCD_HT300to500", "QCD_HT500to700",  "QCD_HT700to1000", "QCD_HT1000to1500",  "QCD_HT1500to2000", "QCD_HT2000toInf", 
+			       "Radion_m1200_13TeV", "Radion_m1800_13TeV", "Radion_m2500_13TeV", "Radion_m3500_13TeV"};
 
 
-  string plotNames[nplots] = {"TotalMass", "PT0",  "PT1", "M0Pruned", "M1Pruned",  "ETA", "DeltaEta",  "nCSV_J0_SJ0", "nCSV_J0_SJ1", "nCSV_J1_SJ0", "nCSV_J1_SJ1", "nCSV", "TotalMass3btag"};
+  string plotNames[nplots] = {"TotalMass", "PT0",  "PT1", "M0Pruned", "M1Pruned",  "ETA", "DeltaEta",  "nCSV_J0_SJ0", "nCSV_J0_SJ1", "nCSV_J1_SJ0", "nCSV_J1_SJ1", "nCSV", "HT12", "TotalMass3btag"};
 
 
   TH1D* plots[ntrees][nplots];
@@ -91,7 +97,7 @@ In pb
   leg->SetFillColor(0);
   leg->SetBorderSize(0);
 
-  TLegend *leg2 = new TLegend(0.25,0.75,0.53,0.89);
+  TLegend *leg2 = new TLegend(0.25,0.70,0.53,0.89);
   leg2->SetTextSize(0.03146853);
   leg2->SetLineColor(1);
   leg2->SetLineStyle(1);
@@ -236,12 +242,17 @@ In pb
 	totalPlot[iPlotNames]->Add(scalePlot);	
 	
       }
-      //      if (iTreeNames == 0) plots[iTreeNames][iPlotNames]->SetMarkerStyle(20);
+      if (iTreeNames == 0) {
+	
+	plots[iTreeNames][iPlotNames]->SetMarkerStyle(20);
+	plots[iTreeNames][iPlotNames]->SetMarkerSize(1.0);
+
+      }
       if (!AddToStack[iTreeNames]){// && iTreeNames > 0 ) {
 	plots[iTreeNames][iPlotNames]->SetFillStyle(0);
 	//	plots[iTreeNames][iPlotNames]->SetLineStyle(iTreeNames%4+2);
 	plots[iTreeNames][iPlotNames]->SetLineWidth(3);
-	if (iPlotNames == 0 &&  UsefulColor[iTreeNames]) {
+	if (iPlotNames == 0 &&  UsefulColor[iTreeNames] && iTreeNames > 0) {
 	  string s_out(sTitle[iTreeNames].c_str());
 	  //	  s_out = string("#sigma(") + s_out + ") x " + Form("%.0f", scaleXsec[iTreeNames]);
 	  leg2->AddEntry(plots[iTreeNames][iPlotNames], s_out.c_str(),"l");
@@ -253,9 +264,9 @@ In pb
       }
 
 
-      //      if (iPlotNames == 0 && iTreeNames == 0) leg->AddEntry(plots[iTreeNames][iPlotNames], treeNames[iTreeNames].c_str(),"pl");
-      //      else if (iPlotNames == 0 && iTreeNames > 0 && UsefulColor[iTreeNames] && AddToStack[iTreeNames]) leg->AddEntry(plots[iTreeNames][iPlotNames], sTitle[iTreeNames].c_str(),"f");
-      if (iPlotNames == 0 && iTreeNames > 0 && UsefulColor[iTreeNames] && AddToStack[iTreeNames]) leg->AddEntry(plots[iTreeNames][iPlotNames], sTitle[iTreeNames].c_str(),"f");
+      if (iPlotNames == 0 && iTreeNames == 0) leg->AddEntry(plots[iTreeNames][iPlotNames], treeNames[iTreeNames].c_str(),"pl");
+      //else if (iPlotNames == 0 && iTreeNames > 0 && UsefulColor[iTreeNames] && AddToStack[iTreeNames]) leg->AddEntry(plots[iTreeNames][iPlotNames], sTitle[iTreeNames].c_str(),"f");
+      else if (iPlotNames == 0 && iTreeNames > 0 && UsefulColor[iTreeNames] && AddToStack[iTreeNames]) leg->AddEntry(plots[iTreeNames][iPlotNames], sTitle[iTreeNames].c_str(),"f");
        
    }
     
@@ -280,8 +291,6 @@ In pb
     
 
 
-   cout << " ============= Signal only ============ " << endl;
-
    leg3->Clear();
 
    double max = totalPlot[iPlotNames]->GetMaximum();
@@ -289,14 +298,14 @@ In pb
    totalPlot[iPlotNames]->Draw();
    stacks[iPlotNames]->Draw("SAMEHIST");
 
-   for (int iTreeNames = 1; iTreeNames < ntrees; iTreeNames++){
+   for (int iTreeNames = 0; iTreeNames < ntrees; iTreeNames++){
 	
      if (!AddToStack[iTreeNames]) {
        if (max < plots[iTreeNames][iPlotNames]->GetMaximum()){
 	 max = plots[iTreeNames][iPlotNames]->GetMaximum();
        }
-       plots[iTreeNames][iPlotNames]->Draw("SAMEHIST");
-
+       if (iTreeNames != 0) plots[iTreeNames][iPlotNames]->Draw("SAMEHIST");
+       else plots[iTreeNames][iPlotNames]->Draw("SAMEPE");
      }
 
    }
@@ -304,9 +313,10 @@ In pb
     leg->Draw();
     leg2->Draw();
       
-   totalPlot[iPlotNames]->SetMaximum(max*1.6);
-   totalPlot[iPlotNames]->SetMinimum(0.7);
-   PT_HAT->Update();
+    if (plotNames[iPlotNames].find("TotalMass") != string::npos) totalPlot[iPlotNames]->SetMaximum(max*1.3);
+    else totalPlot[iPlotNames]->SetMaximum(max*1.8);
+    totalPlot[iPlotNames]->SetMinimum(0.7);
+    PT_HAT->Update();
    
    string nameOut =  directory + "Plots/" + plotNames[iPlotNames] + ".png";
    PT_HAT->SaveAs(nameOut.c_str());
