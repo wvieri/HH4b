@@ -1,0 +1,3 @@
+#!/bin/bash
+cd ${CMSSW_BASE}/src/HH4b/BumpSearchLimitCode; eval `scramv1 run -sh`
+root -b -q 'R2JJFitterHH_13TeV.cc(1000,"",0)'
