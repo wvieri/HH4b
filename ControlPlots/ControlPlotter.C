@@ -9,9 +9,9 @@ TCut cut;
 TCut cut0;
 // TCut generalCut = "(isNucl || isNuclLoose) ";
 //TCut generalCut =  "evweight_w_btagSF";
-//TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>-0.01) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]) < 2.05) * (SelectedEventminv_leading2hjets > 1000)";
+TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>-0.01) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]) < 2.05) * (SelectedEventminv_leading2hjets > 1000)";
 
-TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (SelectedEventminv_leading2hjets > 1000)";
+//TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (SelectedEventminv_leading2hjets > 1000)";
 
 TH1F* numRecVertex1 = new TH1F();
 TH2F* numRecVertex2 = new TH2F();
@@ -53,7 +53,7 @@ void ControlPlotter(){
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-2500_13TeV-madgraph.root", 
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-3500_13TeV-madgraph.root", 
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-4000_13TeV-madgraph.root",
-    "hh4bTree_RadionTohhTohbbhbb_narrow_M-4500_13TeV-madgraph.root"}
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-4500_13TeV-madgraph.root"};
 
   string sampleName[ntrees] = {
     "Data",
@@ -112,7 +112,7 @@ void ControlPlotter(){
     cout << s1.c_str() << endl;
     
     
-    TH1D* counter = (TH1D*) allEvents->Get("hEventCount;1");
+    counter = (TH1D*) allEvents->Get("hEventCount;1");
     if (counter) cout << "TOTAL NUMBER OF EVENTS  ======================================= " << counter->Integral() << endl;
     else{
       counter = (TH1D*) allEvents->Get("hEventCount_wt;1");

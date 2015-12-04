@@ -324,7 +324,7 @@ In pb
    string nameOut =  directory + "Plots/" + plotNames[iPlotNames] + ".png";
    PT_HAT->SaveAs(nameOut.c_str());
    
-   string nameOut =  directory + "Plots/" + plotNames[iPlotNames] + ".pdf";
+   nameOut =  directory + "Plots/" + plotNames[iPlotNames] + ".pdf";
    PT_HAT->SaveAs(nameOut.c_str());
 
 
@@ -332,10 +332,10 @@ In pb
    totalPlot[iPlotNames]->SetMaximum(totalPlot[iPlotNames]->GetMaximum()*3);
    PT_HAT->Update();
 
-   string nameOut =  directory + "Plots/" + plotNames[iPlotNames] + "_log.png";
+   nameOut =  directory + "Plots/" + plotNames[iPlotNames] + "_log.png";
    PT_HAT->SaveAs(nameOut.c_str());
    
-   string nameOut =  directory + "Plots/" + plotNames[iPlotNames] + "_log.pdf";
+   nameOut =  directory + "Plots/" + plotNames[iPlotNames] + "_log.pdf";
    PT_HAT->SaveAs(nameOut.c_str());
 
     
