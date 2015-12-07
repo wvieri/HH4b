@@ -3,7 +3,7 @@
   // control plots we want
 
   const int nplots = 18;
-  const int ntrees = 11;
+  const int ntrees = 12;
   double sherpa = 1.;//1./2.54;
   double Lumi = 1.92956;
   double NewNtot = 150.;
@@ -44,7 +44,8 @@ In pb
 
  //5, 1.1, 1.1, 0.37, 16.5};
 
-  double scaleXsec[ntrees] = {1.,                                                                                              
+  double scaleXsec[ntrees] = {1.,           
+			      831760*Lumi/9.68346e+07,
 			      351300000*Lumi/19826197, 31630000*Lumi/19664159, 6802000*Lumi/15356448, 1206000*Lumi/4963895,                                                            
 			      120400*Lumi/3868890, 25250*Lumi/1912529,
 			      1, 1, 1, 1};
@@ -53,23 +54,28 @@ In pb
 				1, 1, 1, 1};
 
 
-  string sTitle[ntrees] =   {"DATA", 
+  string sTitle[ntrees] =   {"DATA",
+			     "TTbar",
 			     "QCD_HT300to1000", "QCD_HT300to1000",  "QCD_HT300to1000",  "QCD_HT1000to1500", "QCD_HT1500to2000", "QCD_HT2000toInf", 
 			     "M_{R} = 1.2 TeV", "M_{R} = 1.8 TeV", "M_{R} = 2.5 TeV", "M_{R} = 3.5 TeV"};
 
   bool AddToStack[ntrees] = {false, 
+			     true,
 			     true, true, true,  true, true, true,
 			     false, false, false, false};
   
   bool UsefulColor[ntrees] = {true, 
+			      true,
 			      false, false, true, true, true, true,
 			      true, true, true, true};
 
   int Color[ntrees] = {kBlack,
+		       kBlue,
 		       kYellow, kYellow, kYellow, 42, 43, 47,
 		       kRed, kBlue, kGreen, kMagenta};
 
   string treeNames[ntrees] = { "Data",
+			       "TTbar",
 			       "QCD_HT300to500", "QCD_HT500to700",  "QCD_HT700to1000", "QCD_HT1000to1500",  "QCD_HT1500to2000", "QCD_HT2000toInf", 
 			       "Radion_m1200_13TeV", "Radion_m1800_13TeV", "Radion_m2500_13TeV", "Radion_m3500_13TeV"};
 

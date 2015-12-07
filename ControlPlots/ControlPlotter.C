@@ -34,10 +34,11 @@ void ControlPlotter(){
   //string s_file = "ControlPlotsNoReg_X270.root"; 
   fWrite  = new TFile(s_file.data(), "RECREATE");
 
-  const int ntrees = 17;
+  const int ntrees = 18;
 
   string s[ntrees] = {
     "Data_RunD.root",
+    "hh4bTree_TT_TuneCUETP8M1_13TeV-powheg-pythia8.root",
     "QCD_HT300to500.root", 
     "QCD_HT500to700.root", 
     "QCD_HT700to1000.root", 
@@ -57,6 +58,7 @@ void ControlPlotter(){
 
   string sampleName[ntrees] = {
     "Data",
+    "TTbar",
     "QCD_HT300to500", 
     "QCD_HT500to700", 
     "QCD_HT700to1000", 
