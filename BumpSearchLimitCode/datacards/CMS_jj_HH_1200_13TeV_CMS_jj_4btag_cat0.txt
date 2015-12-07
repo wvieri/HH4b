@@ -25,5 +25,3 @@ CMS_sig_p1_jes    param   0.0   1.0   # dijet mass shift due to JES uncertainty
 CMS_sig_p2_jer     param   0.0   1.0   # dijet mass resolution shift due to JER uncertainty
 CMS_bkg_fit_CMS_jj_4btag_cat0_norm           flatParam  # Normalization uncertainty on background slope
 CMS_bkg_fit_slope1_CMS_jj_4btag_cat0         flatParam  # Mean and absolute uncertainty on background slope
-CMS_bkg_fit_slope2_CMS_jj_4btag_cat0         flatParam  # Mean and absolute uncertainty on background slope
-CMS_bkg_fit_slope3_CMS_jj_4btag_cat0         flatParam  # Mean and absolute uncertainty on background slope
