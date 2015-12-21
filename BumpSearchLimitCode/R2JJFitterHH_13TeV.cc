@@ -117,7 +117,10 @@ static const Int_t NCAT = 2;
 Double_t MMIN = 999.9;
 Double_t MMAX = 3000;
 std::string filePOSTfix="";
-double signalScaler=1.96/50000.*10; // assume signal cross section on 1/fb
+double analysisLumi = 1.96; // Luminosity you use in your analysis
+double nEventsInSignalMC = 50000.; //number of events in Signal MC sample
+
+double signalScaler=analysisLumi/nEventsInSignalMC*10; // assume signal cross section on 10/fb
 double scaleFactorHP=1;//0.860; // tau21 and jet mass scale factors data/MC
 double scaleFactorLP=1;//1.385; // tau21 and jet mass scale factors data/MC
 
