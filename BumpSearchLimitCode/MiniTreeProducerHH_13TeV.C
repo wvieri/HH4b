@@ -36,7 +36,7 @@
 
    TAxis* Axis =   hMass->GetXaxis();
    for (int i = 1 ; i < hMass->GetNbinsX()+1; i++){
-     double N = fabs(hMass->GetBinContent(i));
+     double N = hMass->GetBinContent(i);
       
      mgg = Axis->GetBinCenter(i);
      
