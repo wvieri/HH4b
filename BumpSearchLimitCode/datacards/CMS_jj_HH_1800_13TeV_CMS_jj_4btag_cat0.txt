@@ -12,9 +12,9 @@ observation   18.30623216
 bin                      CMS_jj_4btag_cat0       CMS_jj_4btag_cat0      
 process                 HH_jj     bkg_fit_jj     
 process                 0        1          
-rate                       0.532728 1
+rate                       0.0532728 1
 --------------------------------
-# signal scaled by 0.000392 to a cross section of 10/fb and also scale factor of 1 are applied.
+# signal scaled by 3.92e-05 to a cross section of 10/fb and also scale factor of 1 are applied.
 lumi_8TeV       lnN  1.026    - 
 CMS_eff_vtag_sf         lnN  1.056       - # mass cut efficiency
 CMS_scale_j         lnN  1.120 	   - # jet energy scale
