@@ -120,7 +120,7 @@ std::string filePOSTfix="";
 double analysisLumi = 1.96; // Luminosity you use in your analysis
 double nEventsInSignalMC = 50000.; //number of events in Signal MC sample
 
-double signalScaler=analysisLumi/nEventsInSignalMC*10; // assume signal cross section on 10/fb
+double signalScaler=analysisLumi/nEventsInSignalMC; // assume signal cross section on 10/fb
 double scaleFactorHP=1;//0.860; // tau21 and jet mass scale factors data/MC
 double scaleFactorLP=1;//1.385; // tau21 and jet mass scale factors data/MC
 
