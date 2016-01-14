@@ -1,0 +1,6 @@
+mv hh4bTree_QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root QCD_HT300to500.root
+mv hh4bTree_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root QCD_HT500to700.root
+mv hh4bTree_QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root QCD_HT700to1000.root
+mv hh4bTree_QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root QCD_HT1000to1500.root
+mv hh4bTree_QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root QCD_HT1500to2000.root
+hadd Data_RunD.root hh4bTree_JetHT_Run2015D-05Oct2015-v1.root hh4bTree_JetHT_Run2015D-PromptReco-v4.root
