@@ -222,6 +222,7 @@ void runfits(const Float_t mass=1600, int signalsample = 0, Bool_t dobands = fal
 
   cout << "CREATE DATACARD" << endl;
   MakeDataCard_1Channel(w, fileBaseName, fileBkgName, 0, signalname, signalsample, cat_names, mass);
+  MakeDataCard_1Channel(w, fileBaseName, fileBkgName, 1, signalname, signalsample, cat_names, mass);
 
   cout << "MAKE PLOTS" << endl;
   
