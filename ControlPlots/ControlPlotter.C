@@ -7,11 +7,10 @@ string plotName, plotNameFake;
 string variable, variable1;
 TCut cut;
 TCut cut0;
-// TCut generalCut = "(isNucl || isNuclLoose) ";
 //TCut generalCut =  "evweight_w_btagSF";
-TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>-0.01) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]) < 2.05) * (SelectedEventminv_leading2hjets > 1000)";
+//TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>-0.01) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]) < 2.05) * (SelectedEventminv_leading2hjets > 1000)";
 
-//TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (SelectedEventminv_leading2hjets > 1000)";
+TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000) * (HJets_tau2[0]/HJets_tau1[0] < 0.5 || HJets_tau2[1]/HJets_tau1[1] < 0.5)";
 
 TH1F* numRecVertex1 = new TH1F();
 TH2F* numRecVertex2 = new TH2F();
@@ -123,6 +122,49 @@ void ControlPlotter(){
 
       
     
+    nbins = 1; 
+    minBin = 1000, width = 2000; 
+    maxBin = minBin + nbins*width;
+    plotName  = "Nevts_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "";
+    yaxis_title = "Events";
+    variable = "SelectedEventminv_leading2hjets";
+    cut0 = "";
+    cut = cut0;
+ 
+    PlottiPlotta();
+
+
+
+    nbins = 1; 
+    minBin = 1000, width = 2000; 
+    maxBin = minBin + nbins*width;
+    plotName  = "Nevts_MJcut_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "";
+    yaxis_title = "Events";
+    variable = "SelectedEventminv_leading2hjets";
+    cut0 = "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105)";
+    cut = cut0;
+ 
+    PlottiPlotta();
+
+
+    nbins = 1; 
+    minBin = 1000, width = 2000; 
+    maxBin = minBin + nbins*width;
+    plotName  = "Nevts_MJcut_Mjjcut_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "";
+    yaxis_title = "Events";
+    variable = "SelectedEventminv_leading2hjets";
+    cut0 = "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (SelectedEventminv_leading2hjets > 1000)";
+    cut = cut0;
+ 
+    PlottiPlotta();
+
+
 
     // R2S->Print();
  

@@ -191,7 +191,7 @@ In pb
   string fileName = directory +  "ControlPlotsSignal.root";
   TFile *file = new TFile(fileName.c_str(), "READ");
   //TFile *file = new TFile("ControlPlotsNoReg_X270.root", "READ");
-  int iterator=0;
+
 
   for (int iTreeNames = 0; iTreeNames < ntrees; iTreeNames++){
     for (int iPlotNames = 0; iPlotNames < nplots; iPlotNames++){
@@ -199,7 +199,7 @@ In pb
   
       //      cout << sNames.c_str() << endl;
 
-      TH1D* plots[iTreeNames][iPlotNames] = (TH1D* ) file->Get(sNames.c_str());
+      plots[iTreeNames][iPlotNames] = (TH1D* ) file->Get(sNames.c_str());
   
       if (iTreeNames == 0)    {
 	string stitle=plots[0][iPlotNames]->GetTitle();
@@ -207,16 +207,23 @@ In pb
 	string ytitle = plots[0][iPlotNames]->GetYaxis()->GetTitle();
 	stitle = stitle + "; " + xtitle + "; " + ytitle;
 
-	THStack* stacks[iPlotNames] = new THStack(plotNames[iPlotNames].c_str(), stitle.c_str());
+	stacks[iPlotNames] = new THStack(plotNames[iPlotNames].c_str(), stitle.c_str());
 	//	THStack* stacksNorm[iPlotNames] = new THStack(plotNames[iPlotNames].c_str(), stitle.c_str());
 
-	TH1D* totalPlot[iPlotNames] = new TH1D();
+	totalPlot[iPlotNames] = new TH1D();
 	
 	plots[iTreeNames][iPlotNames]->Copy(*totalPlot[iPlotNames]);
 
 	totalPlot[iPlotNames]->Scale(0); 
 
 	totalPlot[iPlotNames]->SetFillStyle(3004); totalPlot[iPlotNames]->SetFillColor(1);
+
+	if (plotNames[iPlotNames].find("nCSV") != string::npos) {
+	  for (int ibin = 1; ibin < plots[iTreeNames][iPlotNames]->GetNbinsX(); ibin++){
+	    if(plots[iTreeNames][iPlotNames]->GetBinCenter(ibin) > 2.9) plots[iTreeNames][iPlotNames]->SetBinContent(ibin, 0);
+	  }
+	}
+
       }
       
       plots[iTreeNames][iPlotNames]->SetFillColor(Color[iTreeNames]);
