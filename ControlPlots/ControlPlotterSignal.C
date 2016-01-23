@@ -25,31 +25,32 @@ TTree* R2S;
 void PlottiPlotta();
 void setParams(TH1F* f, string xtitle, string ytitle, int Color, int Style, int Width);
 
-void ControlPlotter(){
+void ControlPlotterSignal(){
 
   string directory("HH4b_subjetBTagged_15ov2015/"); 
 
-  string s_file = directory + "ControlPlotsSignal.root"; 
+  string s_file = directory + "ControlPlots_1GeV.root"; 
   //string s_file = "ControlPlotsNoReg_X270.root"; 
   fWrite  = new TFile(s_file.data(), "RECREATE");
 
-  const int ntrees = 22;
+  const int ntrees = 24;
 
   string s[ntrees] = {
     "Data_RunD.root",
-    "hh4bTree_TT_TuneCUETP8M1_13TeV-powheg-pythia8.root",
     "QCD_HT300to500.root", 
     "QCD_HT500to700.root", 
     "QCD_HT700to1000.root", 
     "QCD_HT1000to1500.root", 
     "QCD_HT1500to2000.root", 
-    "QCD_HT2000toInf.root", 
+    "QCD_HT2000toInf.root",
+    "hh4bTree_TT_TuneCUETP8M1_13TeV-powheg-pythia8.root", // 8 samples
+
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-1000_13TeV-madgraph_btagsf.root", 
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_btagsf.root",
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_btagsf.root", 
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_btagsf.root",
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_btagsf.root", 
-    "hh4bTree_RadionTohhTohbbhbb_narrow_M-2000_13TeV-madgraph.root",
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_btagsf.root",
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_btagsf.root", 
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-3500_13TeV-madgraph_btagsf.root", 
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-4000_13TeV-madgraph_btagsf.root",
@@ -58,24 +59,26 @@ void ControlPlotter(){
     "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_btagsf.root",
     "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_btagsf.root",
     "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_btagsf.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_btagsf.root"
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_btagsf.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_btagsf.root"
   };
 
   string sampleName[ntrees] = {
     "Data",
-    "TTbar",
     "QCD_HT300to500", 
     "QCD_HT500to700", 
     "QCD_HT700to1000", 
     "QCD_HT1000to1500", 
     "QCD_HT1500to2000", 
-    "QCD_HT2000toInf", 
+    "QCD_HT2000toInf",
+     "TTbar", 
+    
     "Radion_m1000_13TeV",
     "Radion_m1200_13TeV",
     "Radion_m1400_13TeV",
     "Radion_m1600_13TeV",
     "Radion_m1800_13TeV",
-    //    "Radion_m2000_13TeV",
+    "Radion_m2000_13TeV",
     "Radion_m2500_13TeV",
     "Radion_m3500_13TeV",
     "Radion_m4000_13TeV",
@@ -84,7 +87,8 @@ void ControlPlotter(){
     "Graviton_m1400_13TeV",
     "Graviton_m1600_13TeV",
     "Graviton_m1800_13TeV",
-    "Graviton_m2000_13TeV"
+    "Graviton_m2000_13TeV",
+    "Graviton_m2500_13TeV"
   };
 
 
@@ -131,92 +135,22 @@ void ControlPlotter(){
       cout << "TOTAL NUMBER OF EVENTS  ======================================= " << counter->Integral() << endl;
     }
 
-      
     
-    nbins = 1; 
-    minBin = 1000, width = 2000; 
-    maxBin = minBin + nbins*width;
-    plotName  = "Nevts_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "";
-    yaxis_title = "Events";
-    variable = "SelectedEventminv_leading2hjets";
-    cut0 = "";
-    cut = cut0;
- 
-    PlottiPlotta();
+    TCut  btagsf = "SelectedEvent_btagsf";
+    if (i < 8) btagsf = ""; //if signal is used where we have btagsf
 
-
-
-    nbins = 1; 
-    minBin = 1000, width = 2000; 
-    maxBin = minBin + nbins*width;
-    plotName  = "Nevts_MJcut_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "";
-    yaxis_title = "Events";
-    variable = "SelectedEventminv_leading2hjets";
-    cut0 = "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105)";
-    cut = cut0;
- 
-    PlottiPlotta();
-
-
-    nbins = 1; 
-    minBin = 1000, width = 2000; 
-    maxBin = minBin + nbins*width;
-    plotName  = "Nevts_MJcut_Mjjcut_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "";
-    yaxis_title = "Events";
-    variable = "SelectedEventminv_leading2hjets";
-    cut0 = "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (SelectedEventminv_leading2hjets > 1000)";
-    cut = cut0;
- 
-    PlottiPlotta();
-
-
-
-    // R2S->Print();
- 
-    nbins = 75; 
-    minBin = 1000., width = 40.; 
-    maxBin = minBin + nbins*width;
-    plotName  = "TotalMass_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "m_{4b} (GeV)";
-    yaxis_title = "Events / 40 GeV";
-    variable = "SelectedEventminv_leading2hjets";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-
-
+      
     nbins = 4000; 
     minBin = 1000., width = 1.; 
     maxBin = minBin + nbins*width;
-    plotName  = "TotalMass1GeV_" + sampleName[i];
+    plotName  = "TotalMass1GeV_4btag_" + sampleName[i];
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-
-
-    nbins = 4000; 
-    minBin = 1000., width = 1.; 
-    maxBin = minBin + nbins*width;
-    plotName  = "TotalMass1GeV_3btag_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "m_{4b} (GeV)";
-    yaxis_title = "Events / 1 GeV";
-    variable = "SelectedEventminv_leading2hjets";
-    cut0 = "(HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99";
-    cut = cut0*generalCut;
+    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 3.99)";
+    else  cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>3.99)";
+    cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
 
@@ -229,11 +163,11 @@ void ControlPlotter(){
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01)";
-    cut = cut0*generalCut;
+    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
+    else cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01)";
+    cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
-
 
 
     nbins = 4000; 
@@ -244,10 +178,13 @@ void ControlPlotter(){
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01)*(HJets_tau2[0]/HJets_tau1[0] < 0.6)*(HJets_tau2[1]/HJets_tau1[1] < 0.6)";
-    cut = cut0*generalCut;
+    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
+    else  cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
+    cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
+
+
 
 
 
@@ -259,10 +196,15 @@ void ControlPlotter(){
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01)*(HJets_tau2[0]/HJets_tau1[0] < 0.6)*(HJets_tau2[1]/HJets_tau1[1] > 0.6)";
-    cut = cut0*generalCut;
+    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] > 0.6)";
+    else  cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] > 0.6)";
+    cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
+
+
+
+
 
 
     nbins = 4000; 
@@ -273,255 +215,159 @@ void ControlPlotter(){
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01)*(HJets_tau2[0]/HJets_tau1[0] > 0.6)*(HJets_tau2[1]/HJets_tau1[1] < 0.6)";
-    cut = cut0*generalCut;
+    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] > 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
+    else cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01) * (HJets_tau2[0]/HJets_tau1[0] > 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
+    cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
 
 
+    if (i < 8) continue;
 
-    nbins = 4000; 
-    minBin = 1000., width = 1.; 
+
+    //================================= SYSTEMATICS BTAGSF ==============================//
+
+
+
+    nbins = 80; 
+    minBin = 1000., width = 50.; 
     maxBin = minBin + nbins*width;
-    plotName  = "TotalMass1GeV_4btag_" + sampleName[i];
+    plotName  = "TotalMass_4btag_" + sampleName[i];
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    cut0 = "(HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>3.99";
-    cut = cut0*generalCut;
+    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 3.99)";
+    cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
 
- 
 
-
-    nbins = 15; 
-    minBin = 0., width = 0.1; 
+    nbins = 80; 
+    minBin = 1000., width = 50.; 
     maxBin = minBin + nbins*width;
-    plotName  = "DeltaEta_" + sampleName[i];
+    plotName  = "TotalMass_3btagExactly_" + sampleName[i];
     histo_title = "";
-    xaxis_title = "#Delta #eta";
-    yaxis_title = "Events / 0.1";
-    variable = "TMath::Abs(SelectedEvent_deta_leading2hjets)";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-
-    nbins = 42; 
-    minBin = 200., width = 50; 
-    maxBin = minBin + nbins*width;
-    plotName  = "HT12_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "p_{T, j0} + p_{T, j1} (GeV)";
-    yaxis_title = "Events / 25 GeV";
-    variable = "HJets_Pt[0] + HJets_Pt[1]";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-
-
-    nbins = 42; 
-    minBin = 200., width = 25; 
-    maxBin = minBin + nbins*width;
-    plotName  = "PT0_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "p_{T, j0} (GeV)";
-    yaxis_title = "Events / 25 GeV";
-    variable = "HJets_Pt[0]";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-
-
-
-    nbins = 42; 
-    minBin = 200., width = 25; 
-    maxBin = minBin + nbins*width;
-    plotName  = "PT1_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "p_{T, j1} (GeV)";
-    yaxis_title = "Events / 25 GeV";
-    variable = "HJets_Pt[1]";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-
-
-    nbins = 30; 
-    minBin = -3., width = 0.2; 
-    maxBin = minBin + nbins*width;
-    plotName  = "ETA_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "#eta ";
-    yaxis_title = "Events / 0.1";
-    variable = "HJets_Eta";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-
-
-    nbins = 16; 
-    minBin =90., width = 5; 
-    maxBin = minBin + nbins*width;
-    plotName  = "M0Pruned_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "m_{j0} (GeV)";
-    yaxis_title = "Events / 5 GeV";
-    variable = "HJets_MassPruned[0]";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-
-
-
-    nbins = 16; 
-    minBin =90., width = 5; 
-    maxBin = minBin + nbins*width;
-    plotName  = "M1Pruned_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "m_{j1} (GeV)";
-    yaxis_title = "Events / 5 GeV";
-    variable = "HJets_MassPruned[1]";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-    
- 
-
-
-    nbins = 10; 
-    minBin =0., width = 0.1; 
-    maxBin = minBin + nbins*width;
-    plotName  = "nCSV_J0_SJ0_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "CSV J0 SJ0";
-    yaxis_title = "Events / 0.1";
-    variable = "HJets_csvSubjet0[0]";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-
-
-
-    nbins = 10; 
-    minBin =0., width = 0.11; 
-    maxBin = minBin + nbins*width;
-    plotName  = "nCSV_J1_SJ0_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "CSV J1 SJ0";
-    yaxis_title = "Events";
-    variable = "HJets_csvSubjet0[1]";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-
-
-    nbins = 10; 
-    minBin =0., width = 0.1; 
-    maxBin = minBin + nbins*width;
-    plotName  = "nCSV_J0_SJ1_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "CSV J0 SJ1";
-    yaxis_title = "Events / 0.1";
-    variable = "HJets_csvSubjet1[0]";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-
-
-
-    nbins = 10; 
-    minBin =0., width = 0.11; 
-    maxBin = minBin + nbins*width;
-    plotName  = "nCSV_J1_SJ1_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "CSV J1 SJ1";
-    yaxis_title = "Events / 0.1";
-    variable = "HJets_csvSubjet1[1]";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-
-
-
-    nbins = 6; 
-    minBin =-0.5, width = 1; 
-    maxBin = minBin + nbins*width;
-    plotName  = "nCSV_" + sampleName[i];
-    histo_title = "";
-    xaxis_title = "N(CSV0)+N(CSV1)";
-    yaxis_title = "Events";
-    variable = "HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]";
-    cut0 = "";
-    cut = cut0*generalCut;
- 
-    PlottiPlotta();
-
-
-    // R2S->Print();
- 
-    nbins = 150; 
-    minBin = 1000., width = 20.; 
-    maxBin = minBin + nbins*width;
-    plotName  = "TotalMass3btag_" + sampleName[i];
-    histo_title = "3 btags";
     xaxis_title = "m_{4b} (GeV)";
-    yaxis_title = "Events / 20 GeV";
+    yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    cut0 = "(HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99";
-    cut = cut0*generalCut;
+    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
+    cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
 
-    nbins = 150; 
-    minBin = 1000., width = 20.; 
+
+
+
+
+
+
+
+
+    nbins = 80; 
+    minBin = 1000., width = 50.; 
     maxBin = minBin + nbins*width;
-    plotName  = "TotalMass4btag_" + sampleName[i];
-    histo_title = "4 btags";
+    plotName  = "TotalMass_4btag_bcUp_" + sampleName[i];
+    histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
-    yaxis_title = "Events / 20 GeV";
+    yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    cut0 = "(HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>3.99";
-    cut = cut0*generalCut;
+    cut0 = "SelectedEvent_btagsf_bcUp*(SelectedEvent_nsubjetsBTaggedCSVL > 3.99)";
+    cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
 
-    nbins = 10; 
-    minBin =0., width = 0.1; 
+    nbins = 80; 
+    minBin = 1000., width = 50.; 
     maxBin = minBin + nbins*width;
-    plotName  = "TAU21_J0_" + sampleName[i];
+    plotName  = "TotalMass_4btag_bcDown_" + sampleName[i];
     histo_title = "";
-    xaxis_title = "#tau_{21} J0";
-    yaxis_title = "Events / 0.1";
-    variable = "HJets_tau2[0]/HJets_tau1[0]";
-    cut0 = "";
-    cut = cut0*generalCut;
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 1 GeV";
+    variable = "SelectedEventminv_leading2hjets";
+    cut0 = "SelectedEvent_btagsf_bcDown*(SelectedEvent_nsubjetsBTaggedCSVL > 3.99)";
+    cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
 
-    nbins = 10; 
-    minBin =0., width = 0.1; 
+    nbins = 80; 
+    minBin = 1000., width = 50.; 
     maxBin = minBin + nbins*width;
-    plotName  = "TAU21_J1_" + sampleName[i];
+    plotName  = "TotalMass_3btagExactly_bcUp_" + sampleName[i];
     histo_title = "";
-    xaxis_title = "#tau_{21} J1";
-    yaxis_title = "Events / 0.1";
-    variable = "HJets_tau2[1]/HJets_tau1[1]";
-    cut0 = "";
-    cut = cut0*generalCut;
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 1 GeV";
+    variable = "SelectedEventminv_leading2hjets";
+    cut0 = "SelectedEvent_btagsf_bcUp*(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
+    cut = btagsf*cut0*generalCut;
+ 
+    PlottiPlotta();
 
+    nbins = 80; 
+    minBin = 1000., width = 50.; 
+    maxBin = minBin + nbins*width;
+    plotName  = "TotalMass_3btagExactly_bcDown_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 1 GeV";
+    variable = "SelectedEventminv_leading2hjets";
+    cut0 = "SelectedEvent_btagsf_bcDown*(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
+    cut = btagsf*cut0*generalCut;
+ 
+    PlottiPlotta();
+
+    nbins = 80; 
+    minBin = 1000., width = 50.; 
+    maxBin = minBin + nbins*width;
+    plotName  = "TotalMass_4btag_lUp_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 1 GeV";
+    variable = "SelectedEventminv_leading2hjets";
+    cut0 = "SelectedEvent_btagsf_lUp*(SelectedEvent_nsubjetsBTaggedCSVL > 3.99)";
+    cut = btagsf*cut0*generalCut;
+ 
+    PlottiPlotta();
+
+
+    nbins = 80; 
+    minBin = 1000., width = 50.; 
+    maxBin = minBin + nbins*width;
+    plotName  = "TotalMass_4btag_lDown_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 1 GeV";
+    variable = "SelectedEventminv_leading2hjets";
+    cut0 = "SelectedEvent_btagsf_lDown*(SelectedEvent_nsubjetsBTaggedCSVL > 3.99)";
+    cut = btagsf*cut0*generalCut;
+ 
+    PlottiPlotta();
+
+
+    nbins = 80; 
+    minBin = 1000., width = 50.; 
+    maxBin = minBin + nbins*width;
+    plotName  = "TotalMass_3btagExactly_lUp_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 1 GeV";
+    variable = "SelectedEventminv_leading2hjets";
+    cut0 = "SelectedEvent_btagsf_lUp*(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
+    cut = btagsf*cut0*generalCut;
+ 
+
+
+    nbins = 80; 
+    minBin = 1000., width = 50.; 
+    maxBin = minBin + nbins*width;
+    plotName  = "TotalMass_3btagExactly_lDown_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 1 GeV";
+    variable = "SelectedEventminv_leading2hjets";
+    cut0 = "SelectedEvent_btagsf_lDown*(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
+    cut = btagsf*cut0*generalCut;
+ 
     PlottiPlotta();
 
 
