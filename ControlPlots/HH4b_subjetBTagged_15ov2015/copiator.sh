@@ -1,0 +1,28 @@
+#cp ~/eosuser/cms/store/user/devdatta/HH4b_20Jan2016/RadionTohhTohbbhbb_narrow_M-1000_13TeV-madgraph/crab_RadionTohhTohbbhbb_narrow_M-1000_13TeV-madgraph_devdattaRunIISpring15MiniAODv2/160121_214921/0000/hh4b_1.root hh4bTree_RadionTohhTohbbhbb_narrow_M-1000_13TeV-madgraph_btagsf.root
+
+#cp ~/eosuser/cms/store/user/devdatta/HH4b_20Jan2016/RadionTohhTohbbhbb_narrow_M-1200_13TeV-madgraph/crab_RadionTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_devdattaRunIISpring15MiniAODv2/160121_214929/0000/hh4b_1.root hh4bTree_RadionTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_btagsf.root
+
+#cp ~/eosuser/cms/store/user/devdatta/HH4b_20Jan2016/RadionTohhTohbbhbb_narrow_M-1400_13TeV-madgraph/crab_RadionTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_devdattaRunIISpring15MiniAODv2/160121_214936/0000/hh4b_1.root hh4bTree_RadionTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_btagsf.root
+
+#cp ~/eosuser/cms/store/user/devdatta/HH4b_20Jan2016/RadionTohhTohbbhbb_narrow_M-1600_13TeV-madgraph/crab_RadionTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_devdattaRunIISpring15MiniAODv2/160121_214943/0000/hh4b_1.root hh4bTree_RadionTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_btagsf.root
+
+#cp ~/eosuser/cms/store/user/devdatta/HH4b_20Jan2016/RadionTohhTohbbhbb_narrow_M-1800_13TeV-madgraph/crab_RadionTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_devdattaRunIISpring15MiniAODv2/160121_214950/0000/hh4b_1.root hh4bTree_RadionTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_btagsf.root
+
+
+cp ~/eosuser/cms/store/user/devdatta/HH4b_20Jan2016/RadionTohhTohbbhbb_narrow_M-2000_13TeV-madgraph/crab_RadionTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_devdattaRunIISpring15MiniAODv2/160121_215000/0000/hh4b_1.root hh4bTree_RadionTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_btagsf.root
+
+
+#cp ~/eosuser/cms/store/user/devdatta/HH4b_20Jan2016/RadionTohhTohbbhbb_narrow_M-2500_13TeV-madgraph/crab_RadionTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_devdattaRunIISpring15MiniAODv2/160121_215010/0000/hh4b_1.root hh4bTree_RadionTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_btagsf.root
+
+
+#cp ~/eosuser/cms/store/user/devdatta/HH4b_20Jan2016/RadionTohhTohbbhbb_narrow_M-3500_13TeV-madgraph/crab_RadionTohhTohbbhbb_narrow_M-3500_13TeV-madgraph_devdattaRunIISpring15MiniAODv2/160121_215017/0000/hh4b_1.root  hh4bTree_RadionTohhTohbbhbb_narrow_M-3500_13TeV-madgraph_btagsf.root
+
+#cp ~/eosuser/cms/store/user/devdatta/HH4b_20Jan2016/RadionTohhTohbbhbb_narrow_M-4000_13TeV-madgraph/crab_RadionTohhTohbbhbb_narrow_M-4000_13TeV-madgraph_devdattaRunIISpring15MiniAODv2/160121_215024/0000/hh4b_1.root hh4bTree_RadionTohhTohbbhbb_narrow_M-4000_13TeV-madgraph_btagsf.root
+
+
+#cp ~/eosuser/cms/store/user/devdatta/HH4b_20Jan2016/RadionTohhTohbbhbb_narrow_M-4500_13TeV-madgraph/crab_RadionTohhTohbbhbb_narrow_M-4500_13TeV-madgraph_devdattaRunIISpring15MiniAODv2/160121_215032/0000/hh4b_1.root  hh4bTree_RadionTohhTohbbhbb_narrow_M-4500_13TeV-madgraph_btagsf.root
+
+
+
+
+cp ~/eosuser/cms/store/user/devdatta/HH4b_20Jan2016/BulkGravTohhTohbbhbb_narrow_M-2500_13TeV-madgraph/crab_BulkGravTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_devdattaRunIISpring15MiniAODv2/160122_154808/0000/hh4b_1.root  hh4bTree_GravitonTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_btagsf.root
