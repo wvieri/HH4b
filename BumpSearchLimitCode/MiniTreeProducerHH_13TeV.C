@@ -8,7 +8,7 @@
  normWeight = 1;
 
 
- string sInFile = "input/MassPlotFineBins.root";
+ string sInFile = "input/MassPlotFineBins_btagsf.root";
  cout << sInFile.c_str() << endl;
  TFile file0(sInFile.c_str(), "read");
  
@@ -30,7 +30,7 @@
  
  
  
- for (Int_t iCat = 0; iCat < 2; iCat++){
+ for (Int_t iCat = 0; iCat < 3; iCat++){
    TH1D* hMass = (TH1D*) file0.Get(Form("QCD_cat%d;1",iCat));
    
 

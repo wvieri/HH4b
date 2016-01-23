@@ -113,16 +113,17 @@
 using namespace RooFit;
 using namespace RooStats ;
 
-static const Int_t NCAT = 2;
+static const Int_t NCAT = 3;
 Double_t MMIN = 999.9;
 Double_t MMAX = 3000;
 std::string filePOSTfix="";
-double analysisLumi = 1.96; // Luminosity you use in your analysis
-double nEventsInSignalMC = 50000.; //number of events in Signal MC sample
+double analysisLumi = 1.93; // Luminosity you use in your analysis
+double nEventsInSignalMC = 0.; //number of events in Signal MC sample
+int iGraviton = 0;
 
-double signalScaler=analysisLumi/nEventsInSignalMC; // assume signal cross section on 10/fb
-double scaleFactorHP=1;//0.860; // tau21 and jet mass scale factors data/MC
-double scaleFactorLP=1;//1.385; // tau21 and jet mass scale factors data/MC
+double signalScaler=0;//analysisLumi/nEventsInSignalMC; // assume signal cross section on 1/fb
+double scaleFactorHP=1;// already done on 1 GeV Histo level
+double scaleFactorLP=1;// already done on 1 GeV Histo level
 
 void AddSigData(RooWorkspace*, Float_t, int, std::vector<string>);
 void AddBkgData(RooWorkspace*, std::vector<string>);
@@ -145,7 +146,8 @@ RooArgSet* defineVariables()
   RooRealVar* normWeight  = new RooRealVar("normWeight","Additionnal Weight",0.,10000000.,"");
   RooCategory* categories = new RooCategory("categories","event category 0") ;
   categories->defineType("4btag_cat0",0);
-  categories->defineType("3btag_cat1",1);
+  categories->defineType("3btag_HPHP_cat1",1);
+  categories->defineType("3btag_HPLP_cat2",2);
   RooArgSet* ntplVars = new RooArgSet(*mgg, *categories, *evWeight, *normWeight);
  
   return ntplVars;
@@ -175,7 +177,8 @@ void runfits(const Float_t mass=1600, int signalsample = 0, Bool_t dobands = fal
 
   vector<string> cat_names;
   cat_names.push_back("CMS_jj_4btag_cat0");
-  cat_names.push_back("CMS_jj_3btag_cat1");
+  cat_names.push_back("CMS_jj_3btag_HPHP_cat1");
+  cat_names.push_back("CMS_jj_3btag_HPLP_cat2");
 
 
   TString fileBkgName("CMS_jj_bkg_HH_13TeV");
@@ -223,6 +226,7 @@ void runfits(const Float_t mass=1600, int signalsample = 0, Bool_t dobands = fal
   cout << "CREATE DATACARD" << endl;
   MakeDataCard_1Channel(w, fileBaseName, fileBkgName, 0, signalname, signalsample, cat_names, mass);
   MakeDataCard_1Channel(w, fileBaseName, fileBkgName, 1, signalname, signalsample, cat_names, mass);
+  MakeDataCard_1Channel(w, fileBaseName, fileBkgName, 2, signalname, signalsample, cat_names, mass);
 
   cout << "MAKE PLOTS" << endl;
   
@@ -255,7 +259,12 @@ void AddSigData(RooWorkspace* w, Float_t mass, int signalsample, std::vector<str
 
 //signal300_tree_radcut.root
   int iMass = abs(mass);       
-  TFile sigFile1(inDir+TString(Form("dijetHH_RadionHHOUT%d_miniTree.root", iMass)));
+  string signal(inDir+TString(Form("dijetHH_RadionHHOUT%d_miniTree.root", iMass)));
+  if (iGraviton == 1) signal = string(inDir+TString(Form("dijetHH_GravitonHHOUT%d_miniTree.root", iMass)));
+  
+  cout << " ================================================================================= signal_c_str() = " << signal.c_str() << endl;
+
+  TFile sigFile1(signal.c_str());
 
   TTree* sigTree1 = (TTree*) sigFile1.Get("TCVARS");
 
@@ -316,7 +325,7 @@ void AddBkgData(RooWorkspace* w, std::vector<string> cat_names) {
   RooDataSet Data("Data","dataset",dataTree,*ntplVars,"","normWeight");
 
   
-  RooDataSet* dataToFit[2];
+  RooDataSet* dataToFit[NCAT];
   for (int c = 0; c < ncat; ++c) {
 
     dataToFit[c] = (RooDataSet*) Data.reduce(*w->var("mgg"),mainCut+TString::Format(" && categories==%d",c));
@@ -741,7 +750,7 @@ void MakeSigWS(RooWorkspace* w, const char* fileBaseName, TString signalname, st
 // (2) Systematics on energy scale and resolution
 
   wAll->factory("CMS_sig_p1_jes[0.0,-5.0,5.0]");
-  wAll->factory("CMS_jj_sig_p1_jes[0.01,0.01,0.01]");
+  wAll->factory("CMS_jj_sig_p1_jes[0.012,0.012,0.012]");
   wAll->factory("sum::CMS_sig_p1_jes_sum(1.0,prod::CMS_sig_p1_jes_prod(CMS_sig_p1_jes, CMS_jj_sig_p1_jes))");
     for (int c = 0; c < ncat; ++c) {
 wAll->factory("prod::CMS_jj_"+signalname+"_sig_m0_"+TString::Format("%s",cat_names.at(c).c_str())+"(jj_"+signalname+"_sig_m0_"+TString::Format("%s",cat_names.at(c).c_str())+", CMS_sig_p1_jes_sum)");
@@ -749,10 +758,13 @@ wAll->factory("prod::CMS_jj_"+signalname+"_sig_m0_"+TString::Format("%s",cat_nam
 
 // (3) Systematics on resolution: create new sigmas
 
+    // apply JER resolution smearing from 
+    // https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetResolution#JER_Scaling_factors_and_Uncertai
+    // Assume ~7% smearing +- 3% for each jet. Divide by sqrt(2) for both
 
   wAll->factory("CMS_sig_p2_jer[0.0,-5.0,5.0]");
-  wAll->factory("CMS_jj_sig_p2_jer[0.1,0.1,0.1]");
-  wAll->factory("sum::CMS_sig_p2_jer_sum(1.0,prod::CMS_sig_p2_jer_prod(CMS_sig_p2_jer, CMS_jj_sig_p2_jer))");
+  wAll->factory("CMS_jj_sig_p2_jer[0.02,0.02,0.02]");
+  wAll->factory("sum::CMS_sig_p2_jer_sum(1.05,prod::CMS_sig_p2_jer_prod(CMS_sig_p2_jer, CMS_jj_sig_p2_jer))");
 
     for (int c = 0; c < ncat; ++c) {
 wAll->factory("prod::CMS_jj_"+signalname+"_sig_sigma_"+TString::Format("%s",cat_names.at(c).c_str())+"(jj_"+signalname+"_sig_sigma_"+TString::Format("%s",cat_names.at(c).c_str())+", CMS_sig_p2_jer_sum)");
@@ -832,11 +844,13 @@ void MakeBkgWS(RooWorkspace* w, const char* fileBaseName, std::vector<string> ca
 // (2) do reparametrization of background
 
   for (int c = 0; c < ncat; ++c) {
-      wAll->factory(
-		    TString::Format("EDIT::CMS_bkg_fit_%s(bkg_fit_%s,",cat_names.at(c).c_str(),cat_names.at(c).c_str()) +
-		    TString::Format(" bkg_fit_%s_norm=CMS_bkg_fit_%s_norm,", cat_names.at(c).c_str(),cat_names.at(c).c_str())+
-		    TString::Format(" bkg_fit_slope1_%s=CMS_bkg_fit_slope1_%s,", cat_names.at(c).c_str(),cat_names.at(c).c_str())
-		    );
+    TString sFormat = 	    TString::Format("EDIT::CMS_bkg_fit_%s(bkg_fit_%s,",cat_names.at(c).c_str(),cat_names.at(c).c_str()) +
+      TString::Format(" bkg_fit_%s_norm=CMS_bkg_fit_%s_norm,", cat_names.at(c).c_str(),cat_names.at(c).c_str())+
+      TString::Format(" bkg_fit_slope1_%s=CMS_bkg_fit_slope1_%s)", cat_names.at(c).c_str(),cat_names.at(c).c_str());
+
+    cout << sFormat.Data() << endl;
+
+    wAll->factory(sFormat.Data());
   } 
 
 
@@ -1004,6 +1018,8 @@ void MakeDataCard_1Channel(RooWorkspace* w, const char* fileBaseName, const char
   TString filename(cardDir+TString(fileBaseName)+Form("_%s.txt",cat_names[iChan].c_str()));
   ofstream outFile(filename);
 
+  cout << "================================================================ signalScaler = " << signalScaler << endl;
+
   double scaleFactor=signalScaler;
   // Pythia HP+HP
   //if(((signalsample==0))&&(iChan==0))
@@ -1018,7 +1034,7 @@ void MakeDataCard_1Channel(RooWorkspace* w, const char* fileBaseName, const char
   outFile << "---------------" << endl;
 
   outFile << Form("shapes data_obs %s ", cat_names[iChan].c_str()) << wsDir+TString(fileBkgName)+".root" << Form(" w_all:data_obs_%s", cat_names[iChan].c_str()) << endl;
-  outFile << Form("shapes bkg_fit_jj %s ", cat_names[iChan].c_str()) <<  wsDir+TString(fileBkgName)+".root" << Form(" w_all:bkg_fit_%s", cat_names[iChan].c_str()) << endl;
+  outFile << Form("shapes bkg_fit_jj %s ", cat_names[iChan].c_str()) <<  wsDir+TString(fileBkgName)+".root" << Form(" w_all:CMS_bkg_fit_%s", cat_names[iChan].c_str()) << endl;
   outFile << Form("shapes HH_jj %s ", cat_names[iChan].c_str()) << wsDir+TString::Format("CMS_jj_HH_%.0f_13TeV.root", mass) << Form(" w_all:HH_jj_sig_%s", cat_names[iChan].c_str()) << endl;
   outFile << "---------------" << endl;
   outFile << Form("bin          %s", cat_names[iChan].c_str()) << endl;
@@ -1034,8 +1050,22 @@ void MakeDataCard_1Channel(RooWorkspace* w, const char* fileBaseName, const char
   outFile << "--------------------------------" << endl;
   outFile << "# signal scaled by " << signalScaler << " to a cross section of 10/fb and also scale factor of " << scaleFactor/signalScaler << " are applied." << endl;
   
-  outFile << "lumi_8TeV       lnN  1.026    - " << endl;
-  outFile << "CMS_eff_vtag_sf         lnN  1.056       - # mass cut efficiency" << endl;
+  outFile << "lumi_8TeV       lnN  1.046    - " << endl;
+  outFile << "CMS_eff_vtag_sf         lnN  1.03       - # mass cut efficiency" << endl;
+  if(iChan==0)
+    outFile << "CMS_eff_btagsf        lnN  1.17       - # btag efficiency" << endl;
+  else if (iChan == 1 || iChan == 2)
+    outFile << "CMS_eff_btagsf        lnN  0.95       - # btag efficiency" << endl;
+    
+  if (iChan == 1)
+    outFile << "CMS_eff_tau21        lnN  1.27/0.76       - # tau21 efficiency" << endl;
+  else if(iChan == 2)
+    outFile << "CMS_eff_tau21        lnN  0.38/1.75       - # tau21 efficiency" << endl;
+
+  // HPHP 3btag: ((1.03+0.13)^2 - (1.03)^2) / 1.03^2 :  1.27/0.76
+  // HPLP 3btag: ((1.03+0.13)(0.88+0.49) - (1.03)*0.88) / 1.03*0.88 :  1.75/0.38
+
+
   /*  
   if((iChan==0)||(iChan==3)){
   outFile << "CMS_eff_vtag_tau21_sf         lnN  1.15       - # tau21 efficiency" << endl;
@@ -1044,9 +1074,9 @@ void MakeDataCard_1Channel(RooWorkspace* w, const char* fileBaseName, const char
   outFile << "CMS_eff_vtag_tau21_sf         lnN  0.58      - # tau21 efficiency" << endl;
   }
   */
-  outFile << "CMS_scale_j         lnN  1.120 	   - # jet energy scale" << endl;
-  outFile << "CMS_res_j         lnN  1.040	- # jet energy resolution" << endl;
-  outFile << "CMS_pu         lnN  1.030       - # pileup" << endl;
+  //  outFile << "CMS_scale_j         lnN  1.120 	   - # jet energy scale" << endl;
+  //  outFile << "CMS_res_j         lnN  1.040	- # jet energy resolution" << endl;
+  outFile << "CMS_pu         lnN  1.020       - # pileup" << endl;
 
   outFile << "# Parametric shape uncertainties, entered by hand." << endl;
   outFile << Form("CMS_sig_p1_jes    param   0.0   1.0   # dijet mass shift due to JES uncertainty") << endl;
@@ -1066,8 +1096,12 @@ void MakeDataCard_1Channel(RooWorkspace* w, const char* fileBaseName, const char
 
 
 
-void R2JJFitterHH_13TeV(double mass, std::string postfix="", int signalsamples=0)
+void R2JJFitterHH_13TeV(double mass, std::string postfix="", int signalsamples=0, int graviton = 0, double nEvents = 50000.)
 {
     filePOSTfix=postfix;
+    iGraviton = graviton;
+    nEventsInSignalMC = nEvents;
+    signalScaler=analysisLumi/nEventsInSignalMC;
     runfits(mass, 0);
+
 }
