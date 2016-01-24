@@ -222,7 +222,139 @@ void ControlPlotterSignal(){
     PlottiPlotta();
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    nbins = 4000; 
+    minBin = 1000., width = 1.; 
+    maxBin = minBin + nbins*width;
+    plotName  = "TotalMass1GeV_subtr_4btag_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 1 GeV";
+    variable = "SelectedEventminv_leading2hjets_subtr";
+    if (i > 7) variable = "SelectedEventminv_leading2hjets_subtr";
+    else variable = "SelectedEventminv_leading2hjets_subtractedd";
+    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 3.99)";
+    else  cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>3.99)";
+    cut = btagsf*cut0*generalCut;
+ 
+    PlottiPlotta();
+
+
+    nbins = 4000; 
+    minBin = 1000., width = 1.; 
+    maxBin = minBin + nbins*width;
+    plotName  = "TotalMass1GeV_subtr_3btagExactly_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 1 GeV";
+    if (i > 7) variable = "SelectedEventminv_leading2hjets_subtr";
+    else variable = "SelectedEventminv_leading2hjets_subtractedd";
+    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
+    else cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01)";
+    cut = btagsf*cut0*generalCut;
+ 
+    PlottiPlotta();
+
+
+    nbins = 4000; 
+    minBin = 1000., width = 1.; 
+    maxBin = minBin + nbins*width;
+    plotName  = "TotalMass1GeV_subtr_3btagExactly_HPHP_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 1 GeV";
+    if (i > 7) variable = "SelectedEventminv_leading2hjets_subtr";
+    else variable = "SelectedEventminv_leading2hjets_subtractedd";
+    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
+    else  cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
+    cut = btagsf*cut0*generalCut;
+ 
+    PlottiPlotta();
+
+
+
+
+
+    nbins = 4000; 
+    minBin = 1000., width = 1.; 
+    maxBin = minBin + nbins*width;
+    plotName  = "TotalMass1GeV_subtr_3btagExactly_HPLP_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 1 GeV";
+    if (i > 7) variable = "SelectedEventminv_leading2hjets_subtr";
+    else variable = "SelectedEventminv_leading2hjets_subtractedd";
+    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] > 0.6)";
+    else  cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] > 0.6)";
+    cut = btagsf*cut0*generalCut;
+ 
+    PlottiPlotta();
+
+
+
+
+
+
+    nbins = 4000; 
+    minBin = 1000., width = 1.; 
+    maxBin = minBin + nbins*width;
+    plotName  = "TotalMass1GeV_subtr_3btagExactly_LPHP_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "m_{4b} (GeV)";
+    yaxis_title = "Events / 1 GeV";
+    if (i > 7) variable = "SelectedEventminv_leading2hjets_subtr";
+    else variable = "SelectedEventminv_leading2hjets_subtractedd";
+    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] > 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
+    else cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01) * (HJets_tau2[0]/HJets_tau1[0] > 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
+    cut = btagsf*cut0*generalCut;
+ 
+    PlottiPlotta();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     if (i < 8) continue;
+
+
+
+
+
+
+
+
 
 
     //================================= SYSTEMATICS BTAGSF ==============================//
