@@ -99,10 +99,10 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp)
   }
   else if (sigHyp == 20 || sigHyp == 21 || sigHyp == 22) {
     xTitle = string("M_{Gkk} [GeV]");
-    sXsec = string("bulk_graviton_kmpl05.txt");
+    sXsec = string("xsec_bulk_graviton_toHH_toBB_kmpl05.txt");
     sThTitle = string("G_{Bulk} (ktild = 0.5)");
-    BFXHH = 0.1;
-    BFHH4b = 0.57*0.57;
+    BFXHH = 1;
+    BFHH4b = 1;
   }
   if (sigHyp == 10) sCat = string("Radion");
   else if (sigHyp == 11) sCat = string("Radion_4btag_cat0");
