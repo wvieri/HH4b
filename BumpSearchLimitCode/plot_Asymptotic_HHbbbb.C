@@ -29,7 +29,6 @@ string sThTitle;
 double BFXHH = 0;
 double BFHH4b = 0;
 
-
 void plot_Asymptotic_HHbbbb();
 void setFPStyle();
 void scaleGraph(TGraphAsymmErrors* g, double factor)
@@ -83,9 +82,8 @@ double linear_interp(double s2, double s1, double mass, double m2, double m1)
 
 
 
-void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp)
+void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
 {
-
   
 
   if (sigHyp == 10 || sigHyp == 11 || sigHyp == 12) {
@@ -104,14 +102,25 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp)
     BFXHH = 1;
     BFHH4b = 1;
   }
-  if (sigHyp == 10) sCat = string("Radion");
-  else if (sigHyp == 11) sCat = string("Radion_4btag_cat0");
-  else if (sigHyp == 12) sCat = string("Radion_3btag_HPHP_cat1");
 
-  else if (sigHyp == 20) sCat = string("Graviton");
-  else if (sigHyp == 21) sCat = string("Graviton_4btag_cat0");
-  else if (sigHyp == 22) sCat = string("Graviton_3btag_HPHP_cat1");
+  if (subtr == 0){
+    if (sigHyp == 10) sCat = string("Radion");
+    else if (sigHyp == 11) sCat = string("Radion_4btag_cat0");
+    else if (sigHyp == 12) sCat = string("Radion_3btag_HPHP_cat1");
+    
+    else if (sigHyp == 20) sCat = string("Graviton");
+    else if (sigHyp == 21) sCat = string("Graviton_4btag_cat0");
+    else if (sigHyp == 22) sCat = string("Graviton_3btag_HPHP_cat1");
+  } else {
+    if (sigHyp == 10) sCat = string("Radion_subtr");
+    else if (sigHyp == 11) sCat = string("Radion_subtr_4btag_cat0");
+    else if (sigHyp == 12) sCat = string("Radion_subtr_3btag_HPHP_cat1");
+    
+    else if (sigHyp == 20) sCat = string("Graviton_subtr");
+    else if (sigHyp == 21) sCat = string("Graviton_subtr_4btag_cat0");
+    else if (sigHyp == 22) sCat = string("Graviton_subtr_3btag_HPHP_cat1");
 
+  }
 
   TString outfilename = TString(outputdir.c_str())+".root";
   TFile *fout = new TFile(outfilename,"RECREATE");

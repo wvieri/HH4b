@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/afs/cern.ch/work/m/mgouzevi/private/HH4b_RunII/CMSSW_7_4_5_patch1/bin/slc6_amd64_gcc491/combineCards.py", line 46, in <module>
+    file = open(fname, "r")
+IOError: [Errno 2] No such file or directory: 'datacards/GravitonCMS_jj_subtr_HH_2000_13TeV_CMS_jj_3btag_HPHP_cat1.txt'

@@ -1,0 +1,27 @@
+# Fully Hadronic HH analysis
+imax 1
+kmax *
+---------------
+shapes data_obs CMS_jj_3btag_HPLP_cat2 ../workspaces/Graviton_subtrCMS_jj_bkg_HH_13TeV.root w_all:data_obs_CMS_jj_3btag_HPLP_cat2
+shapes bkg_fit_jj CMS_jj_3btag_HPLP_cat2 ../workspaces/Graviton_subtrCMS_jj_bkg_HH_13TeV.root w_all:CMS_bkg_fit_CMS_jj_3btag_HPLP_cat2
+shapes HH_jj CMS_jj_3btag_HPLP_cat2 ../workspaces/Graviton_subtrCMS_jj_HH_1200_13TeV.root w_all:HH_jj_sig_CMS_jj_3btag_HPLP_cat2
+---------------
+bin          CMS_jj_3btag_HPLP_cat2
+observation   12.92673763
+------------------------------
+bin                      CMS_jj_3btag_HPLP_cat2       CMS_jj_3btag_HPLP_cat2      
+process                 HH_jj     bkg_fit_jj     
+process                 0        1          
+rate                       0.0008878 1
+--------------------------------
+# signal scaled by 3.86e-05 to a cross section of 10/fb and also scale factor of 1 are applied.
+lumi_8TeV       lnN  1.046    - 
+CMS_eff_vtag_sf         lnN  1.03       - # mass cut efficiency
+CMS_eff_btagsf        lnN  0.95       - # btag efficiency
+CMS_eff_tau21        lnN  0.38/1.75       - # tau21 efficiency
+CMS_pu         lnN  1.020       - # pileup
+# Parametric shape uncertainties, entered by hand.
+CMS_sig_p1_jes    param   0.0   1.0   # dijet mass shift due to JES uncertainty
+CMS_sig_p2_jer     param   0.0   1.0   # dijet mass resolution shift due to JER uncertainty
+CMS_bkg_fit_CMS_jj_3btag_HPLP_cat2_norm           flatParam  # Normalization uncertainty on background slope
+CMS_bkg_fit_slope1_CMS_jj_3btag_HPLP_cat2         flatParam  # Mean and absolute uncertainty on background slope

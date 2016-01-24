@@ -259,8 +259,7 @@ void AddSigData(RooWorkspace* w, Float_t mass, int signalsample, std::vector<str
 
 //signal300_tree_radcut.root
   int iMass = abs(mass);       
-  string signal(inDir+TString(Form("dijetHH_RadionHHOUT%d_miniTree.root", iMass)));
-  if (iGraviton == 1) signal = string(inDir+TString(Form("dijetHH_GravitonHHOUT%d_miniTree.root", iMass)));
+  string signal(inDir+"dijetHH_" + filePOSTfix + TString(Form("HHOUT%d_miniTree.root", iMass)));
   
   cout << " ================================================================================= signal_c_str() = " << signal.c_str() << endl;
 
@@ -316,7 +315,14 @@ void AddBkgData(RooWorkspace* w, std::vector<string> cat_names) {
 // retrieve the data tree;
 // no common preselection cut applied yet; 
 
-  TFile dataFile(inDir+"dijetHH_miniTree.root");
+
+
+  TString infile = inDir + "dijetHH_miniTree.root"; 
+  if (filePOSTfix.find("subtr") != string::npos) 
+    infile = inDir + "dijetHH_subtr_miniTree.root"; 
+
+  TFile dataFile(infile.Data());
+
   TTree* dataTree     = (TTree*) dataFile.Get("TCVARS");
 
   // Variables
@@ -666,8 +672,8 @@ void MakePlots(RooWorkspace* w, Float_t mass, RooFitResult** fitresults, TString
     int iMass = abs(mass);
 
     //ctmp->SaveAs("plots/sigmodel_"+signalname+TString::Format("%d_%s.png", iMass, cat_names.at(c).c_str()));
-    ctmp->SaveAs("plots/sigmodel_"+signalname+TString::Format("%d_%s.pdf", iMass, cat_names.at(c).c_str()));
-    ctmp->SaveAs("plots/sigmodel_"+signalname+TString::Format("%d_%s.png", iMass, cat_names.at(c).c_str()));
+    ctmp->SaveAs("plots/sigmodel_"+filePOSTfix+signalname+TString::Format("%d_%s.pdf", iMass, cat_names.at(c).c_str()));
+    ctmp->SaveAs("plots/sigmodel_"+filePOSTfix+signalname+TString::Format("%d_%s.png", iMass, cat_names.at(c).c_str()));
 
 
   }
@@ -697,10 +703,14 @@ void MakePlots(RooWorkspace* w, Float_t mass, RooFitResult** fitresults, TString
   }
 
 
-  c4->SaveAs("plots/backgrounds_log.pdf");
-  c4->SaveAs("plots/backgrounds_log.png");
  
+  string out("plots/backgrounds");
+  out = out + "" + filePOSTfix.c_str() + "_log.pdf";
+  c4->SaveAs(out.c_str());
 
+  out = string("plots/backgrounds");
+  out = out + "" + filePOSTfix.c_str() + "_log.png";
+  c4->SaveAs(out.c_str());
 
 
   TCanvas* c5 = new TCanvas("c5","jj Background Categories",0,0,1000,1000);
@@ -717,9 +727,15 @@ void MakePlots(RooWorkspace* w, Float_t mass, RooFitResult** fitresults, TString
     plotbkg_fit[c]->Draw();  
   }
 
- 
-  c5->SaveAs("plots/backgrounds.pdf");
-  c5->SaveAs("plots/backgrounds.png");
+  out = string("plots/backgrounds");
+  out = out + "" + filePOSTfix.c_str() + ".pdf";
+  c5->SaveAs(out.c_str());
+
+  out = string("plots/backgrounds");
+  out = out + "" + filePOSTfix.c_str() + ".png";
+  c5->SaveAs(out.c_str());
+  
+
  
 
 }

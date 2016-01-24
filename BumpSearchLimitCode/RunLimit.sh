@@ -1,5 +1,6 @@
 which=$1
 sigHypIn=$2
+subtr=$3
 
 sigHyp=$(expr $((sigHypIn+0)))
 # 0 : run them all
@@ -33,12 +34,12 @@ compar=$((sigHyp-10 > -1))
 if  [ $compar -eq 1 ]
 then
     echo "here"
-    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,${sigHyp}\)
+    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,${sigHyp}\,${subtr}\)
 else
-    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,10\)
-    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,11\)
-    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,12\)
-    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,20\)
-    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,21\)
-    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,22\)
+    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,10\,${subtr}\)
+    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,11\,${subtr}\)
+    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,12\,${subtr}\)
+    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,20\,${subtr}\)
+    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,21\,${subtr}\)
+    root -l -b -q plot_Asymptotic_HHbbbb.C\(\"$which\"\,22\,${subtr}\)
 fi
