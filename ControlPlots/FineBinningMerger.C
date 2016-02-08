@@ -1,6 +1,6 @@
 {
-
-  double Lumi = 1.93;
+  double rescale = 3368/4528.2; // Factor for data/MC matching
+  double Lumi = 2.1977*rescale;
   double HPHP = 1.03*1.03;
   double HPLP = 1.03*0.88;
 
@@ -92,7 +92,7 @@
 
   //====================================================================================//
 
-
+  /*
   TH1F* TotalMass1GeV_Radion_m1000_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPHP_Radion_m1000_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m1200_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPHP_Radion_m1200_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m1400_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPHP_Radion_m1400_13TeV;1");
@@ -103,7 +103,7 @@
   TH1F* TotalMass1GeV_Radion_m3500_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPHP_Radion_m3500_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m4000_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPHP_Radion_m4000_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m4500_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPHP_Radion_m4500_13TeV;1");
-
+  */
   TH1F* TotalMass1GeV_Graviton_m1200_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPHP_Graviton_m1200_13TeV;1");
   TH1F* TotalMass1GeV_Graviton_m1400_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPHP_Graviton_m1400_13TeV;1");
   TH1F* TotalMass1GeV_Graviton_m1600_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPHP_Graviton_m1600_13TeV;1");
@@ -111,7 +111,7 @@
   TH1F* TotalMass1GeV_Graviton_m2000_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPHP_Graviton_m2000_13TeV;1");
   TH1F* TotalMass1GeV_Graviton_m2500_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPHP_Graviton_m2500_13TeV;1");
 
-
+  /*
   TotalMass1GeV_Radion_m1000_13TeV->Scale(HPHP);
   TotalMass1GeV_Radion_m1200_13TeV->Scale(HPHP);
   TotalMass1GeV_Radion_m1400_13TeV->Scale(HPHP);
@@ -122,7 +122,7 @@
   TotalMass1GeV_Radion_m3500_13TeV->Scale(HPHP);
   TotalMass1GeV_Radion_m4000_13TeV->Scale(HPHP);
   TotalMass1GeV_Radion_m4500_13TeV->Scale(HPHP);
-
+*/
   TotalMass1GeV_Graviton_m1200_13TeV->Scale(HPHP);
   TotalMass1GeV_Graviton_m1400_13TeV->Scale(HPHP);
   TotalMass1GeV_Graviton_m1600_13TeV->Scale(HPHP);
@@ -132,7 +132,7 @@
 
 
 
-
+  /*
   TotalMass1GeV_Radion_m1000_13TeV->Write("Radion1000_cat1");
   TotalMass1GeV_Radion_m1200_13TeV->Write("Radion1200_cat1");
   TotalMass1GeV_Radion_m1400_13TeV->Write("Radion1400_cat1");
@@ -143,7 +143,7 @@
   TotalMass1GeV_Radion_m3500_13TeV->Write("Radion3500_cat1");
   TotalMass1GeV_Radion_m4000_13TeV->Write("Radion4000_cat1");
   TotalMass1GeV_Radion_m4500_13TeV->Write("Radion4500_cat1");
-
+  */
   TotalMass1GeV_Graviton_m1200_13TeV->Write("Graviton1200_cat1");
   TotalMass1GeV_Graviton_m1400_13TeV->Write("Graviton1400_cat1");
   TotalMass1GeV_Graviton_m1600_13TeV->Write("Graviton1600_cat1");
@@ -153,7 +153,7 @@
 
 
 
-
+  /*
   TH1F* TotalMass1GeV_Radion_m1000_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPLP_Radion_m1000_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m1200_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPLP_Radion_m1200_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m1400_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPLP_Radion_m1400_13TeV;1");
@@ -164,7 +164,7 @@
   TH1F* TotalMass1GeV_Radion_m3500_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPLP_Radion_m3500_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m4000_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPLP_Radion_m4000_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m4500_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPLP_Radion_m4500_13TeV;1");
-
+  */
   TH1F* TotalMass1GeV_Graviton_m1200_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPLP_Graviton_m1200_13TeV;1");
   TH1F* TotalMass1GeV_Graviton_m1400_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPLP_Graviton_m1400_13TeV;1");
   TH1F* TotalMass1GeV_Graviton_m1600_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPLP_Graviton_m1600_13TeV;1");
@@ -173,7 +173,7 @@
   TH1F* TotalMass1GeV_Graviton_m2500_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_HPLP_Graviton_m2500_13TeV;1");
 
 
-
+  /*
   TH1F* TotalMass1GeV_Radion_m1000_13TeV_LPHP = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_LPHP_Radion_m1000_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m1200_13TeV_LPHP = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_LPHP_Radion_m1200_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m1400_13TeV_LPHP = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_LPHP_Radion_m1400_13TeV;1");
@@ -184,7 +184,7 @@
   TH1F* TotalMass1GeV_Radion_m3500_13TeV_LPHP = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_LPHP_Radion_m3500_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m4000_13TeV_LPHP = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_LPHP_Radion_m4000_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m4500_13TeV_LPHP = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_LPHP_Radion_m4500_13TeV;1");
-
+  */
   TH1F* TotalMass1GeV_Graviton_m1200_13TeV_LPHP = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_LPHP_Graviton_m1200_13TeV;1");
   TH1F* TotalMass1GeV_Graviton_m1400_13TeV_LPHP = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_LPHP_Graviton_m1400_13TeV;1");
   TH1F* TotalMass1GeV_Graviton_m1600_13TeV_LPHP = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_LPHP_Graviton_m1600_13TeV;1");
@@ -193,7 +193,7 @@
   TH1F* TotalMass1GeV_Graviton_m2500_13TeV_LPHP = (TH1F*)   _file0->Get("TotalMass1GeV_3btagExactly_LPHP_Graviton_m2500_13TeV;1");
 
 
-
+  /*
   TotalMass1GeV_Radion_m1000_13TeV->Add(TotalMass1GeV_Radion_m1000_13TeV_LPHP);
   TotalMass1GeV_Radion_m1200_13TeV->Add(TotalMass1GeV_Radion_m1200_13TeV_LPHP);
   TotalMass1GeV_Radion_m1400_13TeV->Add(TotalMass1GeV_Radion_m1400_13TeV_LPHP);
@@ -204,7 +204,7 @@
   TotalMass1GeV_Radion_m3500_13TeV->Add(TotalMass1GeV_Radion_m3500_13TeV_LPHP);
   TotalMass1GeV_Radion_m4000_13TeV->Add(TotalMass1GeV_Radion_m4000_13TeV_LPHP);
   TotalMass1GeV_Radion_m4500_13TeV->Add(TotalMass1GeV_Radion_m4500_13TeV_LPHP);
-
+  */
 
   TotalMass1GeV_Graviton_m1200_13TeV->Add(TotalMass1GeV_Graviton_m1200_13TeV_LPHP);
   TotalMass1GeV_Graviton_m1400_13TeV->Add(TotalMass1GeV_Graviton_m1400_13TeV_LPHP);
@@ -213,7 +213,7 @@
   TotalMass1GeV_Graviton_m2000_13TeV->Add(TotalMass1GeV_Graviton_m2000_13TeV_LPHP);
   TotalMass1GeV_Graviton_m2500_13TeV->Add(TotalMass1GeV_Graviton_m2500_13TeV_LPHP);
 
-
+  /*
   TotalMass1GeV_Radion_m1000_13TeV->Scale(HPLP);
   TotalMass1GeV_Radion_m1200_13TeV->Scale(HPLP);
   TotalMass1GeV_Radion_m1400_13TeV->Scale(HPLP);
@@ -224,6 +224,7 @@
   TotalMass1GeV_Radion_m3500_13TeV->Scale(HPLP);
   TotalMass1GeV_Radion_m4000_13TeV->Scale(HPLP);
   TotalMass1GeV_Radion_m4500_13TeV->Scale(HPLP);
+  */
 
   TotalMass1GeV_Graviton_m1200_13TeV->Scale(HPLP);
   TotalMass1GeV_Graviton_m1400_13TeV->Scale(HPLP);
@@ -232,7 +233,7 @@
   TotalMass1GeV_Graviton_m2000_13TeV->Scale(HPLP);
   TotalMass1GeV_Graviton_m2500_13TeV->Scale(HPLP);
 
-
+  /*
   TotalMass1GeV_Radion_m1000_13TeV->Write("Radion1000_cat2");
   TotalMass1GeV_Radion_m1200_13TeV->Write("Radion1200_cat2");
   TotalMass1GeV_Radion_m1400_13TeV->Write("Radion1400_cat2");
@@ -243,7 +244,7 @@
   TotalMass1GeV_Radion_m3500_13TeV->Write("Radion3500_cat2");
   TotalMass1GeV_Radion_m4000_13TeV->Write("Radion4000_cat2");
   TotalMass1GeV_Radion_m4500_13TeV->Write("Radion4500_cat2");
-
+  */
   TotalMass1GeV_Graviton_m1200_13TeV->Write("Graviton1200_cat2");
   TotalMass1GeV_Graviton_m1400_13TeV->Write("Graviton1400_cat2");
   TotalMass1GeV_Graviton_m1600_13TeV->Write("Graviton1600_cat2");
@@ -252,7 +253,7 @@
   TotalMass1GeV_Graviton_m2500_13TeV->Write("Graviton2500_cat2");
 
 
-
+  /*
   TH1F* TotalMass1GeV_Radion_m1000_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_4btag_Radion_m1000_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m1200_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_4btag_Radion_m1200_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m1400_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_4btag_Radion_m1400_13TeV;1");
@@ -263,7 +264,7 @@
   TH1F* TotalMass1GeV_Radion_m3500_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_4btag_Radion_m3500_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m4000_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_4btag_Radion_m4000_13TeV;1");
   TH1F* TotalMass1GeV_Radion_m4500_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_4btag_Radion_m4500_13TeV;1");
-
+  */
 
   TH1F* TotalMass1GeV_Graviton_m1200_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_4btag_Graviton_m1200_13TeV;1");
   TH1F* TotalMass1GeV_Graviton_m1400_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_4btag_Graviton_m1400_13TeV;1");
@@ -273,7 +274,7 @@
   TH1F* TotalMass1GeV_Graviton_m2500_13TeV = (TH1F*)   _file0->Get("TotalMass1GeV_4btag_Graviton_m2500_13TeV;1");
 
 
-
+  /*
   TotalMass1GeV_Radion_m1000_13TeV->Write("Radion1000_cat0");
   TotalMass1GeV_Radion_m1200_13TeV->Write("Radion1200_cat0");
   TotalMass1GeV_Radion_m1400_13TeV->Write("Radion1400_cat0");
@@ -284,6 +285,7 @@
   TotalMass1GeV_Radion_m3500_13TeV->Write("Radion3500_cat0");
   TotalMass1GeV_Radion_m4000_13TeV->Write("Radion4000_cat0");
   TotalMass1GeV_Radion_m4500_13TeV->Write("Radion4500_cat0");
+  */
 
   TotalMass1GeV_Graviton_m1200_13TeV->Write("Graviton1200_cat0");
   TotalMass1GeV_Graviton_m1400_13TeV->Write("Graviton1400_cat0");

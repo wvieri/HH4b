@@ -2,14 +2,15 @@
 
   // control plots we want
 
-  const int nplots = 18;
-  const int ntrees = 12;
+  const int nplots = 21;
+  const int ntrees = 10;
   double sherpa = 1.;//1./2.54;
-  double Lumi = 1.92956;
   double NewNtot = 150.;
   double scale_radion = 1./20000.;
   double scale_mssmhiggs = NewNtot/300000.;
   double scale_ttgj_eff = 0.102;
+  double rescale = 3368/4528.2;
+  double Lumi = 2.1977*rescale;
 
   double ReajustScale = 5.;
 
@@ -45,42 +46,60 @@ In pb
  //5, 1.1, 1.1, 0.37, 16.5};
 
   double scaleXsec[ntrees] = {1.,           
-			      831760*Lumi/9.68346e+07,
-			      351300000*Lumi/19826197, 31630000*Lumi/19664159, 6802000*Lumi/15356448, 1206000*Lumi/4963895,                                                            
-			      120400*Lumi/3868890, 25250*Lumi/1912529,
-			      1, 1, 1, 1};
+			      //			      831760.*Lumi/9.68346e+07,                                                                                                
+			      351300000.*Lumi/19826197., 31630000.*Lumi/19664159., 6802000.*Lumi/15356448., 1206000.*Lumi/4963895.,
+			      120400.*Lumi/3868890, 25250.*Lumi/1912529,
+			      1, 1, 1, 
+			      //			      1, 1
+  };
 
-  double Uncertainty[ntrees] = {1, 1, 1, 1, 1, 1, 1,
-				1, 1, 1, 1};
+  double Uncertainty[ntrees] = {1, 
+				//				1,
+				1, 1, 1, 1, 1,
+				1, 1, 1, 1, 
+				//				1,1
+  };
 
 
   string sTitle[ntrees] =   {"DATA",
-			     "TTbar",
+			     //			     "TTbar",
 			     "QCD_HT300to1000", "QCD_HT300to1000",  "QCD_HT300to1000",  "QCD_HT1000to1500", "QCD_HT1500to2000", "QCD_HT2000toInf", 
-			     "M_{R} = 1.2 TeV", "M_{R} = 1.8 TeV", "M_{R} = 2.5 TeV", "M_{R} = 3.5 TeV"};
+			     "M_{G} = 1.2 TeV", "M_{G} = 1.8 TeV", "M_{G} = 2.5 TeV",
+			     //			     "M_{G} = 1.6 TeV", , "M_{G} = 2.0 TeV"
+  };
 
   bool AddToStack[ntrees] = {false, 
-			     true,
+			     //			     true,
 			     true, true, true,  true, true, true,
-			     false, false, false, false};
+			     false, false, false, 
+			     //			     false,false
+
+  };
   
   bool UsefulColor[ntrees] = {true, 
-			      true,
+			      //			      true,
 			      false, false, true, true, true, true,
-			      true, true, true, true};
+			      true, true, true, 
+			      //			      false, false
+
+  };
 
   int Color[ntrees] = {kBlack,
-		       kBlue,
+		       //		       kBlue,
 		       kYellow, kYellow, kYellow, 42, 43, 47,
-		       kRed, kBlue, kGreen, kMagenta};
+		       kRed, kBlue, kGreen, 
+		       //		       kMagenta, kOrange+7
+  };
 
   string treeNames[ntrees] = { "Data",
-			       "TTbar",
+			       //			       "TTbar",
 			       "QCD_HT300to500", "QCD_HT500to700",  "QCD_HT700to1000", "QCD_HT1000to1500",  "QCD_HT1500to2000", "QCD_HT2000toInf", 
-			       "Radion_m1200_13TeV", "Radion_m1800_13TeV", "Radion_m2500_13TeV", "Radion_m3500_13TeV"};
+			       "Graviton_m1200_13TeV", "Graviton_m1800_13TeV", "Graviton_m2500_13TeV", 
+			       //			       "Graviton_m1600_13TeV", "Graviton_m2000_13TeV"
+  };
 
 
-  string plotNames[nplots] = {"TotalMass", "PT0",  "PT1", "M0Pruned", "M1Pruned",  "ETA", "DeltaEta",  "nCSV_J0_SJ0", "nCSV_J0_SJ1", "nCSV_J1_SJ0", "nCSV_J1_SJ1", "nCSV", "HT12", "TotalMass3btag", "TotalMass4btag", "TotalMass1GeV_3btagExactly", "TAU21_J0", "TAU21_J1"};
+  string plotNames[nplots] = {"TotalMass", "PT0",  "PT1", "M0Pruned", "M1Pruned",  "ETA", "DeltaEta",  "nCSV_J0_SJ0", "nCSV_J0_SJ1", "nCSV_J1_SJ0", "nCSV_J1_SJ1", "nCSV", "HT12", "TotalMass3btag", "TotalMass4btag", "TotalMass1GeV_3btagExactly", "TAU21_J0", "TAU21_J1", "M0Pruned_WMJcut", "M1Pruned_WMJcut", "TotalMass_0to2btag"};
 
 
   TH1D* plots[ntrees][nplots];
@@ -209,6 +228,8 @@ In pb
 
 	stacks[iPlotNames] = new THStack(plotNames[iPlotNames].c_str(), stitle.c_str());
 	//	THStack* stacksNorm[iPlotNames] = new THStack(plotNames[iPlotNames].c_str(), stitle.c_str());
+	
+	
 
 	totalPlot[iPlotNames] = new TH1D();
 	
@@ -263,8 +284,8 @@ In pb
       }
       if (!AddToStack[iTreeNames]){// && iTreeNames > 0 ) {
 
-	if ( plotNames[iPlotNames].find("4btag") != string::npos && treeNames[iTreeNames].find("Radion") != string::npos ) plots[iTreeNames][iPlotNames]->Scale(0.01);
-	if ( plotNames[iPlotNames].find("3btag") != string::npos && treeNames[iTreeNames].find("Radion") != string::npos ) plots[iTreeNames][iPlotNames]->Scale(0.03);
+	if ( plotNames[iPlotNames].find("4btag") != string::npos && treeNames[iTreeNames].find("Graviton") != string::npos ) plots[iTreeNames][iPlotNames]->Scale(0.01);
+	if ( plotNames[iPlotNames].find("3btag") != string::npos && treeNames[iTreeNames].find("Graviton") != string::npos ) plots[iTreeNames][iPlotNames]->Scale(0.03);
 	plots[iTreeNames][iPlotNames]->SetFillStyle(0);
 	//	plots[iTreeNames][iPlotNames]->SetLineStyle(iTreeNames%4+2);
 	plots[iTreeNames][iPlotNames]->SetLineWidth(3);
@@ -313,6 +334,8 @@ In pb
 
    totalPlot[iPlotNames]->Draw();
    stacks[iPlotNames]->Draw("SAMEHIST");
+
+   cout << "stacks[iPlotNames]->Integral()" << totalPlot[iPlotNames]->Integral() << " Data = " <<  plots[0][iPlotNames]->Integral() << endl;
 
    for (int iTreeNames = 0; iTreeNames < ntrees; iTreeNames++){
 	

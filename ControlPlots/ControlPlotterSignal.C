@@ -10,7 +10,7 @@ TCut cut0;
 //TCut generalCut =  "evweight_w_btagSF";
 //TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>-0.01) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]) < 2.05) * (SelectedEventminv_leading2hjets > 1000)";
 
-TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000) * (HJets_tau2[0]/HJets_tau1[0] < 0.6 || HJets_tau2[1]/HJets_tau1[1] < 0.6)";
+TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)";
 
 TH1F* numRecVertex1 = new TH1F();
 TH2F* numRecVertex2 = new TH2F();
@@ -33,34 +33,34 @@ void ControlPlotterSignal(){
   //string s_file = "ControlPlotsNoReg_X270.root"; 
   fWrite  = new TFile(s_file.data(), "RECREATE");
 
-  const int ntrees = 24;
+  const int ntrees = 13;
 
   string s[ntrees] = {
-    "Data_RunD.root",
-    "QCD_HT300to500.root", 
-    "QCD_HT500to700.root", 
-    "QCD_HT700to1000.root", 
-    "QCD_HT1000to1500.root", 
-    "QCD_HT1500to2000.root", 
-    "QCD_HT2000toInf.root",
-    "hh4bTree_TT_TuneCUETP8M1_13TeV-powheg-pythia8.root", // 8 samples
+    "Data_RunD_btagsf_massL2L3.root",
+    "QCD_HT300to500_btagsf_massL2L3.root", 
+    "QCD_HT500to700_btagsf_massL2L3.root", 
+    "QCD_HT700to1000_btagsf_massL2L3.root", 
+    "QCD_HT1000to1500_btagsf_massL2L3.root", 
+    "QCD_HT1500to2000_btagsf_massL2L3.root", 
+    "QCD_HT2000toInf_btagsf_massL2L3.root",
+    //    "hh4bTree_TT_TuneCUETP8M1_13TeV-powheg-pythia8.root", // 8 samples
 
-    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1000_13TeV-madgraph_btagsf.root", 
-    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_btagsf.root",
-    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_btagsf.root", 
-    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_btagsf.root",
-    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_btagsf.root", 
-    "hh4bTree_RadionTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_btagsf.root",
-    "hh4bTree_RadionTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_btagsf.root", 
-    "hh4bTree_RadionTohhTohbbhbb_narrow_M-3500_13TeV-madgraph_btagsf.root", 
-    "hh4bTree_RadionTohhTohbbhbb_narrow_M-4000_13TeV-madgraph_btagsf.root",
-    "hh4bTree_RadionTohhTohbbhbb_narrow_M-4500_13TeV-madgraph_btagsf.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_btagsf.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_btagsf.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_btagsf.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_btagsf.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_btagsf.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_btagsf.root"
+    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1000_13TeV-madgraph_btagsf.root", 
+    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_btagsf.root",
+    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_btagsf.root", 
+    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_btagsf.root",
+    //   "hh4bTree_RadionTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_btagsf.root", 
+    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_btagsf.root",
+    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_btagsf.root", 
+    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-3500_13TeV-madgraph_btagsf.root", 
+    //   "hh4bTree_RadionTohhTohbbhbb_narrow_M-4000_13TeV-madgraph_btagsf.root",
+    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-4500_13TeV-madgraph_btagsf.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_btagsf_massL2L3.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_btagsf_massL2L3.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_btagsf_massL2L3.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_btagsf_massL2L3.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_btagsf_massL2L3.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_btagsf_massL2L3.root"
   };
 
   string sampleName[ntrees] = {
@@ -71,8 +71,8 @@ void ControlPlotterSignal(){
     "QCD_HT1000to1500", 
     "QCD_HT1500to2000", 
     "QCD_HT2000toInf",
-     "TTbar", 
-    
+    //    "TTbar", 
+    /*   
     "Radion_m1000_13TeV",
     "Radion_m1200_13TeV",
     "Radion_m1400_13TeV",
@@ -83,6 +83,7 @@ void ControlPlotterSignal(){
     "Radion_m3500_13TeV",
     "Radion_m4000_13TeV",
     "Radion_m4500_13TeV",
+    */
     "Graviton_m1200_13TeV",
     "Graviton_m1400_13TeV",
     "Graviton_m1600_13TeV",
@@ -137,7 +138,7 @@ void ControlPlotterSignal(){
 
     
     TCut  btagsf = "SelectedEvent_btagsf";
-    if (i < 8) btagsf = ""; //if signal is used where we have btagsf
+    if (sampleName[i].find("Data") != string::npos) btagsf = "";
 
       
     nbins = 4000; 
@@ -148,8 +149,7 @@ void ControlPlotterSignal(){
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 3.99)";
-    else  cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>3.99)";
+    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 3.99) * (HJets_tau2[0]/HJets_tau1[0] < 0.60) * (HJets_tau2[1]/HJets_tau1[1] < 0.60)";
     cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
@@ -163,8 +163,7 @@ void ControlPlotterSignal(){
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
-    else cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01)";
+    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
     cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
@@ -178,8 +177,7 @@ void ControlPlotterSignal(){
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
-    else  cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
+    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
     cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
@@ -196,8 +194,7 @@ void ControlPlotterSignal(){
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] > 0.6)";
-    else  cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] > 0.6)";
+    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] > 0.6)";
     cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
@@ -215,8 +212,7 @@ void ControlPlotterSignal(){
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] > 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
-    else cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01) * (HJets_tau2[0]/HJets_tau1[0] > 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
+    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] > 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
     cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
@@ -243,10 +239,7 @@ void ControlPlotterSignal(){
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets_subtr";
-    if (i > 7) variable = "SelectedEventminv_leading2hjets_subtr";
-    else variable = "SelectedEventminv_leading2hjets_subtractedd";
-    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 3.99)";
-    else  cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>3.99)";
+    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 3.99) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
     cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
@@ -259,10 +252,8 @@ void ControlPlotterSignal(){
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
-    if (i > 7) variable = "SelectedEventminv_leading2hjets_subtr";
-    else variable = "SelectedEventminv_leading2hjets_subtractedd";
-    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
-    else cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01)";
+    variable = "SelectedEventminv_leading2hjets_subtr";
+    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
     cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
@@ -275,10 +266,8 @@ void ControlPlotterSignal(){
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
-    if (i > 7) variable = "SelectedEventminv_leading2hjets_subtr";
-    else variable = "SelectedEventminv_leading2hjets_subtractedd";
-    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
-    else  cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
+    variable = "SelectedEventminv_leading2hjets_subtr";
+    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
     cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
@@ -294,10 +283,8 @@ void ControlPlotterSignal(){
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
-    if (i > 7) variable = "SelectedEventminv_leading2hjets_subtr";
-    else variable = "SelectedEventminv_leading2hjets_subtractedd";
-    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] > 0.6)";
-    else  cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] > 0.6)";
+    variable = "SelectedEventminv_leading2hjets_subtr";
+    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) * (HJets_tau2[1]/HJets_tau1[1] > 0.6)";
     cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
@@ -314,10 +301,8 @@ void ControlPlotterSignal(){
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
-    if (i > 7) variable = "SelectedEventminv_leading2hjets_subtr";
-    else variable = "SelectedEventminv_leading2hjets_subtractedd";
-    if (i > 7) cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] > 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
-    else cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99)*((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01) * (HJets_tau2[0]/HJets_tau1[0] > 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
+    variable = "SelectedEventminv_leading2hjets_subtr";
+    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] > 0.6) * (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
     cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
@@ -341,12 +326,6 @@ void ControlPlotterSignal(){
 
 
 
-
-
-
-
-
-    if (i < 8) continue;
 
 
 
