@@ -1,6 +1,8 @@
+
 import os
 
-masses =[1200,1400,1600,1800,2000,2500]
+#masses =[1200,1400,1600,1800,2000,2500]
+masses = []
 
 
 for mass in masses:
@@ -32,7 +34,7 @@ for mass in masses:
   os.system(command)
 
 
-#masses =[1200,1400,1600,1800,2000,2500]
+masses =[1200,1400,1600,1800,2000,2500]
 
 
 for mass in masses:
