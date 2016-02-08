@@ -114,10 +114,10 @@ using namespace RooFit;
 using namespace RooStats ;
 
 static const Int_t NCAT = 3;
-Double_t MMIN = 999.9;
+Double_t MMIN = 1000.;
 Double_t MMAX = 3000;
 std::string filePOSTfix="";
-double analysisLumi = 1.93; // Luminosity you use in your analysis
+double analysisLumi = 2.1977; // Luminosity you use in your analysis
 double nEventsInSignalMC = 0.; //number of events in Signal MC sample
 int iGraviton = 0;
 
@@ -500,8 +500,9 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 	// printf("errlo = %5f, errhi = %5f\n",nlim->getErrorLo(),nlim->getErrorHi());
 	
 	onesigma->SetPoint(i-1,center,nombkg);
-	onesigma->SetPointError(i-1,0.,0.,-nlim->getErrorLo(),nlim->getErrorHi());
-	
+	if (fabs(nlim->getErrorLo())>1e-5) onesigma->SetPointError(i-1,0.,0.,-nlim->getErrorLo(),nlim->getErrorHi());
+	else onesigma->SetPointError(i-1,0.,0.,nlim->getErrorHi(),nlim->getErrorHi());
+
 	minim.setErrorLevel(0.5*pow(ROOT::Math::normal_quantile(1-0.5*(1-cltwo),1.0), 2)); // the 0.5 is because qmu is -2*NLL
 	// eventually if cl = 0.95 this is the usual 1.92!      
 	
@@ -510,7 +511,8 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 	minim.minos(*nlim);
 	
 	twosigma->SetPoint(i-1,center,nombkg);
-	twosigma->SetPointError(i-1,0.,0.,-nlim->getErrorLo(),nlim->getErrorHi());
+	if (fabs(nlim->getErrorLo())>1e-5) twosigma->SetPointError(i-1,0.,0.,-nlim->getErrorLo(),nlim->getErrorHi());
+	else twosigma->SetPointError(i-1,0.,0.,nlim->getErrorHi(),nlim->getErrorHi());
 	
 	
 	delete nll;
@@ -531,7 +533,28 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
       
       plotbkg_fit[c]->Draw("SAME"); 
      
+      
+      string out("plots/backgrounds");
+      out = out + "" + filePOSTfix.c_str() + Form("_channel%d", c) + "_withband.pdf";
+      ctmp->SaveAs(out.c_str());
+
+      ctmp->SetLogy();
+
+      out = string("plots/backgrounds");
+      out = out + "" + filePOSTfix.c_str() + Form("_channel%d", c) + "_withband_log.pdf";
+      ctmp->SaveAs(out.c_str());
+
+      out = string("plots/backgrounds");
+      out = out + "" + filePOSTfix.c_str() + Form("_channel%d", c) + "_withband_parameters.root";
+
+
+      TFile * output = new TFile(out.c_str(), "RECREATE");
+      onesigma->Write("onesigma");
+      twosigma->Write("twosigma");
+      p1mod->Write();
+      output->Close();
     }
+
 
   }
 
@@ -1112,12 +1135,12 @@ void MakeDataCard_1Channel(RooWorkspace* w, const char* fileBaseName, const char
 
 
 
-void R2JJFitterHH_13TeV(double mass, std::string postfix="", int signalsamples=0, int graviton = 0, double nEvents = 50000.)
+void R2JJFitterHH_13TeV(double mass, std::string postfix="", bool dobands=false, int graviton = 0, double nEvents = 50000.)
 {
     filePOSTfix=postfix;
     iGraviton = graviton;
     nEventsInSignalMC = nEvents;
     signalScaler=analysisLumi/nEventsInSignalMC;
-    runfits(mass, 0);
+    runfits(mass, 0, dobands);
 
 }
