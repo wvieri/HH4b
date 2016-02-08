@@ -7,18 +7,20 @@ shapes bkg_fit_jj CMS_jj_4btag_cat0 ../workspaces/GravitonCMS_jj_bkg_HH_13TeV.ro
 shapes HH_jj CMS_jj_4btag_cat0 ../workspaces/GravitonCMS_jj_HH_1200_13TeV.root w_all:HH_jj_sig_CMS_jj_4btag_cat0
 ---------------
 bin          CMS_jj_4btag_cat0
-observation   11.21728996
+observation   11.03310206
 ------------------------------
 bin                      CMS_jj_4btag_cat0       CMS_jj_4btag_cat0      
 process                 HH_jj     bkg_fit_jj     
 process                 0        1          
-rate                       0.0924084 1
+rate                       0.153356 1
 --------------------------------
-# signal scaled by 3.86e-05 to a cross section of 10/fb and also scale factor of 1 are applied.
-lumi_8TeV       lnN  1.046    - 
-CMS_eff_vtag_sf         lnN  1.03       - # mass cut efficiency
-CMS_eff_btagsf        lnN  1.17       - # btag efficiency
-CMS_pu         lnN  1.020       - # pileup
+# signal scaled by 4.3954e-05 to a cross section of 10/fb and also scale factor of 1 are applied.
+CMS_lumi_8TeV       lnN  1.046      - 
+CMS_pu              lnN  1.020      - # pileup impact of W mass tag
+CMS_eff_Htag_unc    lnN  1.02       - # JEs and JER uncertainty on H mass tag
+CMS_eff_Htag_sf     lnN  1.10       - # differenec between H tag and W tag efficiencies
+CMS_PDF_Scales      lnN  1.02       - # selection efficiency
+CMS_eff_btagsf    lnN  1.17       - # btag efficiency
 # Parametric shape uncertainties, entered by hand.
 CMS_sig_p1_jes    param   0.0   1.0   # dijet mass shift due to JES uncertainty
 CMS_sig_p2_jer     param   0.0   1.0   # dijet mass resolution shift due to JER uncertainty
