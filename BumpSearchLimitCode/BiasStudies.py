@@ -1,6 +1,8 @@
 
 import os
 
+#https://twiki.cern.ch/twiki/bin/view/CMS/HiggsWG/SWGuideNonStandardCombineUses#Conventional_bias_studies_with_R
+
 masses =[1200, 1600, 2000]
 ievts =[0,2,5,10,20]
 
