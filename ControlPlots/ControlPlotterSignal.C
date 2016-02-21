@@ -10,7 +10,7 @@ TCut cut0;
 //TCut generalCut =  "evweight_w_btagSF";
 //TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>-0.01) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]) < 2.05) * (SelectedEventminv_leading2hjets > 1000)";
 
-TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)";
+TCut generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)";
 
 TH1F* numRecVertex1 = new TH1F();
 TH2F* numRecVertex2 = new TH2F();
@@ -27,52 +27,44 @@ void setParams(TH1F* f, string xtitle, string ytitle, int Color, int Style, int 
 
 void ControlPlotterSignal(){
 
-  string directory("HH4b_subjetBTagged_15ov2015/"); 
+  string directory("HH4b_subjetBTagged_14Fev2016/"); 
 
   string s_file = directory + "ControlPlots_1GeV.root"; 
   //string s_file = "ControlPlotsNoReg_X270.root"; 
   fWrite  = new TFile(s_file.data(), "RECREATE");
 
-  const int ntrees = 13;
+  const int ntrees = 19;
 
   string s[ntrees] = {
-    "Data_RunD_btagsf_massL2L3.root",
-    "QCD_HT300to500_btagsf_massL2L3.root", 
-    "QCD_HT500to700_btagsf_massL2L3.root", 
-    "QCD_HT700to1000_btagsf_massL2L3.root", 
-    "QCD_HT1000to1500_btagsf_massL2L3.root", 
-    "QCD_HT1500to2000_btagsf_massL2L3.root", 
-    "QCD_HT2000toInf_btagsf_massL2L3.root",
-    //    "hh4bTree_TT_TuneCUETP8M1_13TeV-powheg-pythia8.root", // 8 samples
-
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1000_13TeV-madgraph_btagsf.root", 
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_btagsf.root",
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_btagsf.root", 
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_btagsf.root",
-    //   "hh4bTree_RadionTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_btagsf.root", 
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_btagsf.root",
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_btagsf.root", 
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-3500_13TeV-madgraph_btagsf.root", 
-    //   "hh4bTree_RadionTohhTohbbhbb_narrow_M-4000_13TeV-madgraph_btagsf.root",
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-4500_13TeV-madgraph_btagsf.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_btagsf_massL2L3.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_btagsf_massL2L3.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_btagsf_massL2L3.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_btagsf_massL2L3.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_btagsf_massL2L3.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_btagsf_massL2L3.root"
+    "Data_RunD_Moriond.root",
+    //   "hh4bTree_TT_TuneCUETP8M1_13TeV-powheg-pythia8.root",
+    "QCD_HT700to1000_Moriond.root", 
+    "QCD_HT1000to1500_Moriond.root", 
+    "QCD_HT1500to2000_Moriond.root", 
+    "QCD_HT2000toInf_Moriond.root", 
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1000_13TeV-madgraph_Moriond.root", 
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_Moriond.root",
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_Moriond.root", 
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_Moriond.root",
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_Moriond.root",//10 
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_Moriond.root",
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_Moriond.root", 
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1000_13TeV-madgraph_Moriond.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_Moriond.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_Moriond.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_Moriond.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_Moriond.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_Moriond.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_Moriond.root" //19
   };
 
   string sampleName[ntrees] = {
     "Data",
-    "QCD_HT300to500", 
-    "QCD_HT500to700", 
+    //   "TTbar",
     "QCD_HT700to1000", 
     "QCD_HT1000to1500", 
     "QCD_HT1500to2000", 
-    "QCD_HT2000toInf",
-    //    "TTbar", 
-    /*   
+    "QCD_HT2000toInf", 
     "Radion_m1000_13TeV",
     "Radion_m1200_13TeV",
     "Radion_m1400_13TeV",
@@ -80,10 +72,7 @@ void ControlPlotterSignal(){
     "Radion_m1800_13TeV",
     "Radion_m2000_13TeV",
     "Radion_m2500_13TeV",
-    "Radion_m3500_13TeV",
-    "Radion_m4000_13TeV",
-    "Radion_m4500_13TeV",
-    */
+    "Graviton_m1000_13TeV",
     "Graviton_m1200_13TeV",
     "Graviton_m1400_13TeV",
     "Graviton_m1600_13TeV",
@@ -91,20 +80,6 @@ void ControlPlotterSignal(){
     "Graviton_m2000_13TeV",
     "Graviton_m2500_13TeV"
   };
-
-
-
-  //ControlPlotsSignal.root                                        hh4bTree_RadionTohhTohbbhbb_narrow_M-1800_13TeV-madgraph.root  Plots
-  //hh4bTree_JetHT_Run2015D-05Oct2015-v1.root                      hh4bTree_RadionTohhTohbbhbb_narrow_M-2000_13TeV-madgraph.root  QCD_HT1000to1500.root
-  //hh4bTree_JetHT_Run2015D-PromptReco-v4.root                     hh4bTree_RadionTohhTohbbhbb_narrow_M-2500_13TeV-madgraph.root  QCD_HT1500to2000.root
-  //hh4bTree_RadionTohhTohbbhbb_narrow_M-1000_13TeV-madgraph.root  hh4bTree_RadionTohhTohbbhbb_narrow_M-3500_13TeV-madgraph.root  QCD_HT2000toInf.root
-  //hh4bTree_RadionTohhTohbbhbb_narrow_M-1200_13TeV-madgraph.root  hh4bTree_RadionTohhTohbbhbb_narrow_M-4000_13TeV-madgraph.root  QCD_HT300to500.root
-  //hh4bTree_RadionTohhTohbbhbb_narrow_M-1400_13TeV-madgraph.root  hh4bTree_RadionTohhTohbbhbb_narrow_M-4500_13TeV-madgraph.root  QCD_HT500to700.root
-  //hh4bTree_RadionTohhTohbbhbb_narrow_M-1600_13TeV-madgraph.root  MassPlotFineBins.root                                          QCD_HT700to1000.root
-
-
-
-
 
 
 
@@ -163,7 +138,7 @@ void ControlPlotterSignal(){
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
-    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
+    cut0 = "(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01) * (HJets_tau2[0]/HJets_tau1[0] < 0.6) || (HJets_tau2[1]/HJets_tau1[1] < 0.6)";
     cut = btagsf*cut0*generalCut;
  
     PlottiPlotta();
@@ -384,7 +359,7 @@ void ControlPlotterSignal(){
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
     cut0 = "SelectedEvent_btagsf_bcUp*(SelectedEvent_nsubjetsBTaggedCSVL > 3.99)";
-    cut = btagsf*cut0*generalCut;
+    cut = cut0*generalCut;
  
     PlottiPlotta();
 
@@ -397,7 +372,7 @@ void ControlPlotterSignal(){
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
     cut0 = "SelectedEvent_btagsf_bcDown*(SelectedEvent_nsubjetsBTaggedCSVL > 3.99)";
-    cut = btagsf*cut0*generalCut;
+    cut = cut0*generalCut;
  
     PlottiPlotta();
 
@@ -410,7 +385,7 @@ void ControlPlotterSignal(){
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
     cut0 = "SelectedEvent_btagsf_bcUp*(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
-    cut = btagsf*cut0*generalCut;
+    cut = cut0*generalCut;
  
     PlottiPlotta();
 
@@ -423,7 +398,7 @@ void ControlPlotterSignal(){
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
     cut0 = "SelectedEvent_btagsf_bcDown*(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
-    cut = btagsf*cut0*generalCut;
+    cut = cut0*generalCut;
  
     PlottiPlotta();
 
@@ -436,7 +411,7 @@ void ControlPlotterSignal(){
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
     cut0 = "SelectedEvent_btagsf_lUp*(SelectedEvent_nsubjetsBTaggedCSVL > 3.99)";
-    cut = btagsf*cut0*generalCut;
+    cut = cut0*generalCut;
  
     PlottiPlotta();
 
@@ -450,7 +425,7 @@ void ControlPlotterSignal(){
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
     cut0 = "SelectedEvent_btagsf_lDown*(SelectedEvent_nsubjetsBTaggedCSVL > 3.99)";
-    cut = btagsf*cut0*generalCut;
+    cut = cut0*generalCut;
  
     PlottiPlotta();
 
@@ -464,7 +439,7 @@ void ControlPlotterSignal(){
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
     cut0 = "SelectedEvent_btagsf_lUp*(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
-    cut = btagsf*cut0*generalCut;
+    cut = cut0*generalCut;
  
 
 
@@ -477,7 +452,7 @@ void ControlPlotterSignal(){
     yaxis_title = "Events / 1 GeV";
     variable = "SelectedEventminv_leading2hjets";
     cut0 = "SelectedEvent_btagsf_lDown*(SelectedEvent_nsubjetsBTaggedCSVL > 2.99)*(SelectedEvent_nsubjetsBTaggedCSVL < 3.01)";
-    cut = btagsf*cut0*generalCut;
+    cut = cut0*generalCut;
  
     PlottiPlotta();
 

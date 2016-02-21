@@ -3,20 +3,20 @@
   // control plots we want
 
   const int nplots = 21;
-  const int ntrees = 10;
+  const int ntrees = 9;
   double sherpa = 1.;//1./2.54;
   double NewNtot = 150.;
   double scale_radion = 1./20000.;
   double scale_mssmhiggs = NewNtot/300000.;
   double scale_ttgj_eff = 0.102;
-  double rescale = 3368/4528.2;
+  double rescale = 42536./23606.5;
   double Lumi = 2.1977*rescale;
 
   double ReajustScale = 5.;
 
   bool entryUpdate = 0;
 
-  string directory = "HH4b_subjetBTagged_15ov2015/";
+  string directory = "HH4b_subjetBTagged_14Fev2016/";
 
   /*
 ../SAMPLES_20151106/QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root
@@ -46,56 +46,68 @@ In pb
  //5, 1.1, 1.1, 0.37, 16.5};
 
   double scaleXsec[ntrees] = {1.,           
-			      //			      831760.*Lumi/9.68346e+07,                                                                                                
-			      351300000.*Lumi/19826197., 31630000.*Lumi/19664159., 6802000.*Lumi/15356448., 1206000.*Lumi/4963895.,
-			      120400.*Lumi/3868890, 25250.*Lumi/1912529,
-			      1, 1, 1, 
+			      //			      831760.*Lumi/9.68346e+07,      1.53564e+07                                                                                   
+			      //351300000.*Lumi/19826197., 31630000.*Lumi/19664159., 
+			      6802000.*Lumi/15356448., 1206000.*Lumi/4963895.,
+			      120400.*Lumi/3868886, 25250.*Lumi/1912529,
+			      1, 1, 1,
+			      1
 			      //			      1, 1
   };
 
   double Uncertainty[ntrees] = {1, 
 				//				1,
-				1, 1, 1, 1, 1,
-				1, 1, 1, 1, 
+				//1, 1, 
+				1, 1, 1,
+				1, 1, 1, 1,
+				1
 				//				1,1
   };
 
 
   string sTitle[ntrees] =   {"DATA",
 			     //			     "TTbar",
-			     "QCD_HT300to1000", "QCD_HT300to1000",  "QCD_HT300to1000",  "QCD_HT1000to1500", "QCD_HT1500to2000", "QCD_HT2000toInf", 
+			     //"QCD_HT300to1000", "QCD_HT300to1000",  
+			     "QCD_HT700to1000",  "QCD_HT1000to1500", "QCD_HT1500to2000", "QCD_HT2000toInf", 
 			     "M_{G} = 1.2 TeV", "M_{G} = 1.8 TeV", "M_{G} = 2.5 TeV",
-			     //			     "M_{G} = 1.6 TeV", , "M_{G} = 2.0 TeV"
+			     "M_{R} = 1.8 TeV"
   };
 
   bool AddToStack[ntrees] = {false, 
 			     //			     true,
-			     true, true, true,  true, true, true,
+			     //true, true, 
+			     true,  true, true, true,
 			     false, false, false, 
+			     false
 			     //			     false,false
 
   };
   
   bool UsefulColor[ntrees] = {true, 
 			      //			      true,
-			      false, false, true, true, true, true,
+			      //false, false, 
+			      true, true, true, true,
 			      true, true, true, 
+			      true
 			      //			      false, false
 
   };
 
   int Color[ntrees] = {kBlack,
 		       //		       kBlue,
-		       kYellow, kYellow, kYellow, 42, 43, 47,
+		       //kYellow, kYellow, 
+		       kYellow, 42, 43, 47,
 		       kRed, kBlue, kGreen, 
+		       kOrange
 		       //		       kMagenta, kOrange+7
   };
 
   string treeNames[ntrees] = { "Data",
 			       //			       "TTbar",
-			       "QCD_HT300to500", "QCD_HT500to700",  "QCD_HT700to1000", "QCD_HT1000to1500",  "QCD_HT1500to2000", "QCD_HT2000toInf", 
+			       //"QCD_HT300to500", "QCD_HT500to700", 
+			       "QCD_HT700to1000", "QCD_HT1000to1500",  "QCD_HT1500to2000", "QCD_HT2000toInf", 
 			       "Graviton_m1200_13TeV", "Graviton_m1800_13TeV", "Graviton_m2500_13TeV", 
-			       //			       "Graviton_m1600_13TeV", "Graviton_m2000_13TeV"
+			       "Radion_m1800_13TeV"
   };
 
 
@@ -243,6 +255,8 @@ In pb
 	  for (int ibin = 1; ibin < plots[iTreeNames][iPlotNames]->GetNbinsX(); ibin++){
 	    if(plots[iTreeNames][iPlotNames]->GetBinCenter(ibin) > 2.9) plots[iTreeNames][iPlotNames]->SetBinContent(ibin, 0);
 	  }
+	} else if (plotNames[iPlotNames].find("btag") != string::npos) {
+	  plots[iTreeNames][iPlotNames]->Scale(0);
 	}
 
       }
@@ -284,10 +298,10 @@ In pb
       }
       if (!AddToStack[iTreeNames]){// && iTreeNames > 0 ) {
 
-	if ( plotNames[iPlotNames].find("4btag") != string::npos && treeNames[iTreeNames].find("Graviton") != string::npos ) plots[iTreeNames][iPlotNames]->Scale(0.01);
-	if ( plotNames[iPlotNames].find("3btag") != string::npos && treeNames[iTreeNames].find("Graviton") != string::npos ) plots[iTreeNames][iPlotNames]->Scale(0.03);
+	if ( plotNames[iPlotNames].find("4btag") != string::npos && ( treeNames[iTreeNames].find("Graviton") != string::npos || treeNames[iTreeNames].find("Radion") != string::npos) ) plots[iTreeNames][iPlotNames]->Scale(0.01);
+	if ( plotNames[iPlotNames].find("3btag") != string::npos && (treeNames[iTreeNames].find("Graviton") != string::npos || treeNames[iTreeNames].find("Radion") != string::npos) ) plots[iTreeNames][iPlotNames]->Scale(0.03);
 	plots[iTreeNames][iPlotNames]->SetFillStyle(0);
-	//	plots[iTreeNames][iPlotNames]->SetLineStyle(iTreeNames%4+2);
+	plots[iTreeNames][iPlotNames]->SetLineStyle(iTreeNames-4);
 	plots[iTreeNames][iPlotNames]->SetLineWidth(3);
 	if (iPlotNames == 0 &&  UsefulColor[iTreeNames] && iTreeNames > 0) {
 	  string s_out(sTitle[iTreeNames].c_str());

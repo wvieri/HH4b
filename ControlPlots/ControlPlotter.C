@@ -28,64 +28,54 @@ void setParams(TH1F* f, string xtitle, string ytitle, int Color, int Style, int 
 
 void ControlPlotter(){
 
-  string directory("HH4b_subjetBTagged_15ov2015/"); 
+  string directory("HH4b_subjetBTagged_14Fev2016/"); 
 
   string s_file = directory + "ControlPlotsSignal.root"; 
   //string s_file = "ControlPlotsNoReg_X270.root"; 
   fWrite  = new TFile(s_file.data(), "RECREATE");
 
-  const int ntrees = 12;
+  const int ntrees = 19;
 
   string s[ntrees] = {
-    "Data_RunD_btagsf_massL2L3.root",
+    "Data_RunD_Moriond.root",
     //   "hh4bTree_TT_TuneCUETP8M1_13TeV-powheg-pythia8.root",
-    "QCD_HT300to500_btagsf_massL2L3.root", 
-    "QCD_HT500to700_btagsf_massL2L3.root", 
-    "QCD_HT700to1000_btagsf_massL2L3.root", 
-    "QCD_HT1000to1500_btagsf_massL2L3.root", 
-    "QCD_HT1500to2000_btagsf_massL2L3.root", 
-    "QCD_HT2000toInf_btagsf_massL2L3.root", 
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1000_13TeV-madgraph_btagsf.root", 
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_btagsf.root", //10
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_btagsf.root", 
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_btagsf.root",
-    //   "hh4bTree_RadionTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_btagsf.root", 
-    //   "hh4bTree_RadionTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_btagsf.root",
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_btagsf.root", 
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-3500_13TeV-madgraph_btagsf.root", 
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-4000_13TeV-madgraph_btagsf.root",
-    //    "hh4bTree_RadionTohhTohbbhbb_narrow_M-4500_13TeV-madgraph_btagsf.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_btagsf_massL2L3.root",
-    //    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_btagsf.root", //20
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_btagsf_massL2L3.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_btagsf_massL2L3.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_btagsf_massL2L3.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_btagsf_massL2L3.root"
+    "QCD_HT700to1000_Moriond.root", 
+    "QCD_HT1000to1500_Moriond.root", 
+    "QCD_HT1500to2000_Moriond.root", 
+    "QCD_HT2000toInf_Moriond.root", 
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1000_13TeV-madgraph_Moriond.root", 
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_Moriond.root",
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_Moriond.root", 
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_Moriond.root",
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_Moriond.root",//10 
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_Moriond.root",
+    "hh4bTree_RadionTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_Moriond.root", 
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1000_13TeV-madgraph_Moriond.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_Moriond.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_Moriond.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_Moriond.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_Moriond.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_Moriond.root",
+    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_Moriond.root" //19
   };
 
   string sampleName[ntrees] = {
     "Data",
     //   "TTbar",
-    "QCD_HT300to500", 
-    "QCD_HT500to700", 
     "QCD_HT700to1000", 
     "QCD_HT1000to1500", 
     "QCD_HT1500to2000", 
     "QCD_HT2000toInf", 
-    /*
     "Radion_m1000_13TeV",
-    "Radion_m1200_13TeV",//10
+    "Radion_m1200_13TeV",
     "Radion_m1400_13TeV",
     "Radion_m1600_13TeV",
     "Radion_m1800_13TeV",
     "Radion_m2000_13TeV",
     "Radion_m2500_13TeV",
-    "Radion_m3500_13TeV",
-    "Radion_m4000_13TeV",
-    "Radion_m4500_13TeV",
-    */ 
-   "Graviton_m1200_13TeV",
-    //    "Graviton_m1400_13TeV",//20
+    "Graviton_m1000_13TeV",
+    "Graviton_m1200_13TeV",
+    "Graviton_m1400_13TeV",
     "Graviton_m1600_13TeV",
     "Graviton_m1800_13TeV",
     "Graviton_m2000_13TeV",
@@ -111,8 +101,10 @@ void ControlPlotter(){
 
   for (int i = 0; i < ntrees; i++){
 
-    if (sampleName[i].find("Data") != string::npos) generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)";
-    else  generalCut =  "SelectedEvent_btagsf*(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)";
+    if (sampleName[i].find("Data") != string::npos) generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)";
+//    else  generalCut =  "SelectedEvent_btagsf*(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)";
+    else generalCut =  "SelectedEvent_btagsf*(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)";
+
 
 
     string s1 = directory + "" + s[i];
@@ -147,7 +139,7 @@ void ControlPlotter(){
     // R2S->Print();
  
     nbins = 75; 
-    minBin = 1000., width = 40.; 
+    minBin = 600., width = 40.; 
     maxBin = minBin + nbins*width;
     plotName  = "TotalMass_" + sampleName[i];
     histo_title = "";
