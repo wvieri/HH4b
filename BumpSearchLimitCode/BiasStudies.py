@@ -1,7 +1,7 @@
 
 import os
 
-masses =[1600]
+masses =[1200, 1600, 2000]
 ievts =[0,2,5,10,20]
 
 start = -1
