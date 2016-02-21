@@ -1,11 +1,11 @@
 
 import os
 
-masses =[1200,2000]
+masses =[1600]
 ievts =[0,2,5,10,20]
 
 start = -1
-itoys = 300
+itoys = 250
 
 
 for mass in masses:
