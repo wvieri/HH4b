@@ -61,7 +61,7 @@ void BiasStudiesTable()
       double Median = TMath::Median(nentries, vbias);
 
 
-      myfile << Form("%d & \t\t %d & \t\t %.2f & \t\t %.2f & \t {\bf %.2f }& \t %.2f & \t %.2f \\\\ \n",mass, ievt, funG->GetParameter(1), hist->GetMean(), Median, funG->GetParameter(2), hist->GetRMS());
+      myfile << Form("%d & \t\t %d & \t\t %.2f & \t\t %.2f & \t \{\\bf %.2f} & \t %.2f & \t %.2f \\\\ \n",mass, ievt, funG->GetParameter(1), hist->GetMean(), Median, funG->GetParameter(2), hist->GetRMS());
       
       TLine* lMedian = new TLine(Median, 0, Median, hist->GetMaximum()*0.9);
       lMedian->SetLineStyle(2);
