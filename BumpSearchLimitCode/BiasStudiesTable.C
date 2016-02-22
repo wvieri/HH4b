@@ -14,13 +14,13 @@ void BiasStudiesTable()
 
   ofstream myfile;
   myfile.open ("toys/BiasStudies.txt");
-  myfile << "Mass (GeV) & Sig (#evt) & \t $\mu_{g}$ & \t\t Mean & \t Median & \t $\sigma_{g}$ & \t RMS \\\\ \n \\hline \n";
+  myfile << "Mass (GeV) & Sig (#evt) & \t $\\mu_{g}$ & \t\t Mean & \t Median & \t $\\sigma_{g}$ & \t RMS \\\\ \n \\hline \n";
 
   
   double mu, muLoErr, muHiErr;
 
   for (int imass = 0; imass < 3; imass++){
-    for (int nevt = 0; nevt < 4; nevt++){
+    for (int nevt = 0; nevt < 5; nevt++){
     
       int mass =  vmass[imass];
       int ievt = vevt[nevt];
