@@ -12,6 +12,7 @@ TCut cut0;
 
 TCut generalCut =  "";//(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)";
 //TCut generalCut =  "(SelectedEventminv_leading2hjets > 1000)";
+TCut mainCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1100)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)*(TMath::Abs(HJets_Eta[0]) < 2.4)*(TMath::Abs(HJets_Eta[1]) < 2.4)";
 
 TH1F* numRecVertex1 = new TH1F();
 TH2F* numRecVertex2 = new TH2F();
@@ -37,7 +38,10 @@ void ControlPlotter(){
   const int ntrees = 19;
 
   string s[ntrees] = {
+    //"Data_RunD_Prompt_Moriond.root",
+    //"Data_RunD_05Oct_Moriond.root",
     "Data_RunD_Moriond.root",
+    "TT_TuneCUETP8M1_13TeV-powheg-pythia8.root",
     //   "hh4bTree_TT_TuneCUETP8M1_13TeV-powheg-pythia8.root",
     "QCD_HT700to1000_Moriond.root", 
     "QCD_HT1000to1500_Moriond.root", 
@@ -50,18 +54,18 @@ void ControlPlotter(){
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_Moriond.root",//10 
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_Moriond.root",
     "hh4bTree_RadionTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_Moriond.root", 
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1000_13TeV-madgraph_Moriond.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_Moriond.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_Moriond.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_Moriond.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_Moriond.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_Moriond.root",
-    "hh4bTree_GravitonTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_Moriond.root" //19
+    "hh4bTree_BulkGravTohhTohbbhbb_narrow_M-1000_13TeV-madgraph_Moriond.root",
+    "hh4bTree_BulkGravTohhTohbbhbb_narrow_M-1200_13TeV-madgraph_Moriond.root",
+    "hh4bTree_BulkGravTohhTohbbhbb_narrow_M-1400_13TeV-madgraph_Moriond.root",
+    "hh4bTree_BulkGravTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_Moriond.root",
+    "hh4bTree_BulkGravTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_Moriond.root",
+    "hh4bTree_BulkGravTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_Moriond.root",
+    //   "hh4bTree_BulkGravTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_Moriond.root" //19
   };
 
   string sampleName[ntrees] = {
     "Data",
-    //   "TTbar",
+    "TTbar",
     "QCD_HT700to1000", 
     "QCD_HT1000to1500", 
     "QCD_HT1500to2000", 
@@ -78,8 +82,8 @@ void ControlPlotter(){
     "Graviton_m1400_13TeV",
     "Graviton_m1600_13TeV",
     "Graviton_m1800_13TeV",
-    "Graviton_m2000_13TeV",
-    "Graviton_m2500_13TeV"
+    "Graviton_m2000_13TeV"//,
+    //    "Graviton_m2500_13TeV"
   };
 
 
@@ -101,11 +105,15 @@ void ControlPlotter(){
 
   for (int i = 0; i < ntrees; i++){
 
-    if (sampleName[i].find("Data") != string::npos) generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)";
+    //    if (sampleName[i].find("Data") != string::npos) generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1100)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)";// * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]) > 0.1)";
 //    else  generalCut =  "SelectedEvent_btagsf*(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)";
-    else generalCut =  "SelectedEvent_btagsf*(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)";
-
-
+//    else generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)*(TMath::Abs(HJets_Eta[0]) < 2.4)*(TMath::Abs(HJets_Eta[1]) < 2.4)";// * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]) > 0.1)";
+    
+    if (sampleName[i].find("Data") != string::npos) generalCut =  mainCut;
+    else {
+      generalCut =  "SelectedEvent_btagsf";
+      generalCut = generalCut*mainCut;
+    }
 
     string s1 = directory + "" + s[i];
 
@@ -125,7 +133,7 @@ void ControlPlotter(){
     
     
     counter = (TH1D*) allEvents->Get("hEventCount;1");
-    if (counter) cout << "TOTAL NUMBER OF EVENTS  ======================================= " << counter->Integral() << endl;
+    if (counter) cout << "TOTAL NUMBER OF EVENTS hEventCount ======================================= " << counter->Integral() << endl;
     else{
       counter = (TH1D*) allEvents->Get("hEventCount_wt;1");
       cout << "TOTAL NUMBER OF EVENTS  ======================================= " << counter->Integral() << endl;
@@ -269,14 +277,14 @@ void ControlPlotter(){
  
 
 
-    nbins = 15; 
-    minBin = 0., width = 0.1; 
+    nbins = 30; 
+    minBin = -1.5, width = 0.1; 
     maxBin = minBin + nbins*width;
     plotName  = "DeltaEta_" + sampleName[i];
     histo_title = "";
     xaxis_title = "#Delta #eta";
     yaxis_title = "Events / 0.1";
-    variable = "TMath::Abs(SelectedEvent_deta_leading2hjets)";
+    variable = "SelectedEvent_deta_leading2hjets";
     cut0 = "";
     cut = cut0*generalCut;
  
@@ -347,7 +355,7 @@ void ControlPlotter(){
     xaxis_title = "m_{j0} (GeV)";
     yaxis_title = "Events / 5 GeV";
     variable = "HJets_MassPruned[0]";
-    cut0 = "(SelectedEventminv_leading2hjets > 1000)";
+    cut0 = "(SelectedEventminv_leading2hjets > 1100)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)";
     cut = cut0; // no general cut applied
  
     PlottiPlotta();
@@ -362,7 +370,7 @@ void ControlPlotter(){
     xaxis_title = "m_{j1} (GeV)";
     yaxis_title = "Events / 5 GeV";
     variable = "HJets_MassPruned[1]";
-    cut0 = "(SelectedEventminv_leading2hjets > 1000)";
+    cut0 = "(SelectedEventminv_leading2hjets > 1100)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)";
     cut = cut0;  // no general cut applied
  
     PlottiPlotta();
@@ -470,6 +478,84 @@ void ControlPlotter(){
  
     PlottiPlotta();
 
+    //================================================================= nobtasf 
+
+
+    cut0 = "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]) > 0.1)";
+
+
+   nbins = 10; 
+    minBin =0., width = 0.1; 
+    maxBin = minBin + nbins*width;
+    plotName  = "nCSV_J0_SJ0_noBtagSF_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "CSV J0 SJ0";
+    yaxis_title = "Events / 0.1";
+    variable = "HJets_csvSubjet0[0]";
+    cut = cut0;
+ 
+    PlottiPlotta();
+
+
+
+    nbins = 10; 
+    minBin =0., width = 0.11; 
+    maxBin = minBin + nbins*width;
+    plotName  = "nCSV_J1_SJ0_noBtagSF_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "CSV J1 SJ0";
+    yaxis_title = "Events";
+    variable = "HJets_csvSubjet0[1]";
+    cut = cut0;
+ 
+    PlottiPlotta();
+
+
+    nbins = 10; 
+    minBin =0., width = 0.1; 
+    maxBin = minBin + nbins*width;
+    plotName  = "nCSV_J0_SJ1_noBtagSF_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "CSV J0 SJ1";
+    yaxis_title = "Events / 0.1";
+    variable = "HJets_csvSubjet1[0]";
+    cut = cut0;
+ 
+    PlottiPlotta();
+
+
+
+    nbins = 10; 
+    minBin =0., width = 0.11; 
+    maxBin = minBin + nbins*width;
+    plotName  = "nCSV_J1_SJ1_noBtagSF_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "CSV J1 SJ1";
+    yaxis_title = "Events / 0.1";
+    variable = "HJets_csvSubjet1[1]";
+    cut = cut0;
+ 
+    PlottiPlotta();
+
+
+
+    nbins = 6; 
+    minBin =-0.5, width = 1; 
+    maxBin = minBin + nbins*width;
+    plotName  = "nCSV_noBtagSF_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "N(CSV0)+N(CSV1)";
+    yaxis_title = "Events";
+    variable = "HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]";
+    cut = cut0;
+ 
+    PlottiPlotta();
+
+
+
+
+
+    //======================================================
 
     // R2S->Print();
  
