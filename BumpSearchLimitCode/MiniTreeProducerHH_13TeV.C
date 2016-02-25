@@ -6,16 +6,16 @@
 
  evWeight = 1.0;
  normWeight = 1;
+ bool bSubstr = true;
 
-
- string sInFile = "input/MassPlotFineBins_Moriond.root";
- // string sInFile = "input/MassPlotFineBins_subtr_Moriond.root";
+ string sInFile = string("input/MassPlotFineBins_Moriond.root");
+ if (bSubstr) sInFile = string("input/MassPlotFineBins_subtr_Moriond.root");
  cout << sInFile.c_str() << endl;
  TFile file0(sInFile.c_str(), "read");
  
 
  string sOutFile("MiniTrees/Background_HH_13TeV/dijetHH_miniTree.root");
- // string sOutFile("MiniTrees/Background_HH_13TeV/dijetHH_subtr_miniTree.root");
+ if (bSubstr) sOutFile = string("MiniTrees/Background_HH_13TeV/dijetHH_subtr_miniTree.root");
  TFile f1(sOutFile.c_str(), "recreate");
  f1.cd();
  
@@ -67,7 +67,8 @@
 
  }
 
- 
+ cout << sInFile.c_str() << endl;
+ cout << sOutFile.c_str() << endl;
 
  TCVARS->Write();
  f1.Close();
