@@ -7,7 +7,7 @@ shapes bkg_fit_jj CMS_jj_4btag_cat0 ../workspaces/GravitonCMS_jj_bkg_HH_13TeV.ro
 shapes HH_jj CMS_jj_4btag_cat0 ../workspaces/GravitonCMS_jj_HH_2500_13TeV.root w_all:HH_jj_sig_CMS_jj_4btag_cat0
 ---------------
 bin          CMS_jj_4btag_cat0
-observation   27
+observation   26
 ------------------------------
 bin                      CMS_jj_4btag_cat0       CMS_jj_4btag_cat0      
 process                 HH_jj     bkg_fit_jj     

@@ -7,7 +7,7 @@ shapes bkg_fit_jj CMS_jj_3btag_HPLP_cat2 ../workspaces/Radion_subtrCMS_jj_bkg_HH
 shapes HH_jj CMS_jj_3btag_HPLP_cat2 ../workspaces/Radion_subtrCMS_jj_HH_1800_13TeV.root w_all:HH_jj_sig_CMS_jj_3btag_HPLP_cat2
 ---------------
 bin          CMS_jj_3btag_HPLP_cat2
-observation   162
+observation   167
 ------------------------------
 bin                      CMS_jj_3btag_HPLP_cat2       CMS_jj_3btag_HPLP_cat2      
 process                 HH_jj     bkg_fit_jj     
