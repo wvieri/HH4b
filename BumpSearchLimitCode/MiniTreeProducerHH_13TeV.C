@@ -28,11 +28,13 @@
  TCVARS->Branch("categories",&categories,"categories/I");
  
  
+ TRandom3 R;
  
- 
- 
+
  
  for (Int_t iCat = 0; iCat < 3; iCat++){
+   double sum = 0;
+
    TH1D* hMass = (TH1D*) file0.Get(Form("QCD_cat%d;1",iCat));
    
 
@@ -41,14 +43,28 @@
      double N = hMass->GetBinContent(i);
       
      mgg = Axis->GetBinCenter(i);
+
+     int intPart = TMath::Nint(N);
+     double resid = intPart - N;
+     double rnd = R.Uniform(1.);
+     if (resid > 0) normWeight = rnd > resid ? intPart : intPart-1; 
+     else normWeight = rnd > fabs(resid) ?  intPart+0. : intPart+1.; 
      
-     normWeight = TMath::Nint(N)*1.0;
+     //     normWeight = intPart*1.0;
+     sum += normWeight;
+
      categories = iCat;
  
-     if (N > 1e-10) cout << "i = " << i << " N = " << N << " normWeight = " << normWeight << " binCenter = " << hMass->GetBinCenter(i)<< " categories = " << categories << endl;
+     if (N > 1e-10 && N <1) {
+       //     cout << "i = " << i << " N = " << N << " normWeight = " << normWeight << " binCenter = " << hMass->GetBinCenter(i)<< " categories = " << categories << endl;
+       // cout << "N = " << N << " intPart = " << intPart << " resid = " << resid << " rnd = " << rnd << " norm = " << normWeight << endl; 
+     }
 
     if (N > 1e-10 && mgg > 1000 && mgg < 5000) TCVARS->Fill();
    }
+
+   cout << "sum = " << sum << " integral = " << hMass->Integral() << endl;
+
  }
 
  
