@@ -431,10 +431,10 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
   //  cMCMC->SaveAs(fnam);
   gPad->SetLogy(1);
 
-  string sOutput = string("Limits_") + sCat + "_HH_log.png";
+  string sOutput = string("BrazilianFlags/Limits_") + sCat + "_HH_log.png";
   cMCMC->SaveAs(sOutput.c_str());
 
-  sOutput =  string("Limits_") + sCat + "_HH_log.pdf";
+  sOutput =  string("BrazilianFlags/Limits_") + sCat + "_HH_log.pdf";
   cMCMC->SaveAs(sOutput.c_str());
 
 

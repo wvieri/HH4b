@@ -259,7 +259,8 @@ void AddSigData(RooWorkspace* w, Float_t mass, int signalsample, std::vector<str
 
 //signal300_tree_radcut.root
   int iMass = abs(mass);       
-  string signal(inDir+"dijetHH_" + filePOSTfix + TString(Form("HHOUT%d_miniTree.root", iMass)));
+  string signal(inDir.Data());
+  signal = signal +"dijetHH_" + filePOSTfix + "" + string(Form("HHOUT%d_miniTree.root", iMass));
   
   cout << " ================================================================================= signal_c_str() = " << signal.c_str() << endl;
 
@@ -379,7 +380,7 @@ void SigModelFit(RooWorkspace* w, Float_t mass, TString signalname, std::vector<
   
     cout << " Mass = " << MASS << endl;
       
-    jjSig[c]     ->fitTo(*sigToFit[c],Range(mass*0.8,mass*1.3),SumW2Error(kTRUE),PrintEvalErrors(-1));
+    jjSig[c]     ->fitTo(*sigToFit[c],Range(mass*0.8,mass*1.3),SumW2Error(kTRUE),RooFit::PrintEvalErrors(-1));
 
     cout << " fitted " << endl;
 
@@ -446,7 +447,7 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 
     // EXO-12-053 1-parameter function
     RooAbsPdf* bkg_fitTmp = new RooGenericPdf(TString::Format("bkg_fit_%s",cat_names.at(c).c_str()), "exp(@1*@0)", RooArgList(*x, *p1mod));
-    fitresult[c] = bkg_fitTmp->fitTo(*data[c], Strategy(1),Minos(kFALSE), Range(minMassFit,maxMassFit),SumW2Error(kTRUE), Save(kTRUE),PrintEvalErrors(-1));
+    fitresult[c] = bkg_fitTmp->fitTo(*data[c], Strategy(1),Minos(kFALSE), Range(minMassFit,maxMassFit),SumW2Error(kTRUE), Save(kTRUE),RooFit::PrintEvalErrors(-1));
 
  
     RooAbsReal* bkg_fitTmp2  = new RooRealVar(TString::Format("bkg_fit_%s_norm",cat_names.at(c).c_str()),"",4000.0,0.0,10000000);
@@ -467,7 +468,7 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 
     data[c]->plotOn(plotbkg_fit[c],LineColor(kWhite),MarkerColor(kWhite));    
 
-    bkg_fitTmp->plotOn(plotbkg_fit[c],LineColor(kBlue),Range("fitrange"),NormRange("fitrange"),PrintEvalErrors(-1)); 
+    bkg_fitTmp->plotOn(plotbkg_fit[c],LineColor(kBlue),Range("fitrange"),NormRange("fitrange"),RooFit::PrintEvalErrors(-1)); 
     data[c]->plotOn(plotbkg_fit[c]);    
 
     plotbkg_fit[c]->Draw();  
@@ -485,7 +486,7 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 
     data[c]->plotOn(plotbkg_fit[c],LineColor(kWhite),MarkerColor(kWhite));    
 
-    bkg_fitTmp->plotOn(plotbkg_fit[c],LineColor(kBlue),Range("fitrange"),NormRange("fitrange"),PrintEvalErrors(-1)); 
+    bkg_fitTmp->plotOn(plotbkg_fit[c],LineColor(kBlue),Range("fitrange"),NormRange("fitrange"),RooFit::PrintEvalErrors(-1)); 
     */
 
     double normalisation =  data[c]->sumEntries();
@@ -495,9 +496,9 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 
     for (int i = 0; i < (plotbkg_fit[c]->getHist(TString::Format("h_Data_%s",cat_names.at(c).c_str())))->GetN() ; i++)
       {
-	Double_t x,y;
-	(plotbkg_fit[c]->getHist(TString::Format("h_Data_%s",cat_names.at(c).c_str())))->GetPoint(i, x, y);
-	int N = y;
+	Double_t x0,y0;
+	(plotbkg_fit[c]->getHist(TString::Format("h_Data_%s",cat_names.at(c).c_str())))->GetPoint(i, x0, y0);
+	int N = y0;
 	double L =  (N==0) ? 0  : (ROOT::Math::gamma_quantile(alpha/2,N,1.));
 	double U =  ROOT::Math::gamma_quantile_c(alpha/2,N+1,1);
 
@@ -510,7 +511,7 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 	(plotbkg_fit[c]->getHist(TString::Format("h_Data_%s",cat_names.at(c).c_str())))->SetPointError(i, 0, 0, N-L, U-N);
 	if (N==0)
 	  {
-	    (plotbkg_fit[c]->getHist(TString::Format("h_Data_%s",cat_names.at(c).c_str())))->SetPoint(i, x, 1.01e-1);
+	    (plotbkg_fit[c]->getHist(TString::Format("h_Data_%s",cat_names.at(c).c_str())))->SetPoint(i, x0, 1.01e-1);
 	    (plotbkg_fit[c]->getHist(TString::Format("h_Data_%s",cat_names.at(c).c_str())))->SetPointError(i, 0, 0, N-L, U-N);
 	  } else {
 	  //            (plotbkg_fit[c]->getHist(TString::Format("h_Data_%s",cat_names.at(c).c_str())))->SetPoint(i, x, 0.);
@@ -527,7 +528,7 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 	RooAbsReal* intBin0 = bkg_fitTmp->createIntegral(*set,*set,"A") ;
     
 	double dintBin0 = intBin0->getVal();
-	cout << "=================== Bin = " << i << " xmin = " << xmin << " xmax = " << xmax << " xlowErr = " << xlowErr << " xhighErr = " << xhighErr << " N-L = " << N-L << " U-N = " << U-N << " bin content = " << y << " intBin = " << dintBin0 << " unnormalised integral = " << dintBin0*normalisation << " yc = " << yc << endl;
+	cout << "=================== Bin = " << i << " xmin = " << xmin << " xmax = " << xmax << " xlowErr = " << xlowErr << " xhighErr = " << xhighErr << " N-L = " << N-L << " U-N = " << U-N << " bin content = " << y0 << " intBin = " << dintBin0 << " unnormalised integral = " << dintBin0*normalisation << " yc = " << yc << endl;
 	if (dintBin0*normalisation >= yc) chi2 += TMath::Power((dintBin0*normalisation - yc)/(U-N),2);
 	else  chi2 += TMath::Power((dintBin0*normalisation - yc)/(N-L),2);
 
@@ -725,32 +726,33 @@ void MakePlots(RooWorkspace* w, Float_t mass, RooFitResult** fitresults, TString
   RooPlot* plotjj[9];
   for (int c = 0; c < ncat; ++c) {
     plotjj[c] = mgg->frame(Range(minMassFit,maxMassFit),Bins(nBinsMass));
-    signal[c]->plotOn(plotjj[c],LineColor(kWhite),MarkerColor(kWhite),PrintEvalErrors(-1));    
+    signal[c]->plotOn(plotjj[c],LineColor(kWhite),MarkerColor(kWhite));    
 
-    jjSig[c]  ->plotOn(plotjj[c],PrintEvalErrors(-1));
-    //    jjSig[c]  ->plotOn(plotjj[c],Components("jjGaussSig"+signalname+TString::Format("_%s",cat_names.at(c).c_str())),LineStyle(kDashed),LineColor(kGreen),PrintEvalErrors(-1));
-    //   jjSig[c]  ->plotOn(plotjj[c],Components("jjCBSig"+signalname+TString::Format("_%s",cat_names.at(c).c_str())),LineStyle(kDashed),LineColor(kRed),PrintEvalErrors(-1));
+    jjSig[c]  ->plotOn(plotjj[c]);
+    //    jjSig[c]  ->plotOn(plotjj[c],Components("jjGaussSig"+signalname+TString::Format("_%s",cat_names.at(c).c_str())),LineStyle(kDashed),LineColor(kGreen),RooFit::PrintEvalErrors(-1));
+    //   jjSig[c]  ->plotOn(plotjj[c],Components("jjCBSig"+signalname+TString::Format("_%s",cat_names.at(c).c_str())),LineStyle(kDashed),LineColor(kRed),RooFit::PrintEvalErrors(-1));
     
 
     //    jjSig[c]  ->paramOn(plotjj[c]);
-    signal[c]  ->plotOn(plotjj[c],PrintEvalErrors(-1));
+    signal[c]  ->plotOn(plotjj[c]);
 
         
-    TCanvas* dummy = new TCanvas("dummy", "dummy",0, 0, 400, 400);
-    TH1F *hist = new TH1F("hist", "hist", 400, minMassFit, maxMassFit);
+    TCanvas* dummy = new TCanvas(Form("dummy_%d",c), "dummy",0, 0, 400, 400);
+    TH1F *hist = new TH1F(Form("hist_%d",c), "hist", 400, minMassFit, maxMassFit);
  
     plotjj[c]->SetTitle("");      
     plotjj[c]->SetMinimum(0.0);
     plotjj[c]->SetMaximum(1.40*plotjj[c]->GetMaximum());
     plotjj[c]->GetXaxis()->SetTitle("m_{jj} (GeV)");
 
-    TCanvas* ctmp = new TCanvas("ctmp","jj Background Categories",0,0,500,500);
+    TCanvas* ctmp_sig = new TCanvas(Form("ctmp_sig_%d",c),"jj Background Categories",0,0,500,500);
     plotjj[c]->Draw();  
 //    hist->Draw("same");
-    
+    plotjj[c]->Print();
+
     plotjj[c]->Draw("SAME");  
     TLegend *legmc = new TLegend(0.62,0.75,0.92,0.9);
-    legmc->AddEntry(plotjj[c]->getObject(5),"Simulation","LPE");
+    legmc->AddEntry(plotjj[c]->getObject(2),"Simulation","LPE");
     legmc->AddEntry(plotjj[c]->getObject(1),"Parametric Model","L");
     //    legmc->AddEntry(plotjj[c]->getObject(3),"Crystal Ball component","L");
     //    legmc->AddEntry(plotjj[c]->getObject(2),"Gaussian Outliers","L");
@@ -759,10 +761,10 @@ void MakePlots(RooWorkspace* w, Float_t mass, RooFitResult** fitresults, TString
     legmc->SetFillStyle(0);
     legmc->Draw();    
     
-    float effS = effSigma(hist);
+    //    float effS = effSigma(hist);
 //    text->DrawLatex(0.65,0.4, TString::Format("#sigma_{eff} = %.2f GeV",effS));
 //    cout<<"effective sigma [" << c << "] = " << effS <<endl;
-    
+
     TLatex *lat  = new TLatex(minMassFit+1.5,0.85*plotjj[c]->GetMaximum(),"#scale[1.0]{CMS Preliminary}");
     lat->Draw();
     //    TLatex *lat2 = new TLatex(minMassFit+1.5,0.75*plotjj[c]->GetMaximum(),cat_names.at(c).c_str());
@@ -772,9 +774,18 @@ void MakePlots(RooWorkspace* w, Float_t mass, RooFitResult** fitresults, TString
 
     int iMass = abs(mass);
 
-    //ctmp->SaveAs("plots/sigmodel_"+signalname+TString::Format("%d_%s.png", iMass, cat_names.at(c).c_str()));
-    ctmp->SaveAs("plots/sigmodel_"+filePOSTfix+signalname+TString::Format("%d_%s.pdf", iMass, cat_names.at(c).c_str()));
-    ctmp->SaveAs("plots/sigmodel_"+filePOSTfix+signalname+TString::Format("%d_%s.png", iMass, cat_names.at(c).c_str()));
+    //ctmp_sig->SaveAs("plots/sigmodel_"+signalname+TString::Format("%d_%s.png", iMass, cat_names.at(c).c_str()));
+    string pdfout("plots/sigmodel_");
+    cout << pdfout.c_str() << endl;
+    pdfout = pdfout + "" + filePOSTfix.c_str() + "" + signalname.Data() + "" + Form("%d_%s.pdf", iMass, cat_names.at(c).c_str());
+    cout << pdfout.c_str() << endl;
+
+    string pngout("plots/sigmodel_");
+    pngout = pngout + "" + filePOSTfix.c_str() + "" + signalname.Data() + "" + Form("%d_%s.pdf", iMass, cat_names.at(c).c_str());
+    cout << pngout.c_str() << endl;
+
+    ctmp_sig->SaveAs(pngout.c_str());
+    ctmp_sig->SaveAs(pdfout.c_str());
 
 
   }
@@ -793,7 +804,7 @@ void MakePlots(RooWorkspace* w, Float_t mass, RooFitResult** fitresults, TString
   for (int c = 0; c < ncat; ++c) {
     plotbkg_fit[c] = mgg->frame(Range(minMassFit,maxMassFit),Bins(nBinsMass));
     data[c]->plotOn(plotbkg_fit[c],LineColor(kWhite),MarkerColor(kWhite));    
-    bkg_fit[c]->plotOn(plotbkg_fit[c],LineColor(kBlue),Range("fitrange"),NormRange("fitrange"),PrintEvalErrors(-1)); 
+    bkg_fit[c]->plotOn(plotbkg_fit[c],LineColor(kBlue),Range("fitrange"),NormRange("fitrange")); 
     data[c]->plotOn(plotbkg_fit[c]);    
     bkg_fit[c]->paramOn(plotbkg_fit[c], ShowConstants(true), Layout(0.4,0.9,0.9), Format("NEU",AutoPrecision(4)));
     plotbkg_fit[c]->getAttText()->SetTextSize(0.03);
@@ -814,13 +825,14 @@ void MakePlots(RooWorkspace* w, Float_t mass, RooFitResult** fitresults, TString
   c4->SaveAs(out.c_str());
 
 
+
   TCanvas* c5 = new TCanvas("c5","jj Background Categories",0,0,1000,1000);
   c5->Divide(2,2);
 
   for (int c = 0; c < ncat; ++c) {
     plotbkg_fit[c] = mgg->frame(nBinsMass);
     data[c]->plotOn(plotbkg_fit[c],LineColor(kWhite),MarkerColor(kWhite));    
-    bkg_fit[c]->plotOn(plotbkg_fit[c],LineColor(kBlue),Range("fitrange"),NormRange("fitrange"),PrintEvalErrors(-1)); 
+    bkg_fit[c]->plotOn(plotbkg_fit[c],LineColor(kBlue),Range("fitrange"),NormRange("fitrange")); 
     data[c]->plotOn(plotbkg_fit[c]);    
     bkg_fit[c]->paramOn(plotbkg_fit[c], ShowConstants(true), Layout(0.4,0.9,0.9), Format("NEU",AutoPrecision(4)));
     plotbkg_fit[c]->getAttText()->SetTextSize(0.03);
@@ -837,7 +849,7 @@ void MakePlots(RooWorkspace* w, Float_t mass, RooFitResult** fitresults, TString
   c5->SaveAs(out.c_str());
   
 
- 
+
 
 }
 

@@ -12,9 +12,9 @@ observation   236
 bin                      CMS_jj_3btag_HPHP_cat1       CMS_jj_3btag_HPHP_cat1      
 process                 HH_jj     bkg_fit_jj     
 process                 0        1          
-rate                       0.196839 1
+rate                       0.190541 1
 --------------------------------
-# signal scaled by 4.5407e-05 to a cross section of 10/fb and also scale factor of 1 are applied.
+# signal scaled by 4.3954e-05 to a cross section of 10/fb and also scale factor of 1 are applied.
 CMS_lumi_8TeV       lnN  1.046      - 
 CMS_pu              lnN  1.020      - # pileup impact of W mass tag
 CMS_eff_Htag_unc    lnN  1.02       - # JEs and JER uncertainty on H mass tag
