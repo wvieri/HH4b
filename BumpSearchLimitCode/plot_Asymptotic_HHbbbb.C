@@ -97,7 +97,7 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
   }
   else if (sigHyp == 20 || sigHyp == 21 || sigHyp == 22) {
     xTitle = string("M_{Gkk} [GeV]");
-    sXsec = string("xsec_bulk_graviton_toHH_toBB_kmpl05.txt");
+    sXsec = string("bulk_graviton_toHH_toBB_kmpl05.txt");
     sThTitle = string("G_{Bulk} (ktild = 0.5)");
     BFXHH = 1;
     BFHH4b = 1;
@@ -144,7 +144,7 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
 
     TString limitfile = outputdir+"/"+sDatacard.c_str();
     fFREQ[n] = new TFile(limitfile, "READ");
-    cout<<" Read limit file: "<<limitfile<<endl;
+    //    cout<<" Read limit file: "<<limitfile<<endl;
     t[n] = (TTree*)fFREQ[n]->Get("limit");
   
     double mh, limit;
@@ -162,7 +162,7 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
 
         t[n]->GetEntry(i);
 
-        cout<<" quant : "<<quant<<" limit : " <<limit<<endl;
+	//        cout<<" quant : "<<quant<<" limit : " <<limit<<endl;
         /// Map: mh --> observed, 95low, 68low, expected, 68hi, 95hi, xsec
         if (quant > -1.01 && quant < -0.99) {
         v_obs.push_back(limit);
@@ -265,7 +265,7 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
       up95err[nMassEff] = (v_95h.at(im) - v_median.at(im)) * fl_xs;
       down95err[nMassEff] = (v_median.at(im) - v_95l.at(im)) * fl_xs;
     
-      cout<<"fl_xs: "<< double(v_xs.at(im))<<" v_obs "<<v_obs.at(im)<<" obs_lim_cls : "<<obs_lim_cls[nMassEff]  <<medianD[nMassEff] <<" mass : "<<mass[nMassEff]<<endl;
+      cout<<"fl_xs: "<< double(v_xs.at(im)) <<" median_lim_cls : " <<medianD[nMassEff] <<" mass : "<<mass[nMassEff]<<endl;
  
       nMassEff++;
     
