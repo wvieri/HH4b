@@ -438,6 +438,8 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
     data[c]   = (RooDataSet*) w->data(TString::Format("Data_%s",cat_names.at(c).c_str()));
                     
     RooFormulaVar *p1mod = new RooFormulaVar(TString::Format("p1mod_%s",cat_names.at(c).c_str()),"","@0",*w->var(TString::Format("bkg_fit_slope1_%s",cat_names.at(c).c_str())));
+    RooFormulaVar *p1mod_clone = new RooFormulaVar(TString::Format("p1mod_%s",cat_names.at(c).c_str()),"","@0",*w->var(TString::Format("bkg_fit_slope1_clone_%s",cat_names.at(c).c_str())));
+    RooFormulaVar *p2mod = new RooFormulaVar(TString::Format("p2mod_%s",cat_names.at(c).c_str()),"","@0",*w->var(TString::Format("bkg_fit_slope2_%s",cat_names.at(c).c_str())));
      
 
 
@@ -449,7 +451,12 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
     RooAbsPdf* bkg_fitTmp = new RooGenericPdf(TString::Format("bkg_fit_%s",cat_names.at(c).c_str()), "exp(@1*@0)", RooArgList(*x, *p1mod));
     fitresult[c] = bkg_fitTmp->fitTo(*data[c], Strategy(1),Minos(kFALSE), Range(minMassFit,maxMassFit),SumW2Error(kTRUE), Save(kTRUE),RooFit::PrintEvalErrors(-1));
 
+    RooAbsPdf* bkg_fitTmp_3par = new RooGenericPdf(TString::Format("bkg_fit_%s",cat_names.at(c).c_str()), "exp(@1*@0/(1+@1*@2*@0))", RooArgList(*x, *p1mod_clone, *p2mod));
+
+    bkg_fitTmp_3par->fitTo(*data[c], Strategy(1),Minos(kFALSE), Range(minMassFit,maxMassFit),SumW2Error(kTRUE), Save(kTRUE),RooFit::PrintEvalErrors(-1));
  
+
+
     RooAbsReal* bkg_fitTmp2  = new RooRealVar(TString::Format("bkg_fit_%s_norm",cat_names.at(c).c_str()),"",4000.0,0.0,10000000);
     w->import(*bkg_fitTmp);
     w->import(*bkg_fitTmp2);
@@ -469,6 +476,7 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
     data[c]->plotOn(plotbkg_fit[c],LineColor(kWhite),MarkerColor(kWhite));    
 
     bkg_fitTmp->plotOn(plotbkg_fit[c],LineColor(kBlue),Range("fitrange"),NormRange("fitrange"),RooFit::PrintEvalErrors(-1)); 
+    bkg_fitTmp_3par->plotOn(plotbkg_fit[c],LineColor(kRed),Range("fitrange"),NormRange("fitrange"),RooFit::PrintEvalErrors(-1)); 
     data[c]->plotOn(plotbkg_fit[c]);    
 
     plotbkg_fit[c]->Draw();  
@@ -492,8 +500,8 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
     double normalisation =  data[c]->sumEntries();
     const double alpha = 1 - 0.6827;
 
-    double chi2 = 0;
-
+    double chi2 = 0, chi2_3par = 0;
+    double rss0=0, rss_3par=0;
     for (int i = 0; i < (plotbkg_fit[c]->getHist(TString::Format("h_Data_%s",cat_names.at(c).c_str())))->GetN() ; i++)
       {
 	Double_t x0,y0;
@@ -526,15 +534,34 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 	mgg->setRange("A",xmin,xmax);
 
 	RooAbsReal* intBin0 = bkg_fitTmp->createIntegral(*set,*set,"A") ;
+
+	RooAbsReal* intBin_3par = bkg_fitTmp_3par->createIntegral(*set,*set,"A") ;
     
 	double dintBin0 = intBin0->getVal();
+	double dintBin_3par = intBin_3par->getVal();
 	cout << "=================== Bin = " << i << " xmin = " << xmin << " xmax = " << xmax << " xlowErr = " << xlowErr << " xhighErr = " << xhighErr << " N-L = " << N-L << " U-N = " << U-N << " bin content = " << y0 << " intBin = " << dintBin0 << " unnormalised integral = " << dintBin0*normalisation << " yc = " << yc << endl;
+
 	if (dintBin0*normalisation >= yc) chi2 += TMath::Power((dintBin0*normalisation - yc)/(U-N),2);
 	else  chi2 += TMath::Power((dintBin0*normalisation - yc)/(N-L),2);
 
+	if (dintBin_3par*normalisation >= yc) chi2_3par += TMath::Power((dintBin_3par*normalisation - yc)/(U-N),2);
+	else  chi2_3par += TMath::Power((dintBin_3par*normalisation - yc)/(N-L),2);
+
+	rss0 += TMath::Power((dintBin0*normalisation - yc),2);
+	rss_3par += TMath::Power((dintBin_3par*normalisation - yc),2);
+
       }
 
+    double p1_10 = 1;
+    double p2_10 = (plotbkg_fit[c]->getHist(TString::Format("h_Data_%s",cat_names.at(c).c_str())))->GetN() - 3;
+    double Ftest_10 = (rss0-rss_3par)/p1_10 / (rss_3par/p2_10);
+    double good_CL23 =  1.-TMath::FDistI(Ftest_10,p1_10,p2_10);
+    
+    cout <<  " p1_10 = " << p1_10 << " p2_10 = " << p2_10 << " Ftest_23 = " << Ftest_10 << endl;
+
     cout << "chi2 = " << chi2 << endl;
+    cout << "chi2_3par = " << chi2_3par << endl;
+    cout << "F Test CL = " << good_CL23 << endl;
 
 
 //********************************************************************************//
@@ -604,8 +631,16 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
       onesigma->Draw("L3 SAME");
       
 
-      TLatex *lat  = new TLatex(MMIN+1000,6.,Form("#scale[1.0]{ #chi^{2} = %.1f}",chi2));
+      TLatex *lat  = new TLatex(MMIN+1000,10.,Form("#scale[1.0]{Exp. #chi^{2} = %.1f}",chi2));
+      lat->SetTextSize(0.04);
       lat->Draw();
+      TLatex *lat_3par  = new TLatex(MMIN+1000,6.,Form("#scale[1.0]{Lev. Exp. #chi^{2} = %.1f}",chi2_3par));
+      lat_3par->SetTextSize(0.04);
+      lat_3par->Draw();
+
+      TLatex *lat_ftest  = new TLatex(MMIN+1000,20.,Form("#scale[1.0]{F Test 2 vs 3 par. CL = %.2f}",good_CL23));
+      lat_ftest->SetTextSize(0.03);
+      lat_ftest->Draw();
 
       plotbkg_fit[c]->SetTitle("");
       plotbkg_fit[c]->Draw("SAME"); 
