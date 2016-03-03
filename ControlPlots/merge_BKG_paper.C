@@ -2,21 +2,21 @@
 
   // control plots we want
 
-  const int nplots = 26;
-  const int ntrees = 10;
+  const int nplots = 27;
+  const int ntrees = 11;
   double sherpa = 1.;//1./2.54;
   double NewNtot = 150.;
   double scale_radion = 1./20000.;
   double scale_mssmhiggs = NewNtot/300000.;
   double scale_ttgj_eff = 0.102;
-  double rescale = 1.;//13203./6709.39  ;//1.0;//42536./23606.5;
-  double Lumi = 2197.7*rescale;
+  double rescale =  8937/13661.4;
+  double Lumi = 2400.*rescale;
 
   double ReajustScale = 5.;
 
   bool entryUpdate = 0;
 
-  string directory = "HH4b_subjetBTagged_14Fev2016/";
+  string directory = "HH4b_subjetBTagged_01Mar2016/";
 
   /*
 ../SAMPLES_20151106/QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root
@@ -48,18 +48,20 @@ In pb
   
 
   double scaleXsec[ntrees] = {1.0,    
-			      831.760*Lumi/9.683456e+07,
-			      6831.0*Lumi/15356448., 1207.0*Lumi/4963895.,
-			      119.9*Lumi/3868886, 25.24*Lumi/1912529,
-			      1, 1, 1,
-			      1
+			      831.760*Lumi/9.683456e+07,      
+			      //			      6831.0*Lumi/15356448., 1207.0*Lumi/4963895.,
+			      //			      119.9*Lumi/3868886, 25.24*Lumi/1912529,
+			      32100*Lumi/1.80902e+07, 6831.0*Lumi/1.362303e+07, 1207.0*Lumi/3.831681e+06,
+			      119.9*Lumi/3.465403e+06, 25.24*Lumi/1.45854e+06,
+			      0.5, 0.5, 0.5,                       
+			      0.5
 			      //			      1, 1
   };
 
   double Uncertainty[ntrees] = {1, 
 				1,
 				//1, 1, 
-				1, 1, 1,
+				1, 1, 1, 1,
 				1, 1, 1, 1,
 				1
 				//				1,1
@@ -69,7 +71,7 @@ In pb
   string sTitle[ntrees] =   {"DATA",
 			     "TTbar",
 			     //"QCD_HT300to1000", "QCD_HT300to1000",  
-			     "QCD_HT700to1000",  "QCD_HT1000to1500", "QCD_HT1500to2000", "QCD_HT2000toInf", 
+			     "QCD_HT500to700", "QCD_HT700to1000",  "QCD_HT1000to1500", "QCD_HT1500to2000", "QCD_HT2000toInf", 
 			     "M_{G} = 1.2 TeV", "M_{G} = 1.8 TeV", "M_{R} = 1.8 TeV",
 			     "M_{R} = 2.5 TeV"
   };
@@ -77,7 +79,7 @@ In pb
   bool AddToStack[ntrees] = {false, 
 			     true,
 			     //true, true, 
-			     true,  true, true, true,
+			     true, true,  true, true, true,
 			     false, false, false, 
 			     false
 			     //			     false,false
@@ -87,7 +89,7 @@ In pb
   bool UsefulColor[ntrees] = {true, 
 			      true,
 			      //false, false, 
-			      true, true, true, true,
+			      true, true, true, true, true,
 			      true, true, true, 
 			      true
 			      //			      false, false
@@ -97,7 +99,7 @@ In pb
   int Color[ntrees] = {kBlack,
 		       kMagenta,
 		       //kYellow, kYellow, 
-		       kYellow, 42, 43, 47,
+		       kYellow+4, kYellow+3, kYellow+2, kYellow+1, kYellow,
 		       kRed, kBlue, kGreen, 
 		       kOrange
 		       //		       kMagenta, kOrange+7
@@ -106,13 +108,13 @@ In pb
   string treeNames[ntrees] = { "Data",
 			       "TTbar",
 			       //"QCD_HT300to500", "QCD_HT500to700", 
-			       "QCD_HT700to1000", "QCD_HT1000to1500",  "QCD_HT1500to2000", "QCD_HT2000toInf", 
+			       "QCD_HT500to700", "QCD_HT700to1000", "QCD_HT1000to1500",  "QCD_HT1500to2000", "QCD_HT2000toInf", 
 			       "Graviton_m1200_13TeV", "Graviton_m1800_13TeV", "Radion_m1800_13TeV", 
 			       "Radion_m2500_13TeV"
   };
 
 
-  string plotNames[nplots] = {"TotalMass", "PT0",  "PT1", "M0Pruned", "M1Pruned",  "ETA", "DeltaEta",  "nCSV_J0_SJ0", "nCSV_J0_SJ1", "nCSV_J1_SJ0", "nCSV_J1_SJ1", "nCSV",  "nCSV_J0_SJ0_noBtagSF", "nCSV_J0_SJ1_noBtagSF", "nCSV_J1_SJ0_noBtagSF", "nCSV_J1_SJ1_noBtagSF", "nCSV_noBtagSF", "HT12", "TotalMass3btag", "TotalMass4btag", "TotalMass1GeV_3btagExactly", "TAU21_J0", "TAU21_J1", "M0Pruned_WMJcut", "M1Pruned_WMJcut", "TotalMass_0to2btag"};
+  string plotNames[nplots] = {"TotalMass", "PT0",  "PT1", "M0Pruned", "M1Pruned",  "ETA", "DeltaEta",  "nCSV_J0_SJ0", "nCSV_J0_SJ1", "nCSV_J1_SJ0", "nCSV_J1_SJ1", "nCSV",  "nCSV_J0_SJ0_noBtagSF", "nCSV_J0_SJ1_noBtagSF", "nCSV_J1_SJ0_noBtagSF", "nCSV_J1_SJ1_noBtagSF", "nCSV_noBtagSF", "HThat", "TotalMass3btag", "TotalMass4btag", "TotalMass1GeV_3btagExactly", "TAU21_J0", "TAU21_J1", "M0Pruned_WMJcut", "M1Pruned_WMJcut", "TotalMass_0to2btag", "BTAG_SF"};
 
 
   TH1D* plots[ntrees][nplots];
@@ -195,6 +197,8 @@ In pb
   pt->SetTextSize(0.04);
   pt->SetTextAlign(32);
 
+
+
   TPaveText *ptSim = new TPaveText(0.10,0.92,0.90,0.97, "brNDC");
   ptSim->SetBorderSize(0);
   ptSim->SetFillColor(0);
@@ -262,6 +266,10 @@ In pb
 
       }
       
+      if (plotNames[iPlotNames].find("HThat") != string::npos && treeNames[iTreeNames].find("on_m") != string::npos) {
+	plots[iTreeNames][iPlotNames]->Scale(0);
+      }
+
       plots[iTreeNames][iPlotNames]->SetFillColor(Color[iTreeNames]);
       if (plotNames[iPlotNames].find("TotalMass") != string::npos && iPlotNames < 10) {
 	double nrec = plots[iTreeNames][iPlotNames]->Integral();
@@ -370,14 +378,18 @@ In pb
     leg2->Draw();
       
     if (plotNames[iPlotNames].find("TotalMass") != string::npos) totalPlot[iPlotNames]->SetMaximum(max*1.3);
+    else if (plotNames[iPlotNames].find("HThat") != string::npos) totalPlot[iPlotNames]->SetMaximum(max*6.0);
     else totalPlot[iPlotNames]->SetMaximum(max*1.8);
     totalPlot[iPlotNames]->SetMinimum(0.7);
+
+    totalPlot[iPlotNames]->Draw("AXISSAME");
+
     PT_HAT->Update();
    
-   string nameOut =  directory + "Plots_LumiNorm/" + plotNames[iPlotNames] + ".png";
+   string nameOut =  directory + "Plots/" + plotNames[iPlotNames] + ".png";
    PT_HAT->SaveAs(nameOut.c_str());
    
-   nameOut =  directory + "Plots_LumiNorm/" + plotNames[iPlotNames] + ".pdf";
+   nameOut =  directory + "Plots/" + plotNames[iPlotNames] + ".pdf";
    PT_HAT->SaveAs(nameOut.c_str());
 
 
@@ -385,10 +397,10 @@ In pb
    totalPlot[iPlotNames]->SetMaximum(totalPlot[iPlotNames]->GetMaximum()*3);
    PT_HAT->Update();
 
-   nameOut =  directory + "Plots_LumiNorm/" + plotNames[iPlotNames] + "_log.png";
+   nameOut =  directory + "Plots/" + plotNames[iPlotNames] + "_log.png";
    PT_HAT->SaveAs(nameOut.c_str());
    
-   nameOut =  directory + "Plots_LumiNorm/" + plotNames[iPlotNames] + "_log.pdf";
+   nameOut =  directory + "Plots/" + plotNames[iPlotNames] + "_log.pdf";
    PT_HAT->SaveAs(nameOut.c_str());
 
     

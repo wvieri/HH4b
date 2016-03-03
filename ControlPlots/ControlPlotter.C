@@ -12,7 +12,7 @@ TCut cut0;
 
 TCut generalCut =  "";//(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)";
 //TCut generalCut =  "(SelectedEventminv_leading2hjets > 1000)";
-TCut mainCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1100)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)*(TMath::Abs(HJets_Eta[0]) < 2.4)*(TMath::Abs(HJets_Eta[1]) < 2.4)";
+TCut mainCut =  "(SelectedEvent_btagsf > 0)*(SelectedEvent_btagsf < 3)*(HJets_MassPruned[0] > 90) * (HJets_MassPruned[1] > 90) * (SelectedEvent_minv_leading2hjets > 1000)*(SelectedEvent_deta_leading2hjets < 1.3)";
 
 TH1F* numRecVertex1 = new TH1F();
 TH2F* numRecVertex2 = new TH2F();
@@ -29,20 +29,21 @@ void setParams(TH1F* f, string xtitle, string ytitle, int Color, int Style, int 
 
 void ControlPlotter(){
 
-  string directory("HH4b_subjetBTagged_14Fev2016/"); 
+  string directory("HH4b_subjetBTagged_01Mar2016/"); 
 
   string s_file = directory + "ControlPlotsSignal.root"; 
   //string s_file = "ControlPlotsNoReg_X270.root"; 
   fWrite  = new TFile(s_file.data(), "RECREATE");
 
-  const int ntrees = 19;
+  const int ntrees = 21;
 
   string s[ntrees] = {
-    //"Data_RunD_Prompt_Moriond.root",
-    //"Data_RunD_05Oct_Moriond.root",
-    "Data_RunD_Moriond.root",
-    "TT_TuneCUETP8M1_13TeV-powheg-pythia8.root",
-    //   "hh4bTree_TT_TuneCUETP8M1_13TeV-powheg-pythia8.root",
+    //   "QCD_HT1000to1500_Moriond.root", 
+    //  };
+  
+    "Data_RunCD_Moriond.root",
+    "TT_TuneCUETP8M1_13TeV-powheg-pythia8_Moriond.root",
+    "QCD_HT500to700_Moriond.root", 
     "QCD_HT700to1000_Moriond.root", 
     "QCD_HT1000to1500_Moriond.root", 
     "QCD_HT1500to2000_Moriond.root", 
@@ -60,12 +61,15 @@ void ControlPlotter(){
     "hh4bTree_BulkGravTohhTohbbhbb_narrow_M-1600_13TeV-madgraph_Moriond.root",
     "hh4bTree_BulkGravTohhTohbbhbb_narrow_M-1800_13TeV-madgraph_Moriond.root",
     "hh4bTree_BulkGravTohhTohbbhbb_narrow_M-2000_13TeV-madgraph_Moriond.root",
-    //   "hh4bTree_BulkGravTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_Moriond.root" //19
+    "hh4bTree_BulkGravTohhTohbbhbb_narrow_M-2500_13TeV-madgraph_Moriond.root" //19
   };
-
+  
   string sampleName[ntrees] = {
+    //"QCD_HT1000to1500"
+    //  };
     "Data",
     "TTbar",
+    "QCD_HT500to700", 
     "QCD_HT700to1000", 
     "QCD_HT1000to1500", 
     "QCD_HT1500to2000", 
@@ -82,10 +86,10 @@ void ControlPlotter(){
     "Graviton_m1400_13TeV",
     "Graviton_m1600_13TeV",
     "Graviton_m1800_13TeV",
-    "Graviton_m2000_13TeV"//,
-    //    "Graviton_m2500_13TeV"
+    "Graviton_m2000_13TeV",
+    "Graviton_m2500_13TeV"
   };
-
+  
 
 
   //ControlPlotsSignal.root                                        hh4bTree_RadionTohhTohbbhbb_narrow_M-1800_13TeV-madgraph.root  Plots
@@ -109,12 +113,16 @@ void ControlPlotter(){
 //    else  generalCut =  "SelectedEvent_btagsf*(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)";
 //    else generalCut =  "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)*(TMath::Abs(HJets_Eta[0]) < 2.4)*(TMath::Abs(HJets_Eta[1]) < 2.4)";// * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]) > 0.1)";
     
+
+    generalCut =  "SelectedEvent_btagsf*(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135)";
+    generalCut = generalCut*mainCut;
+/*
+
     if (sampleName[i].find("Data") != string::npos) generalCut =  mainCut;
     else {
-      generalCut =  "SelectedEvent_btagsf";
-      generalCut = generalCut*mainCut;
-    }
 
+    }
+*/
     string s1 = directory + "" + s[i];
 
  
@@ -123,7 +131,9 @@ void ControlPlotter(){
     f1  = TFile::Open(s1.data());
     TDirectory* hh4b = (TDirectory*) f1->Get("hh4b;1");
 
-    R2S = (TTree*) hh4b->Get("tree;1");
+    TFile* test = new TFile("test", "RECREATE");
+
+    R2S = ((TTree*) hh4b->Get("tree;1"))->CopyTree(mainCut);
 
     TDirectory* allEvents = (TDirectory*) f1->Get("allEvents;1");
 
@@ -141,7 +151,20 @@ void ControlPlotter(){
 
       
     
-  
+     // R2S->Print();
+ 
+    nbins = 10; 
+    minBin = 0.8, width = 0.1; 
+    maxBin = minBin + nbins*width;
+    plotName  = "BTAG_SF_" + sampleName[i];
+    histo_title = "";
+    xaxis_title = "btag SF";
+    yaxis_title = "Events / 40 GeV";
+    variable = "SelectedEvent_btagsf";
+    cut0 = "";
+    cut = cut0*generalCut;
+ 
+    PlottiPlotta(); 
 
 
     // R2S->Print();
@@ -153,12 +176,13 @@ void ControlPlotter(){
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 40 GeV";
-    variable = "SelectedEventminv_leading2hjets";
+    variable = "SelectedEvent_minv_leading2hjets";
     cut0 = "";
     cut = cut0*generalCut;
  
     PlottiPlotta();
 
+    cout << "Leading jets" << endl;
 
     nbins = 75; 
     minBin = 1000., width = 40.; 
@@ -167,7 +191,7 @@ void ControlPlotter(){
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 40 GeV";
-    variable = "SelectedEventminv_leading2hjets";
+    variable = "SelectedEvent_minv_leading2hjets";
     cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<2.99)";
     cut = cut0*generalCut;
  
@@ -181,7 +205,7 @@ void ControlPlotter(){
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
-    variable = "SelectedEventminv_leading2hjets";
+    variable = "SelectedEvent_minv_leading2hjets";
     cut0 = "";
     cut = cut0*generalCut;
  
@@ -195,7 +219,7 @@ void ControlPlotter(){
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
-    variable = "SelectedEventminv_leading2hjets";
+    variable = "SelectedEvent_minv_leading2hjets";
     cut0 = "(HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99";
     cut = cut0*generalCut;
  
@@ -209,7 +233,7 @@ void ControlPlotter(){
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
-    variable = "SelectedEventminv_leading2hjets";
+    variable = "SelectedEvent_minv_leading2hjets";
     cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01)";
     cut = cut0*generalCut;
  
@@ -224,7 +248,7 @@ void ControlPlotter(){
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
-    variable = "SelectedEventminv_leading2hjets";
+    variable = "SelectedEvent_minv_leading2hjets";
     cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01)*(HJets_tau2[0]/HJets_tau1[0] < 0.6)*(HJets_tau2[1]/HJets_tau1[1] < 0.6)";
     cut = cut0*generalCut;
  
@@ -239,7 +263,7 @@ void ControlPlotter(){
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
-    variable = "SelectedEventminv_leading2hjets";
+    variable = "SelectedEvent_minv_leading2hjets";
     cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01)*(HJets_tau2[0]/HJets_tau1[0] < 0.6)*(HJets_tau2[1]/HJets_tau1[1] > 0.6)";
     cut = cut0*generalCut;
  
@@ -253,7 +277,7 @@ void ControlPlotter(){
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
-    variable = "SelectedEventminv_leading2hjets";
+    variable = "SelectedEvent_minv_leading2hjets";
     cut0 = "((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])<3.01)*(HJets_tau2[0]/HJets_tau1[0] > 0.6)*(HJets_tau2[1]/HJets_tau1[1] < 0.6)";
     cut = cut0*generalCut;
  
@@ -268,7 +292,7 @@ void ControlPlotter(){
     histo_title = "";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 1 GeV";
-    variable = "SelectedEventminv_leading2hjets";
+    variable = "SelectedEvent_minv_leading2hjets";
     cut0 = "(HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>3.99";
     cut = cut0*generalCut;
  
@@ -277,8 +301,8 @@ void ControlPlotter(){
  
 
 
-    nbins = 30; 
-    minBin = -1.5, width = 0.1; 
+    nbins = 16; 
+    minBin = -0.1, width = 0.1; 
     maxBin = minBin + nbins*width;
     plotName  = "DeltaEta_" + sampleName[i];
     histo_title = "";
@@ -290,14 +314,14 @@ void ControlPlotter(){
  
     PlottiPlotta();
 
-    nbins = 42; 
-    minBin = 200., width = 50; 
+    nbins = 84; 
+    minBin = 200., width = 25; 
     maxBin = minBin + nbins*width;
-    plotName  = "HT12_" + sampleName[i];
+    plotName  = "HThat_" + sampleName[i];
     histo_title = "";
-    xaxis_title = "p_{T, j0} + p_{T, j1} (GeV)";
+    xaxis_title = "HT_hat (GeV)";
     yaxis_title = "Events / 25 GeV";
-    variable = "HJets_Pt[0] + HJets_Pt[1]";
+    variable = "SelectedEvent_htHat";
     cut0 = "";
     cut = cut0*generalCut;
  
@@ -355,7 +379,7 @@ void ControlPlotter(){
     xaxis_title = "m_{j0} (GeV)";
     yaxis_title = "Events / 5 GeV";
     variable = "HJets_MassPruned[0]";
-    cut0 = "(SelectedEventminv_leading2hjets > 1100)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)";
+    cut0 = "SelectedEvent_btagsf*(SelectedEvent_minv_leading2hjets > 1000)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)";
     cut = cut0; // no general cut applied
  
     PlottiPlotta();
@@ -370,7 +394,7 @@ void ControlPlotter(){
     xaxis_title = "m_{j1} (GeV)";
     yaxis_title = "Events / 5 GeV";
     variable = "HJets_MassPruned[1]";
-    cut0 = "(SelectedEventminv_leading2hjets > 1100)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)";
+    cut0 = "SelectedEvent_btagsf*(SelectedEvent_minv_leading2hjets > 1000)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3)";
     cut = cut0;  // no general cut applied
  
     PlottiPlotta();
@@ -481,7 +505,7 @@ void ControlPlotter(){
     //================================================================= nobtasf 
 
 
-    cut0 = "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEventminv_leading2hjets > 1000)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]) > 0.1)";
+    cut0 = "(HJets_MassPruned[0] > 105) * (HJets_MassPruned[1] > 105) * (HJets_MassPruned[0] < 135) * (HJets_MassPruned[1] < 135) * (SelectedEvent_minv_leading2hjets > 1000)*(TMath::Abs(SelectedEvent_deta_leading2hjets) < 1.3) * ((HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1]) > 0.1)";
 
 
    nbins = 10; 
@@ -566,7 +590,7 @@ void ControlPlotter(){
     histo_title = "3 btags";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 20 GeV";
-    variable = "SelectedEventminv_leading2hjets";
+    variable = "SelectedEvent_minv_leading2hjets";
     cut0 = "(HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>2.99";
     cut = cut0*generalCut;
  
@@ -579,7 +603,7 @@ void ControlPlotter(){
     histo_title = "4 btags";
     xaxis_title = "m_{4b} (GeV)";
     yaxis_title = "Events / 20 GeV";
-    variable = "SelectedEventminv_leading2hjets";
+    variable = "SelectedEvent_minv_leading2hjets";
     cut0 = "(HJets_nsubjetsBTaggedCSVL[0]+HJets_nsubjetsBTaggedCSVL[1])>3.99";
     cut = cut0*generalCut;
  
@@ -612,8 +636,8 @@ void ControlPlotter(){
     PlottiPlotta();
 
 
-
-
+    test->Close();
+    f1->Close();
   }
 
 
@@ -679,7 +703,7 @@ void setParams(TH1F* f, string xtitle, string ytitle, int Color, int Style, int 
 *Baskets :        5 : Basket Size=      32000 bytes  Compression=   1.33     *
 *............................................................................*
 *Br    1 :SelectedEvent_minv_leading2hjets :                                 *
-*         | SelectedEventminv_leading2hjets/D                                *
+*         | SelectedEvent_minv_leading2hjets/D                                *
 *Entries :      306 : Total  Size=       3530 bytes  File Size  =       2943 *
 *Baskets :        5 : Basket Size=      32000 bytes  Compression=   1.00     *
 *............................................................................*
