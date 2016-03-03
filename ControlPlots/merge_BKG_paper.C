@@ -99,9 +99,9 @@ In pb
   int Color[ntrees] = {kBlack,
 		       kMagenta,
 		       //kYellow, kYellow, 
-		       kYellow+4, kYellow+3, kYellow+2, kYellow+1, kYellow,
-		       kRed, kBlue, kGreen, 
-		       kOrange
+		       kYellow+3, kYellow+2, kYellow+1, kYellow, kOrange,
+		       kRed, kBlue, kGreen+1, 
+		       kRed+2
 		       //		       kMagenta, kOrange+7
   };
 
