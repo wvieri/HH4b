@@ -8,6 +8,8 @@
   luminosity->SetParameter(2, 2);
 
   /*
+
+https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt8TeV
 250.00 	2,6943005181 	0,3480090158
 300.00 	2,8522067364 	0,3383104126
 400.00 	3,1604118233 	0,3011
