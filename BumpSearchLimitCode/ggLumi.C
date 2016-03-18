@@ -37,8 +37,8 @@ https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt13TeV
   y[4] = 4.56;  y[5] = 5.40;   y[6] = 8.14; y[7] = 12.48;   
   y[8] = 19.90;  y[9] = 33.42; 
 
-  y_err[0] = 0.6;  y_err[1] = 0.6;   y_err[2] = 0.6; y_err[3] = 0.6;     
-  y_err[4] = 1.0;  y_err[5] = 1.0;   y_err[6] = 2.0; y_err[7] = 1.0;     
+  y_err[0] = 0.1;  y_err[1] = 0.1;   y_err[2] = 0.3; y_err[3] = 0.3;     
+  y_err[4] = 0.5;  y_err[5] = 0.5;   y_err[6] = 0.5; y_err[7] = 1.0;     
   y_err[8] = 1.0;  y_err[9] = 1.0; 
 
   TGraphErrors* gLumi = new TGraphErrors(10, x, y,  x_err,  y_err);
