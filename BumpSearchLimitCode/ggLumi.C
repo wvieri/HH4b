@@ -10,6 +10,8 @@
   /*
 
 https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt8TeV
+https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt13TeV
+
 250.00 	2,6943005181 	0,3480090158
 300.00 	2,8522067364 	0,3383104126
 400.00 	3,1604118233 	0,3011
@@ -84,9 +86,19 @@ https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt8TeV
 
   ofstream myfile;
   myfile.open("Radion_13TeV_HH_finalstate.txt");
-  myfile << "Mass (GeV)\tRadion->HH at 13 TeV and LambdaR = 3 TeV\n";
+  myfile << "Mass (GeV)\tgg -> Radion -> HH at 13 TeV and LambdaR = 3 TeV\n";
+  myfile << "Obtained from YR4 using gg->H cross section. PDF4LHC 15 PDF\n";
+  myfile << "https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt8TeV\n";
+  myfile << "https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt13TeV\n";
+  myfile << "https://github.com/acarvalh/Cross_sections_CMS/blob/master/WED/radion_inclusive.txt\n";
 
-  
+  ofstream myfile_noHH;
+  myfile_noHH.open("Radion_13TeV_finalstate.txt");
+  myfile_noHH << "Mass (GeV)\tgg -> Radion at 13 TeV and LambdaR = 3 TeV\n";
+  myfile_noHH << "Obtained from YR4 using gg->H cross section. PDF4LHC 15 PDF";
+  myfile_noHH << "https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt8TeV\n";
+  myfile_noHH << "https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt13TeV\n";
+  myfile_noHH << "https://github.com/acarvalh/Cross_sections_CMS/blob/master/WED/radion_inclusive.txt\n";
   int counter = 0;
   while (fgets(&line,127,fp) && fgets(&line_bfhh,127,fp_bfhh)) {
     counter++;
@@ -102,12 +114,14 @@ https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt8TeV
     printf("x0=%f, y0=%f, z0=%f lumi=%f\n",x0,y0,z0,lumiRatio);
     ntuple->Fill(x0,y0*z0*lumiRatio);
     myfile << x0 << "\t" << y0*z0*lumiRatio << "\n";
+    myfile_noHH << x0 << "\t" << y0*lumiRatio << "\n";
 
   }
   cout<<ntuple.GetNvar()<<" "<<ntuple.GetVar1()<<ntuple.GetVar2()<<endl;
 
 
   myfile.close();
+  myfile_noHH.close();
 
 
 }

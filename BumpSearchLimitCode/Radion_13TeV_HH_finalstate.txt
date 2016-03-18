@@ -1,4 +1,8 @@
-Mass (GeV)	Radion->HH at 13 TeV and LambdaR = 3 TeV
+Mass (GeV)	gg -> Radion -> HH at 13 TeV and LambdaR = 3 TeV
+Obtained from YR4 using gg->H cross section. PDF4LHC 15 PDF
+https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt8TeV
+https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt13TeV
+https://github.com/acarvalh/Cross_sections_CMS/blob/master/WED/radion_inclusive.txt
 260	2288.28
 280	2425.04
 300	2144.34
