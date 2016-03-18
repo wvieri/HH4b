@@ -84,7 +84,7 @@ https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageBSMAt8TeV
 
   ofstream myfile;
   myfile.open("Radion_13TeV_HH_finalstate.txt");
-  myfile << "Mass (GeV)\tRadion->HH at 13 TeV\n";
+  myfile << "Mass (GeV)\tRadion->HH at 13 TeV and LambdaR = 3 TeV\n";
 
   
   int counter = 0;

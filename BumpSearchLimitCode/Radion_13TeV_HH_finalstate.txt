@@ -1,4 +1,4 @@
-Mass (GeV)	Radion->HH at 13 TeV
+Mass (GeV)	Radion->HH at 13 TeV and LambdaR = 3 TeV
 260	2288.28
 280	2425.04
 300	2144.34
