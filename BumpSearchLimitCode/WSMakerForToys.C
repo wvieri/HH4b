@@ -1,4 +1,6 @@
-void WSMakerForToys(){
+void WSMakerForToys(int category){
+
+  cout << "category " << category << endl; 
 
    // Load the combine Library 
    gSystem->Load("libHiggsAnalysisCombinedLimit.so");
@@ -10,8 +12,12 @@ void WSMakerForToys(){
    // The observable (CMS_hgg_mass in the workspace)
    RooRealVar *mass =  w_hgg->var("mgg");
 
+   string file;
+   if (category == 0) file = string("CMS_bkg_fit_CMS_jj_4btag_cat0");
+   if (category == 1) file = string("CMS_bkg_fit_CMS_jj_3btag_HPHP_cat1");
+
    // Get three of the functions inside, exponential, linear polynomial, power law
-   RooAbsPdf *pdf_exp = w_hgg->pdf("CMS_bkg_fit_CMS_jj_4btag_cat0");
+   RooAbsPdf *pdf_exp = w_hgg->pdf(file.c_str());
 
    // Fit the functions to the data to set the "prefit" state (note this can and should be redone with combine when doing 
    // bias studies as one typically throws toys from the "best-fit"
@@ -48,7 +54,7 @@ void WSMakerForToys(){
    RooRealVar norm("roomultipdf_norm","Number of background events",0,10000);
    
    // Save to a new workspace
-   TFile *fout = new TFile("background_pdfs.root","RECREATE");
+   TFile *fout = new TFile(Form("background_pdfs_cat%d.root",category),"RECREATE");
    RooWorkspace wout("backgrounds","backgrounds");
    wout.import(cat);
    wout.import(norm);

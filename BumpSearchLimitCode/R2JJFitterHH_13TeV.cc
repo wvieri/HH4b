@@ -448,12 +448,12 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 
 
     // EXO-12-053 1-parameter function
-    RooAbsPdf* bkg_fitTmp = new RooGenericPdf(TString::Format("bkg_fit_%s",cat_names.at(c).c_str()), "exp(@1*@0)", RooArgList(*x, *p1mod));
-    fitresult[c] = bkg_fitTmp->fitTo(*data[c], Strategy(1),Minos(kFALSE), Range(minMassFit,maxMassFit),SumW2Error(kTRUE), Save(kTRUE),RooFit::PrintEvalErrors(-1));
+    RooAbsPdf* bkg_fitTmp_2par = new RooGenericPdf(TString::Format("bkg_fit_%s",cat_names.at(c).c_str()), "exp(@1*@0)", RooArgList(*x, *p1mod_clone));
+    fitresult[c] = bkg_fitTmp_2par->fitTo(*data[c], Strategy(1),Minos(kFALSE), Range(minMassFit,maxMassFit),SumW2Error(kTRUE), Save(kTRUE),RooFit::PrintEvalErrors(-1));
 
-    RooAbsPdf* bkg_fitTmp_3par = new RooGenericPdf(TString::Format("bkg_fit_%s",cat_names.at(c).c_str()), "exp(@1*@0/(1+@1*@2*@0))", RooArgList(*x, *p1mod_clone, *p2mod));
+    RooAbsPdf* bkg_fitTmp = new RooGenericPdf(TString::Format("bkg_fit_%s",cat_names.at(c).c_str()), "exp(@1*@0/(1+@1*@2*@0))", RooArgList(*x, *p1mod, *p2mod));
 
-    bkg_fitTmp_3par->fitTo(*data[c], Strategy(1),Minos(kFALSE), Range(minMassFit,maxMassFit),SumW2Error(kTRUE), Save(kTRUE),RooFit::PrintEvalErrors(-1));
+    bkg_fitTmp->fitTo(*data[c], Strategy(1),Minos(kFALSE), Range(minMassFit,maxMassFit),SumW2Error(kTRUE), Save(kTRUE),RooFit::PrintEvalErrors(-1));
  
 
 
@@ -475,8 +475,8 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 
     data[c]->plotOn(plotbkg_fit[c],LineColor(kWhite),MarkerColor(kWhite));    
 
-    bkg_fitTmp->plotOn(plotbkg_fit[c],LineColor(kBlue),Range("fitrange"),NormRange("fitrange"),RooFit::PrintEvalErrors(-1)); 
-    bkg_fitTmp_3par->plotOn(plotbkg_fit[c],LineColor(kRed),Range("fitrange"),NormRange("fitrange"),RooFit::PrintEvalErrors(-1)); 
+    bkg_fitTmp_2par->plotOn(plotbkg_fit[c],LineColor(kBlue),Range("fitrange"),NormRange("fitrange"),RooFit::PrintEvalErrors(-1)); 
+    bkg_fitTmp->plotOn(plotbkg_fit[c],LineColor(kRed),Range("fitrange"),NormRange("fitrange"),RooFit::PrintEvalErrors(-1)); 
     data[c]->plotOn(plotbkg_fit[c]);    
 
     plotbkg_fit[c]->Draw();  
@@ -494,7 +494,7 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 
     data[c]->plotOn(plotbkg_fit[c],LineColor(kWhite),MarkerColor(kWhite));    
 
-    bkg_fitTmp->plotOn(plotbkg_fit[c],LineColor(kBlue),Range("fitrange"),NormRange("fitrange"),RooFit::PrintEvalErrors(-1)); 
+    bkg_fitTmp_2par->plotOn(plotbkg_fit[c],LineColor(kBlue),Range("fitrange"),NormRange("fitrange"),RooFit::PrintEvalErrors(-1)); 
     */
 
     double normalisation =  data[c]->sumEntries();
@@ -533,9 +533,9 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 	
 	mgg->setRange("A",xmin,xmax);
 
-	RooAbsReal* intBin0 = bkg_fitTmp->createIntegral(*set,*set,"A") ;
+	RooAbsReal* intBin0 = bkg_fitTmp_2par->createIntegral(*set,*set,"A") ;
 
-	RooAbsReal* intBin_3par = bkg_fitTmp_3par->createIntegral(*set,*set,"A") ;
+	RooAbsReal* intBin_3par = bkg_fitTmp->createIntegral(*set,*set,"A") ;
     
 	double dintBin0 = intBin0->getVal();
 	double dintBin_3par = intBin_3par->getVal();
@@ -568,7 +568,7 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
 
     if (dobands) {
 
-      RooAbsPdf *cpdf; cpdf = bkg_fitTmp;
+      RooAbsPdf *cpdf; cpdf = bkg_fitTmp_2par;
       TGraphAsymmErrors *onesigma = new TGraphAsymmErrors();
       TGraphAsymmErrors *twosigma = new TGraphAsymmErrors();
       
@@ -638,7 +638,7 @@ void BkgModelFit(RooWorkspace* w, Bool_t dobands, std::vector<string> cat_names,
       lat_3par->SetTextSize(0.04);
       lat_3par->Draw();
 
-      TLatex *lat_ftest  = new TLatex(MMIN+1000,20.,Form("#scale[1.0]{F Test 2 vs 3 par. CL = %.2f}",good_CL23));
+      TLatex *lat_ftest  = new TLatex(MMIN+1000,20.,Form("#scale[1.0]{F Test 1 vs 2 par. CL = %.2f}",good_CL23));
       lat_ftest->SetTextSize(0.03);
       lat_ftest->Draw();
 
@@ -928,7 +928,7 @@ void MakeSigWS(RooWorkspace* w, const char* fileBaseName, TString signalname, st
 
   wAll->factory("CMS_sig_p2_jer[0.0,-5.0,5.0]");
   wAll->factory("CMS_jj_sig_p2_jer[0.02,0.02,0.02]");
-  wAll->factory("sum::CMS_sig_p2_jer_sum(1.05,prod::CMS_sig_p2_jer_prod(CMS_sig_p2_jer, CMS_jj_sig_p2_jer))");
+  wAll->factory("sum::CMS_sig_p2_jer_sum(1.00,prod::CMS_sig_p2_jer_prod(CMS_sig_p2_jer, CMS_jj_sig_p2_jer))");
 
     for (int c = 0; c < ncat; ++c) {
       wAll->factory("prod::CMS_jj_"+signalname+"_sig_sigma_"+TString::Format("%s",cat_names.at(c).c_str())+"(jj_"+signalname+"_sig_sigma_"+TString::Format("%s",cat_names.at(c).c_str())+", CMS_sig_p2_jer_sum)");
@@ -996,6 +996,12 @@ void MakeBkgWS(RooWorkspace* w, const char* fileBaseName, std::vector<string> ca
 
    wAll->factory(TString::Format("CMS_bkg_fit_slope1_%s[%g,%g,%g]", cat_names.at(c).c_str(), mean, min, max));
 
+
+    mean = (wAll->var(TString::Format("bkg_fit_slope2_%s",cat_names.at(c).c_str())))->getVal();
+    min = (wAll->var(TString::Format("bkg_fit_slope2_%s",cat_names.at(c).c_str())))->getMin();
+    max = (wAll->var(TString::Format("bkg_fit_slope2_%s",cat_names.at(c).c_str())))->getMax();
+
+   wAll->factory(TString::Format("CMS_bkg_fit_slope2_%s[%g,%g,%g]", cat_names.at(c).c_str(), mean, min, max));
  
     cout << "Done For category " << c << endl;    
   }
@@ -1008,7 +1014,8 @@ void MakeBkgWS(RooWorkspace* w, const char* fileBaseName, std::vector<string> ca
   for (int c = 0; c < ncat; ++c) {
     TString sFormat = 	    TString::Format("EDIT::CMS_bkg_fit_%s(bkg_fit_%s,",cat_names.at(c).c_str(),cat_names.at(c).c_str()) +
       TString::Format(" bkg_fit_%s_norm=CMS_bkg_fit_%s_norm,", cat_names.at(c).c_str(),cat_names.at(c).c_str())+
-      TString::Format(" bkg_fit_slope1_%s=CMS_bkg_fit_slope1_%s)", cat_names.at(c).c_str(),cat_names.at(c).c_str());
+      TString::Format(" bkg_fit_slope1_%s=CMS_bkg_fit_slope1_%s,", cat_names.at(c).c_str(),cat_names.at(c).c_str())+
+      TString::Format(" bkg_fit_slope2_%s=CMS_bkg_fit_slope2_%s)", cat_names.at(c).c_str(),cat_names.at(c).c_str());
 
     cout << sFormat.Data() << endl;
 
@@ -1030,6 +1037,8 @@ void MakeBkgWS(RooWorkspace* w, const char* fileBaseName, std::vector<string> ca
   for (int c = 0; c < ncat; ++c) {
     printf("CMS_bkg_fit_slope1_%s  param  %.4f  %.3f   # Mean and absolute uncertainty on background slope\n",
 	   cat_names.at(c).c_str(), (wAll->var(TString::Format("CMS_bkg_fit_slope1_%s",cat_names.at(c).c_str())))->getVal(), 10.);
+    printf("CMS_bkg_fit_slope2_%s  param  %.4f  %.3f   # Mean and absolute uncertainty on background slope\n",
+	   cat_names.at(c).c_str(), (wAll->var(TString::Format("CMS_bkg_fit_slope2_%s",cat_names.at(c).c_str())))->getVal(), 10.);
   }
 
   cout << "BKG WS DONE" << endl;
@@ -1250,6 +1259,8 @@ void MakeDataCard_1Channel(RooWorkspace* w, const char* fileBaseName, const char
   outFile << Form("CMS_bkg_fit_%s_norm           flatParam  # Normalization uncertainty on background slope",cat_names[iChan].c_str()) << endl;
 
   outFile << Form("CMS_bkg_fit_slope1_%s         flatParam  # Mean and absolute uncertainty on background slope",cat_names[iChan].c_str()) << endl;
+
+  outFile << Form("CMS_bkg_fit_slope2_%s         flatParam  # Mean and absolute uncertainty on background levelled parameter",cat_names[iChan].c_str()) << endl;
 
   outFile.close();
 
