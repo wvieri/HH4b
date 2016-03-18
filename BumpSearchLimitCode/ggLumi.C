@@ -7,18 +7,40 @@
   luminosity->SetParameter(1, 1);
   luminosity->SetParameter(2, 2);
 
+  /*
+250.00 	2,6943005181 	0,3480090158
+300.00 	2,8522067364 	0,3383104126
+400.00 	3,1604118233 	0,3011
+500.00 	3,4880860876 	0,2642160845
+800.00 	4,5598537923 	0,1539387309
+1000.00 	5,3960612691 	0,1364179104
+1500.00 	8,1397260274 	0,0972468917
+2000.00 	12,4812895797 	0,0659453303
+2500.00 	19,897045658 	0,0423507109
+3000.00 	33,4160305344 	0,0254863813
+  */
 
+  Double_t x[10], y[10],  x_err[10],  y_err[10];
+  x[0] = 250/13000.;  x[1] = 300/13000.;   x[2] = 400/13000.; x[3] = 500/13000.;   
+  x[4] = 800/13000.;  x[5] = 1000/13000.;   x[6] = 1500/13000.; x[7] = 2000/13000.;   
+  x[8] = 2500/13000.;  x[9] = 3000/13000.;
 
-  Double_t x[4], y[4],  x_err[4],  y_err[4];
-  x[0] = 1000/13000.;  x[1] = 2000/13000.;   x[2] = 3000/13000.; x[3] = 4000/13000.;   
   x_err[0] = 100/13000.;  x_err[1] = 100/13000.;   x_err[2] = 100/13000.; x_err[3] = 100/13000.;   
-  y[0] = 6;  y[1] = 15;   y[2] = 46; y[3] = 203.4;   
-  y_err[0] = 0.6;  y_err[1] = 1.5;   y_err[2] = 4.6; y_err[3] = 20.3;     
+  x_err[4] = 100/13000.;  x_err[5] = 100/13000.;   x_err[6] = 100/13000.; x_err[7] = 100/13000.;   
+  x_err[8] = 100/13000.;  x_err[9] = 100/13000.; 
 
-  TGraphErrors* gLumi = new TGraphErrors(4, x, y,  x_err,  y_err);
-  TH1D* PLOTTER = new TH1D("PLOTTER", "Parton Lumi Ration 13/8 TeV and expo fit; M_{X}/13 TeV;  Ratio;", 1, 0, 0.5);
+  y[0] = 2.69;  y[1] = 2.82;   y[2] = 3.16; y[3] = 3.49;   
+  y[4] = 4.56;  y[5] = 5.40;   y[6] = 8.14; y[7] = 12.48;   
+  y[8] = 19.90;  y[9] = 33.42; 
+
+  y_err[0] = 0.6;  y_err[1] = 0.6;   y_err[2] = 0.6; y_err[3] = 0.6;     
+  y_err[4] = 1.0;  y_err[5] = 1.0;   y_err[6] = 2.0; y_err[7] = 1.0;     
+  y_err[8] = 1.0;  y_err[9] = 1.0; 
+
+  TGraphErrors* gLumi = new TGraphErrors(10, x, y,  x_err,  y_err);
+  TH1D* PLOTTER = new TH1D("PLOTTER", "Parton Lumi Ration 13/8 TeV and expo fit; M_{X}/13 TeV;  Ratio;", 1, 0, 0.30);
   PLOTTER->SetMinimum(0);
-  PLOTTER->SetMaximum(300);
+  PLOTTER->SetMaximum(50);
 
   PLOTTER->SetStats(0);
 
@@ -31,6 +53,8 @@
    pt->AddText(Form("Norm = %.2f", luminosity->GetParameter(1)));
    pt->AddText(Form("Constant = %.1f", luminosity->GetParameter(2)));
 
+   cout << "at 0.25 TeV = " << luminosity->Eval(250./13000) << endl;
+   cout << "at 0.5 TeV = " << luminosity->Eval(500./13000) << endl;
    cout << "at 1.2 TeV = " << luminosity->Eval(1200./13000) << endl;
    cout << "at 1.4 TeV = " << luminosity->Eval(1400./13000) << endl;
    cout << "at 1.6 TeV = " << luminosity->Eval(1600./13000) << endl;
@@ -45,10 +69,43 @@
    cout << "2000 " << luminosity->Eval(2000./13000)*0.135*9 << endl;
    cout << "2500 " << luminosity->Eval(2500./13000)*0.0286*9 << endl;
 
-
    pt->Draw();
 
   c1->SaveAs("ggLumiRatio_8_13TeV.png");
   c1->SaveAs("ggLumiRatio_8_13TeV.pdf");
+
+  FILE *fp = fopen("radion.txt","r");
+  FILE *fp_bfhh = fopen("radion_to_hh.txt","r");
+  ntuple = new TNtuple("ntuple","NTUPLE","x:y"); 
+  float x0,y0,z0;
+  char line[127], line_bfhh[127];
+
+  ofstream myfile;
+  myfile.open("Radion_13TeV_HH_finalstate.txt");
+  myfile << "Mass (GeV)\tRadion->HH at 13 TeV\n";
+
+  
+  int counter = 0;
+  while (fgets(&line,127,fp) && fgets(&line_bfhh,127,fp_bfhh)) {
+    counter++;
+    cout << "counter " << counter << endl; 
+
+    sscanf(&line[0],"%f %f",&x0,&y0);
+    sscanf(&line_bfhh[0],"%f %f",&x0,&z0);
+
+    double lumiRatio =  luminosity->Eval(x0/13000.);
+
+    cout << "luminosity->Eval(x0/13000.) " << lumiRatio << endl; 
+
+    printf("x0=%f, y0=%f, z0=%f lumi=%f\n",x0,y0,z0,lumiRatio);
+    ntuple->Fill(x0,y0*z0*lumiRatio);
+    myfile << x0 << "\t" << y0*z0*lumiRatio << "\n";
+
+  }
+  cout<<ntuple.GetNvar()<<" "<<ntuple.GetVar1()<<ntuple.GetVar2()<<endl;
+
+
+  myfile.close();
+
 
 }
