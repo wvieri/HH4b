@@ -24,6 +24,9 @@ then
 elif [ $sigHyp.eq.21 ]
 then
     echo "graviton 4btag category"
+elif [ $sigHyp.eq.30 ]
+then
+    echo "radion 8TeV category"
 elif [ $sigHyp.eq.22 ]
 then
     echo "graviton 3btag category with HPHP jets"

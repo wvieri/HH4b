@@ -15,13 +15,27 @@
 #include "TLegend.h"
 #include "TStyle.h"
 #include "TPaveText.h"
-#define nXm 6
+#define nXm 6 // 6 for 4b 8TeV, 4 for 2b2tau 8TeV, 3 for 4b+2b2tau 8TeV
 
 const float intLumi = 1.93;
 const string dirXSect = "./";
 
 // 10 = radion_2cat, 11 = radion_4btag_cat0, 12 = radion_3btag_HPHP_cat1 
-// 20 = graviton_2cat, 21 = graviton_4btag_cat0, 22 = graviton_3btag_HPHP_cat1 
+// 20 = graviton_2cat, 21 = graviton_4btag_cat0, 22 = graviton_3btag_HPHP_cat1
+
+// 30 = radion_8TeV_4b
+// 40 = radion_8TeV_2b2tau
+// 50 = radion_combined_8TeV
+
+// 60 = radion_HH_13	     Norm to 13 TeV Radion xsec
+// 70 = radion_HH4b_13plus8  Norm to 13 TeV Radion xsec
+// 80 = radion_HH_8	     Norm to 13 TeV Radion xsec
+
+// 90 = graviton_HH_8	       Norm to 13 TeV Graviton xsec
+// 00 = graviton_HH_13	       Norm to 13 TeV Graviton xsec
+// 01 = graviton_HH4b_13plus8  Norm to 13 TeV Graviton xsec
+
+
 string xTitle;
 string sCat;
 string sXsec;
@@ -65,8 +79,6 @@ double expo_interp(double s2, double s1,  double newM, double m2, double m1)
   return newS;
 }
 
-
-
 double linear_interp(double s2, double s1, double mass, double m2, double m1)
 {
   if (m1 > m2) {
@@ -80,18 +92,59 @@ double linear_interp(double s2, double s1, double mass, double m2, double m1)
   return (s1 + (s2 - s1) * (mass - m1) / (m2 - m1));
 }
 
-
-
 void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
 {
   
-
-  if (sigHyp == 10 || sigHyp == 11 || sigHyp == 12) {
+  if (sigHyp == 30) {
     xTitle = string("M_{R} [GeV]");
-    sXsec = string("radion_toHH_toBB_lambda1.txt");
+    sXsec = string("radion_toHH_toBB_lambda1_8TeV.txt");
+    //sXsec = string("radion_toHH_lambda1_8TeV.txt");
     sThTitle = string("Radion (#Lambda_{R} = 1)");
     BFXHH = 1;
+    BFHH4b = 1;
+  }
 
+  if (sigHyp == 40) {
+    xTitle = string("M_{R} [GeV]");
+    sXsec = string("radion_toHH_lambda1_8TeV.txt");
+    sThTitle = string("Radion (#Lambda_{R} = 1)");
+    BFXHH = 1;
+    BFHH4b = 1;
+  }
+  
+  if (sigHyp == 50) {
+    xTitle = string("M_{R} [GeV]");
+    sXsec = string("radion_toHH_lambda1_8TeV.txt");
+    sThTitle = string("Radion (#Lambda_{R} = 1)");
+    BFXHH = 1;
+    BFHH4b = 1;
+  }
+  if (sigHyp == 60) {
+    xTitle = string("M_{R} [GeV]");
+    sXsec = string("radion_toHH_toBB_lambda1_Comb.txt");
+    sThTitle = string("Radion (#Lambda_{R} = 1)");
+    BFXHH = 1;
+    BFHH4b = 1;
+  }
+  if (sigHyp == 70) {
+    xTitle = string("M_{R} [GeV]");
+    sXsec = string("radion_toHH_toBB_lambda1_13TeV.txt");
+    sThTitle = string("Radion (#Lambda_{R} = 1)");
+    BFXHH = 1;
+    BFHH4b = 1;
+  }
+  if (sigHyp == 80) {
+    xTitle = string("M_{R} [GeV]");
+    sXsec = string("radion_toHH_toBB_lambda1_8TeV.txt");
+    sThTitle = string("Radion (#Lambda_{R} = 1)");
+    BFXHH = 1;
+    BFHH4b = 1;
+  }
+  if (sigHyp == 10 || sigHyp == 11 || sigHyp == 12) {
+    xTitle = string("M_{R} [GeV]");
+    sXsec = string("radion_toHH_toBB_lambda1.txt"); 
+    sThTitle = string("Radion (#Lambda_{R} = 1)");
+    BFXHH = 1;
     BFHH4b = 1;
     //    sXsec = "radion_lambda1";
   }
@@ -107,6 +160,13 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
     if (sigHyp == 10) sCat = string("Radion");
     else if (sigHyp == 11) sCat = string("Radion_4btag_cat0");
     else if (sigHyp == 12) sCat = string("Radion_3btag_HPHP_cat1");
+    
+    else if (sigHyp == 30) sCat = string("HbbHbb");
+    else if (sigHyp == 40) sCat = string("HtautauHbb");
+    else if (sigHyp == 50) sCat = string("HH_8TeV_4b_2b2t");
+    else if (sigHyp == 70) sCat = string("Radion_subtr_13plus8TeV");
+    else if (sigHyp == 60) sCat = string("Radion_subtr_13TeV_norm");
+    else if (sigHyp == 80) sCat = string("HbbHbb");
     
     else if (sigHyp == 20) sCat = string("Graviton");
     else if (sigHyp == 21) sCat = string("Graviton_4btag_cat0");
@@ -126,17 +186,19 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
   TFile *fout = new TFile(outfilename,"RECREATE");
   bool useNewStyle = true;
   if (useNewStyle)  setFPStyle();
-//  gROOT->LoadMacro("CMS_lumi.C");
+//gROOT->LoadMacro("CMS_lumi.C");
  
   TFile *fFREQ[nXm];
   TTree *t[nXm];
-  int Xmass[nXm]={1200,1400,1600,1800,2000,2500};  
-  //  int Xmass[nXm]={1200,1400,1600,1800,2000};  
+
+    int Xmass[nXm]={1200,1400,1600,1800,2000,2500}; // for HbbHbb 8 TeV & 8+13 TeV 
+    //int Xmass[nXm]={1000,1500,2000,2500}; //for 8 TeV HbbHtautau 
+    //int Xmass[nXm]={1500,2000,2500}; //for 8 TeV combo
+
   vector<double> v_mh, v_median, v_68l, v_68h, v_95l, v_95h, v_obs;
  
- 
-  for(int n=0;n<nXm;n++)
-  {
+  for (int n=0;n<nXm;n++) {
+
     char limitfilename[100];
 
     string sDatacard("higgsCombine");
@@ -152,8 +214,6 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
     t[n]->SetBranchAddress("mh", &mh);
     t[n]->SetBranchAddress("limit", &limit);
     t[n]->SetBranchAddress("quantileExpected", &quant);
-  
-    
     
     //int iMH = 0;
     //while (iMH < n) {
@@ -161,7 +221,6 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
       for (int i = 0; i < t[n]->GetEntries(); i++) {
 
         t[n]->GetEntry(i);
-
 	//        cout<<" quant : "<<quant<<" limit : " <<limit<<endl;
         /// Map: mh --> observed, 95low, 68low, expected, 68hi, 95hi, xsec
         if (quant > -1.01 && quant < -0.99) {
@@ -189,11 +248,9 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
      }
       //iMH++;
 	//     }//end while loop
-
   }//file loop
 
   string xsect_file_th = dirXSect + "xsec_" + sXsec.c_str(); 
-
 
   ifstream xsect_file(xsect_file_th.c_str(), ios::in);
   if (! xsect_file.is_open()) {
@@ -241,17 +298,17 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
     fl_xs = (1);
     fl_xs10 = (fl_xs10);
 
-      mass[nMassEff] = Xmass[im];
+    mass[nMassEff] = Xmass[im];
 
     /// This is the part where we multiply the limits in terms of signal strength
     /// by the cross-section, in order to have limits in picobarns.
     //std::cerr << mass[nMassEff] << ":" << v_obs.at(im) << std::endl;
-      obs_lim_cls[nMassEff] = v_obs.at(im) * fl_xs;
+
+      obs_lim_cls[nMassEff] = v_obs.at(im) * fl_xs; //12.98; //* 3.03; // 1/2*BR(tautau)BR(bb) = 12.98 ; 1/BR(bb)BR(bb) = 3.03
  
-      
-      medianD[nMassEff] = v_median.at(im) * fl_xs;
-      up68err[nMassEff] = (v_68h.at(im) - v_median.at(im)) * fl_xs;
-      down68err[nMassEff] = (v_median.at(im) - v_68l.at(im)) * fl_xs;
+      medianD[nMassEff] = v_median.at(im) * fl_xs; //12.98; //* 3.03;
+      up68err[nMassEff] = (v_68h.at(im) - v_median.at(im)) * fl_xs; //12.98; //* 3.03;
+      down68err[nMassEff] = (v_median.at(im) - v_68l.at(im)) * fl_xs; //* 12.98; //* 3.03;
 
       //scale factor 100 for making the xsect visible
       xs[nMassEff] =  double(v_xs.at(im)); //*100.0;
@@ -262,17 +319,14 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
       xs10_uperr[nMassEff] = double(v_toterrh.at(im)) * xs10[nMassEff] - xs10[nMassEff];
       xs10_downerr[nMassEff] =  xs10[nMassEff] - double(v_toterrl.at(im)) * xs10[nMassEff];
      
-      up95err[nMassEff] = (v_95h.at(im) - v_median.at(im)) * fl_xs;
-      down95err[nMassEff] = (v_median.at(im) - v_95l.at(im)) * fl_xs;
+      up95err[nMassEff] = (v_95h.at(im) - v_median.at(im)) * fl_xs;//12.98; //* 3.03;
+      down95err[nMassEff] = (v_median.at(im) - v_95l.at(im)) * fl_xs; //12.98; //* 3.03;
     
       cout<<"fl_xs: "<< double(v_xs.at(im)) <<" median_lim_cls : " <<medianD[nMassEff] <<" mass : "<<mass[nMassEff]<<endl;
  
       nMassEff++;
     
-    
   }//end loop over im (mass points)
-
-
 
   /// The TGraphs themselves.
 
@@ -295,8 +349,13 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
   TGraph *grthSM10=new TGraph(nMassEff,mass,xs10);
   grthSM10->SetName("SMXSection_2nd");
 
-  // double fr_left = 590.0, fr_down = 1E-5, fr_right = 2000.0, fr_up = 0.5; 
-   double fr_left = 1190.0, fr_down = 5E-5, fr_right = 2500.0, fr_up = 5;
+  TLine *line = new TLine(1200,1,2500,1);
+
+  if (sigHyp == 11) double fr_left = 590.0, fr_down = 1E-5, fr_right = 2000.0, fr_up = 0.5; 
+  if (sigHyp == 20 || sigHyp == 21) double fr_left = 1190.0, fr_down = 5E-5, fr_right = 3000.0, fr_up = 0.5;
+  if (sigHyp == 10 || sigHyp == 30 || sigHyp == 40 || sigHyp == 50 || sigHyp == 60 || sigHyp == 70 || sigHyp == 80) {
+  double fr_left = 1200, fr_down = 0.1, fr_right = 2500.0, fr_up = 10000;
+  }
 
   TCanvas *cMCMC = new TCanvas("c_lim_Asymptotic", "canvas with limits for Asymptotic CLs", 630, 600);
   cMCMC->cd();
@@ -308,23 +367,32 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
   TString VV = "ZH";
   
   hr->SetXTitle(xTitle.c_str());
-  hr->SetYTitle("95% CLs on #sigma(X#rightarrowHH)#timesBR(HH#rightarrowb#bar{b}b#bar{b})[fb]"); // #rightarrow 2l2q
-  hr->SetMinimum(0.6);
-  hr->SetMaximum(10000);
-
+  if (sigHyp == 70 || sigHyp == 60 || sigHyp == 80) {
+    hr->SetYTitle("95% CLs on #sigma(X#rightarrowHH) #timesBR(H#rightarrowb#bar{b})[fb]"); // 4b
+    hr->SetMinimum(0.1);
+    hr->SetMaximum(100000);
+  }
+  if (sigHyp == 40) hr->SetYTitle("95% CLs on #sigma(X#rightarrowHH) [fb]"); // bbtautau
+  if (sigHyp == 50) {
+    hr->SetYTitle("95% CLs on #sigma(X#rightarrowHH) [fb]"); // bbtautau
+    hr->SetMinimum(0.1);
+    hr->SetMaximum(10000);
+  }
+  if (sigHyp == 10 || sigHyp == 30) {
+    hr->SetYTitle("95% CLs on #sigma(X#rightarrowHH) #timesBR(H#rightarrowb#bar{b})[fb]"); // 4b
+    hr->SetMinimum(0.1);
+    hr->SetMaximum(100000);
+  }
   gr95_cls->SetFillColor(kYellow);
   gr95_cls->SetFillStyle(1001);//solid
   gr95_cls->SetLineStyle(kDashed);
   gr95_cls->SetLineWidth(3);
   gr95_cls->GetXaxis()->SetTitle(xTitle.c_str());
   gr95_cls->GetYaxis()->SetTitle("95% CLs on #sigma(Z`#rightarrow#chi#bar{@chi}H)#timesBR(H#rightarrowb#bar{b})[fb] "); // #rightarrow 2l2q
-  //gr95_cls->GetYaxis()->SetTitle("95% CLs on #sigma(Z`#rightarrow#chi#bar{#chi}H)[pb] "); // #rightarrow 2l2q
   gr95_cls->GetXaxis()->SetRangeUser(fr_left, fr_right);
-
   gr95_cls->Draw("3");
-  //  gr95_cls->SetMinimum(0.00001);
+  //gr95_cls->SetMinimum(0.00001);
   //gr95_cls->SetMaximum(1000.0);
-  
   //grmedian_cls->SetMinimum(0.00001);
   //grmedian_cls->SetMaximum(1000.0);
   
@@ -360,12 +428,20 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
   grthSM10->SetFillColor(kRed);
   grthSM10->SetFillStyle(3344);
 
-
   grthSM->Draw("L3");
   grmedian_cls->Draw("L");
-  // observed limit
-  //grobslim_cls->Draw("LP");
 
+  /*if (sigHyp==70 || sigHyp==60 || sigHyp == 80) {
+    line->SetLineColor(kRed);
+    line->SetLineWidth(2);
+    line->SetLineStyle(1);
+    line->SetLineStyle(kDashed);
+    line->Draw(); 
+  }*/
+
+  // observed limit
+  grobslim_cls->Draw("LP");
+  
   /*
   TFile *fUnMPlus=new TFile("AsymptoticCLs_UnmatchedPlus_TGraph.root","READ");
   TGraph *grobs_ump=(TGraph*)fUnMPlus->Get("LimitObservedCLs");
@@ -396,26 +472,53 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
   leg->SetShadowColor(0);
   leg->SetTextFont(42);
   leg->SetTextSize(0.03);
-  //   leg->SetBorderMode(0);
+  leg->SetBorderSize(0);
   
-  //leg->AddEntry(grobslim_cls, "CL_{S} Observed", "LP");
-  leg->SetHeader(sCat.c_str());
+  leg->AddEntry(grobslim_cls, "CL_{S} Observed", "LP");
+  //fixme
+  if (sigHyp == 30) leg->SetHeader("pp #rightarrow X #rightarrow HH (b#bar{b}b#bar{b})");
+  if (sigHyp == 40) leg->SetHeader("pp #rightarrow X #rightarrow HH (b#bar{b}#tau^{+}#tau^{-})");
+  if (sigHyp == 50) leg->SetHeader("pp #rightarrow X #rightarrow HH (b#bar{b}b#bar{b} + b#bar{b}#tau^{+}#tau^{-} combination)");
+  if (sigHyp == 70 || sigHyp == 60 || sigHyp == 80) leg->AddEntry(line,"13 TeV #sigma_{th}#timesBR_{H#rightarrowb#bar{b}} Radion #Lambda=1", "LF");
   leg->AddEntry(grmedian_cls, "CL_{S} Expected", "LP");
   leg->AddEntry(gr68_cls, "CL_{S}  Expected #pm 1#sigma", "LF");
   leg->AddEntry(gr95_cls, " CL_{S}  Expected #pm 2#sigma", "LF");
   leg->AddEntry(grthSM, sThTitle.c_str(), "L");
-//    leg->AddEntry(grthSM, "#sigma_{TH} x BR(Z' #rightarrow " + VV + "), #tilde{k}=0.50", "L"); // #rightarrow 2l2q
-//    leg->AddEntry(grthSM10, "#sigma_{TH} x BR(Z' #rightarrow " + VV + "), #tilde{k}=0.20", "L"); // #rightarrow 2l2q
   leg->Draw();
 
-    TLatex * latex = new TLatex();
-    latex->SetNDC();
-    latex->SetTextSize(0.04);
-    latex->SetTextAlign(31);
-    latex->SetTextAlign(11); // align left
-    latex->DrawLatex(0.18, 0.96, "CMS preliminary 2015");
-    latex->DrawLatex(0.60, 0.96, Form("%.2f fb^{-1} at #sqrt{s} = 13 TeV", intLumi));
-  
+  if (sigHyp == 30 || sigHyp == 40) {
+  TLatex * latex = new TLatex();
+  latex->SetNDC();
+  latex->SetTextSize(0.04);
+  latex->SetTextAlign(31);
+  latex->SetTextAlign(11); // align left
+  latex->DrawLatex(0.18, 0.96, "CMS preliminary 2015");
+  latex->DrawLatex(0.60, 0.96, Form("19.7 fb^{-1} at #sqrt{s} = 8 TeV", intLumi));
+  } else if (sigHyp == 50 || sigHyp == 80) {
+  TLatex * latex = new TLatex();
+  latex->SetNDC();
+  latex->SetTextSize(0.04);
+  latex->SetTextAlign(31);
+  latex->SetTextAlign(11); // align left
+  latex->DrawLatex(0.18, 0.96, "CMS preliminary 2015");
+  latex->DrawLatex(0.60, 0.96, Form("19.7 fb^{-1} at #sqrt{s} = 8 TeV", intLumi));
+  } else if (sigHyp == 70) {
+  TLatex * latex = new TLatex();
+  latex->SetNDC();
+  latex->SetTextSize(0.04);
+  latex->SetTextAlign(31);
+  latex->SetTextAlign(11); // align left
+  latex->DrawLatex(0.18, 0.96, "CMS preliminary 2015");
+  latex->DrawLatex(0.60, 0.96, Form("#sqrt{s} = 8 TeV + #sqrt{s} = 13 TeV", intLumi));
+  } else if (sigHyp == 10 ||sigHyp == 60) {
+  TLatex * latex = new TLatex();
+  latex->SetNDC();
+  latex->SetTextSize(0.04);
+  latex->SetTextAlign(31);
+  latex->SetTextAlign(11); // align left
+  latex->DrawLatex(0.18, 0.96, "CMS preliminary 2015");
+  latex->DrawLatex(0.60, 0.96, Form("2.6 fb^{-1} at #sqrt{s} = 13 TeV", intLumi));
+  }
 
   // cMCMC->RedrawAxis("");
   gPad->RedrawAxis("");
@@ -436,8 +539,6 @@ void plot_Asymptotic_HHbbbb(string outputdir, int sigHyp, int subtr)
 
   sOutput =  string("BrazilianFlags/Limits_") + sCat + "_HH_log.pdf";
   cMCMC->SaveAs(sOutput.c_str());
-
-
 
   /*
     sprintf(fnam, "XZHllbb_%s_Asymptotic.root",outputdir.data() );
@@ -508,7 +609,6 @@ void setFPStyle()
   gStyle->SetGridStyle(3);
   gStyle->SetGridWidth(1);
 
-
   gStyle->SetTitleColor(1, "XYZ");
   gStyle->SetTitleFont(42, "XYZ");
   gStyle->SetTitleSize(0.05, "XYZ");
@@ -527,5 +627,3 @@ void setFPStyle()
   gStyle->SetTitleFillColor(10);
   gStyle->SetTitleFontSize(0.05);
 }
-
-
